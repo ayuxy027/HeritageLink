@@ -36,6 +36,7 @@ const CustomCursor = () => {
         </div>
     );
 };
+
 const LoadingAnimation = () => (
     <motion.div
         className="fixed inset-0 flex items-center justify-center bg-black z-50"
@@ -72,6 +73,7 @@ const FuturisticGrid = () => {
     const [particleColor, setParticleColor] = useState('#ffffff');
     const [rotationSpeed, setRotationSpeed] = useState(0.001);
     const [waveIntensity, setWaveIntensity] = useState(0.1);
+    const [showParticles, setShowParticles] = useState(true);
     const controls = useAnimation();
 
     useEffect(() => {
@@ -142,7 +144,6 @@ const FuturisticGrid = () => {
             mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
 
             raycaster.setFromCamera(mouse, camera);
-            // The highlight effect has been removed from here
         };
 
         const onWindowResize = () => {
@@ -158,19 +159,22 @@ const FuturisticGrid = () => {
             grid.rotation.x += rotationSpeed;
             grid.rotation.y += rotationSpeed;
 
-            particles.rotation.x -= rotationSpeed * 0.5;
-            particles.rotation.y -= rotationSpeed * 0.5;
+            if (particles) {
+                particles.visible = showParticles;
+                particles.rotation.x -= rotationSpeed * 0.5;
+                particles.rotation.y -= rotationSpeed * 0.5;
 
-            // Add wave effect to particles
-            const positions = particles.geometry.attributes.position.array;
-            for (let i = 0; i < positions.length; i += 3) {
-                const x = positions[i];
-                const y = positions[i + 1];
-                const z = positions[i + 2];
+                // Add wave effect to particles
+                const positions = particles.geometry.attributes.position.array;
+                for (let i = 0; i < positions.length; i += 3) {
+                    const x = positions[i];
+                    const y = positions[i + 1];
+                    const z = positions[i + 2];
 
-                positions[i + 1] = y + Math.sin(elapsedTime + x) * waveIntensity;
+                    positions[i + 1] = y + Math.sin(elapsedTime + x) * waveIntensity;
+                }
+                particles.geometry.attributes.position.needsUpdate = true;
             }
-            particles.geometry.attributes.position.needsUpdate = true;
 
             renderer.render(scene, camera);
         };
@@ -187,7 +191,7 @@ const FuturisticGrid = () => {
             renderer.dispose();
             containerRef.current.removeChild(renderer.domElement);
         };
-    }, [controls, gridColor, particleColor, rotationSpeed, waveIntensity]);
+    }, [controls, gridColor, particleColor, rotationSpeed, waveIntensity, showParticles]);
 
     const handleColorChange = (gridColor, particleColor) => {
         setGridColor(gridColor);
@@ -200,6 +204,10 @@ const FuturisticGrid = () => {
 
     const handleWaveIntensityChange = (intensity) => {
         setWaveIntensity(intensity);
+    };
+
+    const toggleParticles = () => {
+        setShowParticles(!showParticles);
     };
 
     return (
@@ -256,7 +264,7 @@ const FuturisticGrid = () => {
                         Fast Rotation
                     </button>
                 </div>
-                <div className="flex flex-wrap justify-center gap-4">
+                <div className="flex flex-wrap justify-center gap-4 mb-6">
                     <button
                         onClick={() => handleWaveIntensityChange(0.05)}
                         className="px-6 py-3 bg-indigo-500 rounded-full hover:bg-indigo-600 transition-all transform hover:scale-105 text-white font-semibold"
@@ -268,6 +276,14 @@ const FuturisticGrid = () => {
                         className="px-6 py-3 bg-pink-500 rounded-full hover:bg-pink-600 transition-all transform hover:scale-105 text-white font-semibold"
                     >
                         Intense Waves
+                    </button>
+                </div>
+                <div className="flex flex-wrap justify-center gap-4">
+                    <button
+                        onClick={toggleParticles}
+                        className="px-6 py-3 bg-purple-500 rounded-full hover:bg-purple-600 transition-all transform hover:scale-105 text-white font-semibold"
+                    >
+                        {showParticles ? "Hide Particles" : "Show Particles"}
                     </button>
                 </div>
             </motion.div>
