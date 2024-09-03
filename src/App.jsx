@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaTicketAlt, FaCalendarAlt, FaLanguage, FaChartBar, FaSearch, FaUserPlus, FaChevronDown, FaArrowRight } from 'react-icons/fa';
+import Chatbot1 from './Chatbot1';
 
 // Simulated AI response function (replace with actual AI integration)
 const getAIResponse = async (message) => {
   await new Promise(resolve => setTimeout(resolve, 1000));
   const responses = [
-    "Welcome to HeritageLink! How can I assist you today?",
+    "Welcome to Heritage Link! How can I assist you today?",
     "Our museum is open from 9 AM to 5 PM, Tuesday through Sunday.",
     "Tickets can be booked online or at the entrance. Would you like me to guide you through the booking process?",
     "Our current exhibition 'Ancient Wonders' showcases artifacts from ancient civilizations. It's a must-see!",
@@ -69,7 +70,7 @@ const Navbar = () => {
 };
 
 const HeroSection = () => {
-  const dynamicWords = ["Seamless", "Intelligent", "Revolutionary"];
+  const dynamicWords = ["Blazing Fast", "AI Powered", "Hassle-Free"];
   const [dynamicText, setDynamicText] = useState('');
   const [wordIndex, setWordIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -120,7 +121,7 @@ const HeroSection = () => {
           transition={{ duration: 0.7, ease: "easeOut" }}
         >
           <h1 className="text-3xl font-bold leading-tight text-transparent bg-clip-text bg-gradient-to-r from-[#2b6cb0] to-[#3182ce] sm:text-4xl sm:leading-tight lg:leading-tight lg:text-5xl font-pj">
-            Experience History, <br />
+            Experience History With, <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2b6cb0] to-[#3182ce]">
               {dynamicText}
               <span className="cursor" aria-hidden="true"></span>
@@ -205,7 +206,7 @@ const FeatureSection = () => {
   return (
     <section className="py-20 bg-blue-50">
       <div className="container px-4 mx-auto">
-        <h2 className="mb-12 text-3xl font-bold text-center text-[#2b6cb0] md:text-4xl">How HeritageLink Works</h2>
+        <h2 className="mb-12 text-3xl font-bold text-center text-[#2b6cb0] md:text-4xl">How Heritage Link Works</h2>
         <div className="grid grid-cols-1 gap-12 md:grid-cols-3">
           {features.map((feature, index) => (
             <motion.div
@@ -558,7 +559,7 @@ const MuseumTicketingSystem = () => {
       <FAQSection />
       <CTASection />
       <Footer />
-      <ChatSection />
+      <Chatbot1 />
     </div>
   );
 };
