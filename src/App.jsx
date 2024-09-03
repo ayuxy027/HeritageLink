@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaTicketAlt, FaCalendarAlt, FaLanguage, FaChartBar,FaChevronDown, FaArrowRight } from 'react-icons/fa';
+import { FaTicketAlt, FaCalendarAlt, FaLanguage, FaChartBar, FaChevronDown, FaArrowRight } from 'react-icons/fa';
+import { ChevronDown } from 'lucide-react';
 import Chatbot1 from './Chatbot1';
 import './cursor.css';
 
@@ -25,7 +26,7 @@ const Navbar = () => {
           HeritageLink
         </motion.div>
         <nav className="hidden space-x-8 md:flex">
-          {['Home', 'Exhibitions', 'Tickets', 'About', 'Contact'].map((item, index) => (
+          {['Home', 'Events & Exhibitions', 'Tickets', 'About', 'Contact'].map((item, index) => (
             <motion.a
               key={item}
               href="#"
@@ -269,7 +270,7 @@ const FAQSection = () => {
   const faqs = [
     {
       question: "How does the chatbot assist in booking tickets?",
-      answer: "Our chatbot guides you through the process of booking tickets by helping you select museums, amenities, and payment methods. It’s as interactive as talking to a Ticketing Agent."
+      answer: "Our chatbot guides you through the process of booking tickets by helping you select museums, amenities, and payment methods. It's as interactive as talking to a Ticketing Agent."
     },
     {
       question: "Is the chatbot responsive in regional languages?",
@@ -277,7 +278,7 @@ const FAQSection = () => {
     },
     {
       question: "Can I book tickets for special events through the chatbot?",
-      answer: "Definitely! The chatbot can assist you in booking tickets for special events and exhibitions, ensuring you don’t miss out on unique opportunities."
+      answer: "Definitely! The chatbot can assist you in booking tickets for special events and exhibitions, ensuring you don't miss out on unique opportunities."
     },
     {
       question: "Does the chatbot help with cancellations and refunds?",
@@ -290,7 +291,14 @@ const FAQSection = () => {
   return (
     <section className="py-20 bg-blue-50">
       <div className="container px-4 mx-auto">
-        <h2 className="mb-12 text-3xl font-bold text-center text-[#2b6cb0] md:text-4xl">Frequently Asked Questions</h2>
+        <motion.h2
+          className="mb-12 text-3xl font-bold text-center text-[#2b6cb0] md:text-4xl"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        >
+          Frequently Asked Questions
+        </motion.h2>
         <div className="max-w-3xl mx-auto">
           {faqs.map((faq, index) => (
             <motion.div
@@ -300,25 +308,38 @@ const FAQSection = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
-              <button
-                className="flex items-center justify-between w-full p-4 text-left bg-white rounded-lg focus:outline-none"
+              <motion.button
+                className="flex items-center justify-between w-full p-4 text-left transition-colors duration-300 bg-white rounded-lg focus:outline-none hover:bg-blue-100"
                 onClick={() => setOpenIndex(openIndex === index ? null : index)}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
               >
                 <span className="font-semibold text-[#2b6cb0]">{faq.question}</span>
-                <FaChevronDown
-                  className={`text-[#2b6cb0] transition-transform duration-300 ${openIndex === index ? 'transform rotate-180' : ''}`}
-                />
-              </button>
+                <motion.div
+                  animate={{ rotate: openIndex === index ? 180 : 0 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <ChevronDown className="text-[#2b6cb0]" />
+                </motion.div>
+              </motion.button>
               <AnimatePresence>
                 {openIndex === index && (
                   <motion.div
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: 'auto' }}
                     exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="px-4 py-2 bg-white rounded-b-lg"
+                    transition={{ duration: 0.3, ease: "easeInOut" }}
                   >
-                    <p className="text-gray-600">{faq.answer}</p>
+                    <div className="px-4 py-2 bg-white rounded-b-lg">
+                      <motion.p
+                        className="text-gray-600"
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.3, delay: 0.1 }}
+                      >
+                        {faq.answer}
+                      </motion.p>
+                    </div>
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -329,8 +350,6 @@ const FAQSection = () => {
     </section>
   );
 };
-
-
 
 const CTASection = () => {
   return (
