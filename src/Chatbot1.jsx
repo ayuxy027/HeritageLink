@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import axios from 'axios';
 import Fuse from 'fuse.js';
 
 const ChatSection = () => {
@@ -68,6 +69,26 @@ const ChatSection = () => {
       const possibleResponses = predefinedResponses[bestMatch];
       response = possibleResponses[Math.floor(Math.random() * possibleResponses.length)];
       setContext({ ...context, lastQuestion: bestMatch });
+    } else {
+      try {
+        const apiResponse = await axios.post(
+          'https://your-api-endpoint.com/v1/generate-response', // Replace with actual API endpoint
+          {
+            prompt: input,
+            // Other parameters as required by the API
+          },
+          {
+            headers: {
+              'Authorization': `Bearer AIzaSyCPOQB5cv8R1ucsx6Y7xhdTJNbzqVdqNfI`,
+              'Content-Type': 'application/json'
+            }
+          }
+        );
+        response = apiResponse.data.response; // Adjust according to API response structure
+      } catch (error) {
+        console.error('Error fetching response from Google Gemini:', error);
+        response = "Sorry, there was an error processing your request.";
+      }
     }
 
     setMessages(prev => [...prev, { text: response, sender: 'ai' }]);
