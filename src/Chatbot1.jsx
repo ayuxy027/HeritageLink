@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Fuse from 'fuse.js';
 
 const ChatSection = () => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [context, setContext] = useState({});
   const messagesEndRef = useRef(null);
 
   const predefinedQuestions = [
@@ -17,12 +19,29 @@ const ChatSection = () => {
   ];
 
   const predefinedResponses = {
-    "How to get started": "Welcome to Heritage Link! To get started, you can explore our exhibitions, book tickets, or join a guided tour. What would you like to do first?",
-    "Book Tickets": "Certainly! You can book tickets online through our website or at the entrance. Would you like me to guide you through the online booking process?",
-    "Museum Status": "Our museum is currently open. We operate from 9 AM to 5 PM, Tuesday through Sunday. Is there a specific date you're planning to visit?",
-    "Contact Staff": "You can contact our staff by calling (555) 123-4567 or by emailing info@heritagelink.com. How may we assist you today?",
-    "History of the Museum": "This Museum was founded in 1950 and has been a epitome of cultural education in our community for over 70 years. Would you like to know more about any specific era of our history?"
+    "How to get started": [
+      "Welcome to Heritage Link! To get started, you can explore our exhibitions, book tickets, or join a guided tour. What would you like to do first?",
+      "Getting started is easy! You can book tickets or explore our exhibitions. How can I assist you?"
+    ],
+    "Book Tickets": [
+      "Certainly! You can book tickets online through our website or at the entrance. Would you like me to guide you through the online booking process?",
+      "Booking tickets is easy! You can do it online or in person. Would you like help with the online process?"
+    ],
+    "Museum Status": [
+      "Our museum is currently open. We operate from 9 AM to 5 PM, Tuesday through Sunday. Is there a specific date you're planning to visit?",
+      "The museum is open from 9 AM to 5 PM, Tuesday through Sunday. Do you have a particular date in mind for your visit?"
+    ],
+    "Contact Staff": [
+      "You can contact our staff by calling (555) 123-4567 or by emailing info@heritagelink.com. How may we assist you today?",
+      "To reach our staff, call (555) 123-4567 or email info@heritagelink.com. How can we assist you?"
+    ],
+    "History of the Museum": [
+      "This Museum was founded in 1950 and has been an epitome of cultural education in our community for over 70 years. Would you like to know more about any specific era of our history?",
+      "Our Museum has been a cultural cornerstone since 1950. Interested in learning more about our history?"
+    ]
   };
+
+  const fuse = new Fuse(predefinedQuestions, { includeScore: true, threshold: 0.4 });
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -43,8 +62,12 @@ const ChatSection = () => {
     await new Promise(resolve => setTimeout(resolve, 1000));
 
     let response = "I'm sorry, I don't have information about that. Can you try asking one of the predefined questions?";
-    if (predefinedResponses[input]) {
-      response = predefinedResponses[input];
+    const matchingQuestion = fuse.search(input);
+    if (matchingQuestion.length > 0) {
+      const bestMatch = matchingQuestion[0].item;
+      const possibleResponses = predefinedResponses[bestMatch];
+      response = possibleResponses[Math.floor(Math.random() * possibleResponses.length)];
+      setContext({ ...context, lastQuestion: bestMatch });
     }
 
     setMessages(prev => [...prev, { text: response, sender: 'ai' }]);
