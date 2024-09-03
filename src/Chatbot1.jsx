@@ -21,26 +21,27 @@ const ChatSection = () => {
 
   const predefinedResponses = {
     "How to get started": [
-      "Welcome to Heritage Link! To get started, you can explore our exhibitions, book tickets, or join a guided tour. What would you like to do first?",
-      "Getting started is easy! You can book tickets or explore our exhibitions. How can I assist you?"
+      "Welcome to HeritageLink! You can book tickets, check availability, get recommendations, or learn about exhibits. How can I help?",
+      "Great to have you here! I can assist with booking, exploring exhibits, or recommendations. What would you like to do?"
     ],
     "Book Tickets": [
-      "Certainly! You can book tickets online through our website or at the entrance. Would you like me to guide you through the online booking process?",
-      "Booking tickets is easy! You can do it online or in person. Would you like help with the online process?"
+      "Sure! Would you like to book tickets for a specific date or get info on current exhibits and events?",
+      "Of course! What date are you planning to visit, or do you want to know about our current exhibitions?"
     ],
     "Museum Status": [
-      "Our museum is currently open. We operate from 9 AM to 5 PM, Tuesday through Sunday. Is there a specific date you're planning to visit?",
-      "The museum is open from 9 AM to 5 PM, Tuesday through Sunday. Do you have a particular date in mind for your visit?"
+      "The museum is open. Would you like real-time updates on exhibit availability or crowd levels?",
+      "We're open! I can provide info on less crowded times. Do you have a specific date in mind?"
     ],
     "Contact Staff": [
-      "You can contact our staff by calling (555) 123-4567 or by emailing info@heritagelink.com. How may we assist you today?",
-      "To reach our staff, call (555) 123-4567 or email info@heritagelink.com. How can we assist you?"
+      "You can reach our staff at (555) 123-4567 or info@heritagelink.com. How else can I help?",
+      "Our staff is available at (555) 123-4567 or info@heritagelink.com. Is there something specific you need?"
     ],
     "History of the Museum": [
-      "This Museum was founded in 1950 and has been an epitome of cultural education in our community for over 70 years. Would you like to know more about any specific era of our history?",
-      "Our Museum has been a cultural cornerstone since 1950. Interested in learning more about our history?"
+      "Our museum has been a cultural cornerstone since 1950. Would you like to explore our current exhibits?",
+      "With over 70 years of history, would you like to learn about our special exhibits or book a visit?"
     ]
   };
+  
 
   const fuse = new Fuse(predefinedQuestions, { includeScore: true, threshold: 0.4 });
 
@@ -62,7 +63,7 @@ const ChatSection = () => {
     // Simulate API call delay
     await new Promise(resolve => setTimeout(resolve, 1000));
 
-    let response = "I'm sorry, I don't have information about that. Can you try asking one of the predefined questions?";
+    let response = "I apologize, I don't have specific information about that. Could you try asking about our booking process, museum status, or current exhibits?";
     const matchingQuestion = fuse.search(input);
     if (matchingQuestion.length > 0) {
       const bestMatch = matchingQuestion[0].item;
@@ -72,22 +73,25 @@ const ChatSection = () => {
     } else {
       try {
         const apiResponse = await axios.post(
-          'https://api.google.com/v1/generate-response', // Replace with actual API endpoint
+          'https://api.openai.com/v1/chat/completions', // Replace with your actual API endpoint
           {
-            prompt: input
-            // Add other parameters if required by the API
+            model: "gpt-3.5-turbo",
+            messages: [
+              { role: "system", content: "You are HeritageLink, an AI assistant for a museum ticketing system. Provide helpful, concise responses about booking tickets, museum information, and exhibits." },
+              { role: "user", content: input }
+            ]
           },
           {
             headers: {
-              'Authorization': `Bearer AIzaSyCPOQB5cv8R1ucsx6Y7xhdTJNbzqVdqNfI`,
+              'Authorization': `AIzaSyCPOQB5cv8R1ucsx6Y7xhdTJNbzqVdqNfI`, // Replace with your actual API key
               'Content-Type': 'application/json'
             }
           }
         );
-        response = apiResponse.data.response; // Adjust according to API response structure
+        response = apiResponse.data.choices[0].message.content;
       } catch (error) {
-        console.error('Error fetching response from Google Gemini:', error);
-        response = "Sorry, there was an error processing your request.";
+        console.error('Error fetching response from API:', error);
+        response = "I apologize, there was an error processing your request. How else can I assist you with HeritageLink's services?";
       }
     }
 
@@ -149,7 +153,7 @@ const ChatSection = () => {
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-                  placeholder="Select any predefined question below..."
+                  placeholder="Ask about booking, exhibits, or more..."
                   className="flex-grow p-2 border rounded-l-lg focus:outline-none focus:ring-2 focus:ring-[#2b6cb0]"
                 />
                 <button
