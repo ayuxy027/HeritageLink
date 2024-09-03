@@ -121,16 +121,16 @@ const HeroSection = () => {
           transition={{ duration: 0.7, ease: "easeOut" }}
         >
           <h1 className="text-3xl font-bold leading-tight text-transparent bg-clip-text bg-gradient-to-r from-[#2b6cb0] to-[#3182ce] sm:text-4xl sm:leading-tight lg:leading-tight lg:text-5xl font-pj">
-            Experience History With, <br />
+            Experience History with, <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2b6cb0] to-[#3182ce]">
               {dynamicText}
               <span className="cursor" aria-hidden="true"></span>
             </span>
             <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2b6cb0] to-[#3182ce]">Booking</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2b6cb0] to-[#3182ce]">Bookings</span>
           </h1>
           <p className="max-w-xl mx-auto mt-4 text-lg text-gray-600 sm:mt-6 font-inter lg:mx-0">
-            HeritageLink revolutionizes museum visits with our AI-powered chatbot ticketing system. Say goodbye to long queues and hello to seamless, intelligent booking.
+            HeritageLink transforms museum visits with our AI-powered ticketing chatbot. Skip the queues and enjoy smart, seamless booking
           </p>
           <div className="flex flex-col items-center justify-center mt-8 space-y-3 sm:flex-row sm:space-y-0 sm:space-x-4 lg:justify-start">
             <button className="relative w-full max-w-xs px-6 py-2 text-base font-semibold text-white transition-all duration-300 ease-in-out transform rounded-full bg-gradient-to-r from-[#2b6cb0] to-[#3182ce] hover:from-[#1e4e8c] hover:to-[#2563eb] sm:w-auto hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 group">
@@ -430,123 +430,6 @@ const Footer = () => (
     </div>
   </footer>
 );
-
-const ChatSection = () => {
-  const [messages, setMessages] = useState([]);
-  const [input, setInput] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
-
-  const handleSendMessage = async () => {
-    if (!input.trim()) return;
-
-    setIsLoading(true);
-    setMessages(prev => [...prev, { text: input, sender: 'user' }]);
-    setInput('');
-
-    try {
-      const response = await getAIResponse(input);
-      setMessages(prev => [...prev, { text: response, sender: 'ai' }]);
-    } catch (error) {
-      console.error('Error generating response:', error);
-      setMessages(prev => [...prev, { text: 'Sorry, I encountered an error. Please try again.', sender: 'ai' }]);
-    }
-
-    setIsLoading(false);
-  };
-
-  const quickResponses = [
-    "How to get started",
-    "Book Tickets",
-    "Museum Status",
-    "Contact Staff",
-    "History of the Museum"
-  ];
-
-  return (
-    <div className="fixed z-50 bottom-4 right-4">
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
-            className="overflow-hidden bg-white rounded-lg shadow-xl w-80 md:w-96"
-            style={{
-              backgroundImage: 'linear-gradient(to bottom right, #2b6cb0, #3182ce)',
-            }}
-          >
-            <div className="flex items-center justify-between p-4 text-white bg-gradient-to-r from-[#2b6cb0] to-[#3182ce]">
-              <h3 className="text-lg font-semibold">HeritageLink Assistant</h3>
-              <button onClick={() => setIsOpen(false)} className="text-white hover:text-gray-200">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
-              </button>
-            </div>
-            <div className="p-4 overflow-y-auto bg-white bg-opacity-90 h-80">
-              {messages.map((message, index) => (
-                <div key={index} className={`mb-4 ${message.sender === 'user' ? 'text-right' : 'text-left'}`}>
-                  <span className={`inline-block p-2 rounded-lg ${message.sender === 'user' ? 'bg-gradient-to-r from-[#2b6cb0] to-[#3182ce] text-white' : 'bg-white text-[#2b6cb0] border border-[#2b6cb0]'}`}>
-                    {message.text}
-                  </span>
-                </div>
-              ))}
-              {isLoading && (
-                <div className="text-center">
-                  <span className="inline-block p-2 text-[#2b6cb0] bg-white rounded-lg">
-                    Thinking...
-                  </span>
-                </div>
-              )}
-            </div>
-            <div className="p-4 bg-gradient-to-r from-[#2b6cb0] to-[#3182ce]">
-              <div className="flex mb-2">
-                <input
-                  type="text"
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  placeholder="Ask about tickets, exhibits, or events..."
-                  className="flex-grow p-2 border rounded-l-lg focus:outline-none focus:ring-2 focus:ring-[#2b6cb0]"
-                />
-                <button
-                  onClick={handleSendMessage}
-                  disabled={isLoading}
-                  className="p-2 text-white bg-[#2b6cb0] rounded-r-lg hover:bg-[#1e4e8c] focus:outline-none focus:ring-2 focus:ring-[#2b6cb0] transition-colors duration-300"
-                >
-                  Send
-                </button>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {quickResponses.map((response, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setInput(response)}
-                    className="px-2 py-1 text-xs text-[#2b6cb0] bg-white rounded-full hover:bg-blue-100 transition-colors duration-300"
-                  >
-                    {response}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-      {!isOpen && (
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={() => setIsOpen(true)}
-          className="p-4 text-white transition duration-300 rounded-full shadow-lg bg-gradient-to-r from-[#2b6cb0] to-[#3182ce] hover:from-[#1e4e8c] hover:to-[#2563eb]"
-        >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
-          </svg>
-        </motion.button>
-      )}
-    </div>
-  );
-};
 
 const MuseumTicketingSystem = () => {
   return (
