@@ -221,22 +221,19 @@ const FeatureSection = () => {
 const TestimonialSection = () => {
   const testimonials = [
     {
-      name: "Emily Chen",
+      name: "Amit Sharma",
       role: "Museum Visitor",
-      content: "HeritageLink made booking tickets a breeze! No more waiting in long queues. I love how I can book tickets and get information about exhibits all through the chatbot.",
-      image: "/placeholder.svg?height=100&width=100"
+      content: "Using HeritageLink was a fantastic experience! No more waiting in long queues. Booking tickets and getting information about exhibits through the chatbot was so convenient."
     },
     {
-      name: "David Smith",
+      name: "Radhika Rao",
       role: "Museum Director",
-      content: "Implementing HeritageLink has significantly improved our visitor experience and operational efficiency. The analytics provided are invaluable for our decision-making process.",
-      image: "/placeholder.svg?height=100&width=100"
+      content: "HeritageLink has greatly enhanced our visitor experience and operational efficiency. The insights provided by the analytics are crucial for our strategic decisions."
     },
     {
-      name: "Sophie Martin",
+      name: "Priya Patel",
       role: "International Tourist",
-      content: "As a non-English speaker, I was thrilled to use the multilingual chatbot. It made planning my visit and booking tickets so much easier and more enjoyable.",
-      image: "/placeholder.svg?height=100&width=100"
+      content: "As someone who prefers Hindi, I was delighted to use the multilingual chatbot. It made planning my visit and booking tickets so much easier and more enjoyable."
     }
   ];
 
@@ -253,8 +250,7 @@ const TestimonialSection = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
-              <div className="flex items-center mb-4">
-                <img src={testimonial.image} alt={testimonial.name} className="w-12 h-12 mr-4 rounded-full" />
+              <div className="mb-4">
                 <div>
                   <h3 className="font-semibold text-[#2b6cb0]">{testimonial.name}</h3>
                   <p className="text-gray-600">{testimonial.role}</p>
@@ -272,20 +268,20 @@ const TestimonialSection = () => {
 const FAQSection = () => {
   const faqs = [
     {
-      question: "How does the chatbot ticketing system work?",
-      answer: "Our AI-powered chatbot guides you through the booking process, answering questions and helping you select the right tickets. You can interact with it just like you would with a human representative."
+      question: "How does the chatbot assist in booking tickets?",
+      answer: "Our chatbot guides you through the process of booking tickets by helping you select museums, amenities, and payment methods. It’s as interactive as talking to a Ticketing Agent."
     },
     {
-      question: "Is the chatbot available 24/7?",
-      answer: "Yes, our chatbot is available round the clock to assist with bookings and answer queries about the museum and its exhibitions."
+      question: "Is the chatbot responsive in regional languages?",
+      answer: "Yes, our chatbot is designed to support multiple regional languages including Hindi, Tamil, Telugu, Marathi, and Bengali, making the booking experience accessible for everyone."
     },
     {
       question: "Can I book tickets for special events through the chatbot?",
-      answer: "The chatbot can handle bookings for regular admissions as well as special events and exhibitions."
+      answer: "Definitely! The chatbot can assist you in booking tickets for special events and exhibitions, ensuring you don’t miss out on unique opportunities."
     },
     {
-      question: "What languages does the chatbot support?",
-      answer: "Our chatbot currently supports multiple languages including English, Spanish, French, Chinese, and Arabic, with more languages being added regularly."
+      question: "Does the chatbot help with cancellations and refunds?",
+      answer: "Yes, the chatbot is equipped to guide you through the cancellation process and assist with applying for refunds, providing a hassle-free experience."
     }
   ];
 
@@ -333,6 +329,8 @@ const FAQSection = () => {
     </section>
   );
 };
+
+
 
 const CTASection = () => {
   return (
