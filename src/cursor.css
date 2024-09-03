@@ -1,0 +1,26 @@
+.cursor {
+    display: inline-block;
+    width: 8px;
+    height: 45px;
+    background-color: #b5cae9;
+    animation: blink 0.8s step-end infinite;
+    transform: translateY(8px);
+    margin-left: 5px; /* Add space after the cursor */
+}
+
+@media (max-width: 768px) {
+    .cursor {
+        height: 1em;
+        transform: translateY(0.1em);
+        margin-left: 5px; /* Ensure space after the cursor on smaller screens */
+    }
+}
+
+@keyframes blink {
+    from, to {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+}
