@@ -2,19 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaTicketAlt, FaCalendarAlt, FaLanguage, FaChartBar, FaSearch, FaUserPlus, FaChevronDown, FaArrowRight } from 'react-icons/fa';
 import Chatbot1 from './Chatbot1';
-
-const getAIResponse = async (message) => {
-  await new Promise(resolve => setTimeout(resolve, 1000));
-  const responses = [
-    "Welcome to Heritage Link! How can I assist you today?",
-    "Our museum is open from 9 AM to 5 PM, Tuesday through Sunday.",
-    "Tickets can be booked online or at the entrance. Would you like me to guide you through the booking process?",
-    "Our current exhibition 'Ancient Wonders' showcases artifacts from ancient civilizations. It's a must-see!",
-    "Yes, we offer guided tours every hour. The next available tour starts in 30 minutes.",
-    "I'm sorry, I didn't understand that. Could you please rephrase your question?"
-  ];
-  return responses[Math.floor(Math.random() * responses.length)];
-};
+import './cursor.css';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -69,7 +57,7 @@ const Navbar = () => {
 };
 
 const HeroSection = () => {
-  const dynamicWords = ["Blazing Fast", "AI Powered", "Hassle-Free"];
+  const dynamicWords = ["Blazing-Fast", "AI-Powered", "Hassle-Free"];
   const [dynamicText, setDynamicText] = useState('');
   const [wordIndex, setWordIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -129,7 +117,9 @@ const HeroSection = () => {
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2b6cb0] to-[#3182ce]">Bookings</span>
           </h1>
           <p className="max-w-xl mx-auto mt-4 text-lg text-gray-600 sm:mt-6 font-inter lg:mx-0">
-            HeritageLink transforms museum visits with our AI-powered ticketing chatbot. Skip the queues and enjoy smart, seamless booking
+            Transform museum visits with our chat powered ticketing chatbot,
+            <br />
+            Skip the queues and enjoy seamless booking.
           </p>
           <div className="flex flex-col items-center justify-center mt-8 space-y-3 sm:flex-row sm:space-y-0 sm:space-x-4 lg:justify-start">
             <button className="relative w-full max-w-xs px-6 py-2 text-base font-semibold text-white transition-all duration-300 ease-in-out transform rounded-full bg-gradient-to-r from-[#2b6cb0] to-[#3182ce] hover:from-[#1e4e8c] hover:to-[#2563eb] sm:w-auto hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 group">

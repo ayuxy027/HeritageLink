@@ -72,10 +72,10 @@ const ChatSection = () => {
     } else {
       try {
         const apiResponse = await axios.post(
-          'https://your-api-endpoint.com/v1/generate-response', // Replace with actual API endpoint
+          'https://api.google.com/v1/generate-response', // Replace with actual API endpoint
           {
-            prompt: input,
-            // Other parameters as required by the API
+            prompt: input
+            // Add other parameters if required by the API
           },
           {
             headers: {
@@ -95,6 +95,11 @@ const ChatSection = () => {
     setIsLoading(false);
   };
 
+  const handleClearChat = () => {
+    setMessages([]);
+    setContext({});
+  };
+
   return (
     <div className="fixed z-50 bottom-4 right-4">
       <AnimatePresence>
@@ -107,11 +112,18 @@ const ChatSection = () => {
           >
             <div className="flex items-center justify-between p-4 text-white bg-gradient-to-r from-[#2b6cb0] to-[#3182ce]">
               <h3 className="text-lg font-semibold">HeritageLink Assistant</h3>
-              <button onClick={() => setIsOpen(false)} className="text-white hover:text-gray-200">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
-              </button>
+              <div className="flex items-center">
+                <button onClick={handleClearChat} className="mr-2 text-white hover:text-gray-200">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                  </svg>
+                </button>
+                <button onClick={() => setIsOpen(false)} className="text-white hover:text-gray-200">
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
+                  </svg>
+                </button>
+              </div>
             </div>
             <div className="p-4 overflow-y-auto bg-white h-80">
               {messages.map((message, index) => (
@@ -169,6 +181,9 @@ const ChatSection = () => {
           whileTap={{ scale: 0.95 }}
           onClick={() => setIsOpen(true)}
           className="p-4 text-white transition duration-300 rounded-full shadow-lg bg-gradient-to-r from-[#2b6cb0] to-[#3182ce] hover:from-[#1e4e8c] hover:to-[#2563eb]"
+          style={{
+            boxShadow: '0 0 0 4px rgba(255, 255, 255, 0.7), 0 4px 6px rgba(0, 0, 0, 0.1)',
+          }}
         >
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
