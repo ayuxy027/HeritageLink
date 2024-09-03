@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FaTicketAlt, FaCalendarAlt, FaLanguage, FaChartBar, FaSearch, FaUserPlus, FaChevronDown, FaArrowRight } from 'react-icons/fa';
 import Chatbot1 from './Chatbot1';
 
-// Simulated AI response function (replace with actual AI integration)
 const getAIResponse = async (message) => {
   await new Promise(resolve => setTimeout(resolve, 1000));
   const responses = [
@@ -347,7 +346,7 @@ const FAQSection = () => {
 
 const CTASection = () => {
   return (
-    <section className="py-20 text-white bg-gradient-to-br from-[#2b6cb0] to-[#3182ce]">
+    <section className="py-20 text-white bg-gradient-to-bl from-[#2b6cb0] to-[#3182ce]">
       <div className="container px-4 mx-auto text-center">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
@@ -369,7 +368,7 @@ const CTASection = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="px-8 py-3 text-lg font-semibold text-[#2b6cb0] transition-all duration-300 bg-white rounded-full hover:bg-blue-100 hover:scale-105 transform"
+          className="px-8 py-3 text-lg font-semibold text-[#3182ce] transition-all duration-300 bg-white rounded-full hover:bg-blue-100 hover:scale-105 transform"
         >
           <FaTicketAlt className="inline-block mr-2" /> Book Your Visit
         </motion.button>
@@ -430,6 +429,7 @@ const Footer = () => (
     </div>
   </footer>
 );
+
 
 const MuseumTicketingSystem = () => {
   return (

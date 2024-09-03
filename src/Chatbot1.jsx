@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaTicketAlt, FaCalendarAlt, FaLanguage, FaChartBar } from 'react-icons/fa';
 
 const ChatSection = () => {
   const [messages, setMessages] = useState([]);
