@@ -153,7 +153,7 @@ const ChatSection = () => {
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-                  placeholder="Ask about booking, exhibits, or more..."
+                  placeholder="Browse Predefined Questions..."
                   className="flex-grow p-2 border rounded-l-lg focus:outline-none focus:ring-2 focus:ring-[#2b6cb0]"
                 />
                 <button

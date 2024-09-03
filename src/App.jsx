@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaTicketAlt, FaCalendarAlt, FaLanguage, FaChartBar, FaSearch, FaUserPlus, FaChevronDown, FaArrowRight } from 'react-icons/fa';
+import { FaTicketAlt, FaCalendarAlt, FaLanguage, FaChartBar,FaChevronDown, FaArrowRight } from 'react-icons/fa';
 import Chatbot1 from './Chatbot1';
 import './cursor.css';
 
@@ -132,7 +132,7 @@ const HeroSection = () => {
             <button className="relative w-full max-w-xs px-6 py-2 text-base font-semibold text-[#2b6cb0] transition-all duration-300 ease-in-out transform bg-white border-2 border-[#2b6cb0] rounded-full sm:w-auto hover:bg-blue-50 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 group">
               <span className="absolute inset-0 w-full h-full transition-all duration-300 ease-in-out rounded-full bg-gradient-to-br from-white/50 to-transparent"></span>
               <span className="relative z-10 flex items-center justify-center">
-                View Events
+                View Slots
                 <FaCalendarAlt className="ml-2" />
               </span>
             </button>
