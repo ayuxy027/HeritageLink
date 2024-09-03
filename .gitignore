@@ -1,0 +1,161 @@
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# IDEs and text editors
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Build directories
+build/
+dist/
+
+# Logs
+logs
+*.log
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# Temporary files
+tmp/
+temp/
+
+# Generated files
+coverage/
+*.cache
+*.eslintcache
+*.babelrc.js
+*.history
+
+# Parcel-bundler cache (if used)
+.cache/
+
+# Next.js
+.next/
+
+# Vite
+.vite/
+.vitest/
+
+# SvelteKit
+.svelte-kit/
+
+# Storybook
+.out/
+.storybook/
+node_modules/@storybook/
+
+# Static output
+out/
+public/
+
+# Testing
+coverage/
+*.lcov
+
+# Environment variables
+.env
+.env.*.local
+
+# Bower
+bower_components/
+
+# TypeScript
+*.tsbuildinfo
+tsconfig.tsbuildinfo
+
+# Styled Components artifacts
+*.css.map
+*.scss.map
+
+# ESLint
+.eslintcache
+
+# npm package lock file
+package-lock.json
+
+# Yarn Integrity file
+.yarn-integrity
+
+# Yarn Files
+.pnp.*
+
+# JetBrains IDE files
+.idea/
+*.iml
+
+# Sass cache
+.sass-cache/
+
+# Jest
+jest-test-results.json
+
+# Project files
+.vscode/
+*.code-workspace
+
+# TypeScript cache
+tsconfig.tsbuildinfo
+
+# Serverless directories
+.serverless/
+
+# Terraform directories
+.terraform/
+
+# Hugo directories
+public/
+resources/_gen/
+
+# Python bytecode files
+*.pyc
+__pycache__/
+
+# dotenv environment variable files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Parcel cache
+.cache/
+.parcel-cache/
+
+# .vscode folder for Visual Studio Code
+.vscode/
+
+# Serverless framework files
+.serverless/
+
+# Prettier
+.prettierignore
+
+# Any .env files
+.env*
+
+# Any lock files
+yarn.lock
+pnpm-lock.yaml
