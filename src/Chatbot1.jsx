@@ -1,14 +1,48 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import axios from 'axios';
-import Fuse from 'fuse.js';
+
+const API_KEY = 'AIzaSyCPOQB5cv8R1ucsx6Y7xhdTJNbzqVdqNfI';
+const API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent';
+
+const Button = React.forwardRef(({ className, variant, size, children, ...props }, ref) => {
+  const baseStyle = "inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none";
+  const variants = {
+    default: "bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500",
+    ghost: "hover:bg-blue-100 hover:text-blue-600 focus:ring-blue-500",
+  };
+  const sizes = {
+    default: "h-10 py-2 px-4",
+    sm: "h-8 px-2 rounded-md",
+    lg: "h-12 px-8 rounded-md",
+  };
+  
+  return (
+    <button
+      className={`${baseStyle} ${variants[variant] || variants.default} ${sizes[size] || sizes.default} ${className}`}
+      ref={ref}
+      {...props}
+    >
+      {children}
+    </button>
+  );
+});
+
+const Input = React.forwardRef(({ className, ...props }, ref) => {
+  return (
+    <input
+      className={`flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
+      ref={ref}
+      {...props}
+    />
+  );
+});
 
 const ChatSection = () => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const [context, setContext] = useState({});
   const messagesEndRef = useRef(null);
 
   const predefinedQuestions = [
@@ -18,32 +52,6 @@ const ChatSection = () => {
     "Contact Staff",
     "History of the Museum"
   ];
-
-  const predefinedResponses = {
-    "How to get started": [
-      "Welcome to HeritageLink! You can book tickets, check availability, get recommendations, or learn about exhibits. How can I help?",
-      "Great to have you here! I can assist with booking, exploring exhibits, or recommendations. What would you like to do?"
-    ],
-    "Book Tickets": [
-      "Sure! Would you like to book tickets for a specific date or get info on current exhibits and events?",
-      "Of course! What date are you planning to visit, or do you want to know about our current exhibitions?"
-    ],
-    "Museum Status": [
-      "The museum is open. Would you like real-time updates on exhibit availability or crowd levels?",
-      "We're open! I can provide info on less crowded times. Do you have a specific date in mind?"
-    ],
-    "Contact Staff": [
-      "You can reach our staff at (555) 123-4567 or info@heritagelink.com. How else can I help?",
-      "Our staff is available at (555) 123-4567 or info@heritagelink.com. Is there something specific you need?"
-    ],
-    "History of the Museum": [
-      "Our museum has been a cultural cornerstone since 1950. Would you like to explore our current exhibits?",
-      "With over 70 years of history, would you like to learn about our special exhibits or book a visit?"
-    ]
-  };
-  
-
-  const fuse = new Fuse(predefinedQuestions, { includeScore: true, threshold: 0.4 });
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -60,48 +68,39 @@ const ChatSection = () => {
     setMessages(prev => [...prev, { text: input, sender: 'user' }]);
     setInput('');
 
-    // Simulate API call delay
-    await new Promise(resolve => setTimeout(resolve, 1000));
-
-    let response = "I apologize, I don't have specific information about that. Could you try asking about our booking process, museum status, or current exhibits?";
-    const matchingQuestion = fuse.search(input);
-    if (matchingQuestion.length > 0) {
-      const bestMatch = matchingQuestion[0].item;
-      const possibleResponses = predefinedResponses[bestMatch];
-      response = possibleResponses[Math.floor(Math.random() * possibleResponses.length)];
-      setContext({ ...context, lastQuestion: bestMatch });
-    } else {
-      try {
-        const apiResponse = await axios.post(
-          'https://api.openai.com/v1/chat/completions', // Replace with your actual API endpoint
-          {
-            model: "gpt-3.5-turbo",
-            messages: [
-              { role: "system", content: "You are HeritageLink, an AI assistant for a museum ticketing system. Provide helpful, concise responses about booking tickets, museum information, and exhibits." },
-              { role: "user", content: input }
-            ]
-          },
-          {
-            headers: {
-              'Authorization': `AIzaSyCPOQB5cv8R1ucsx6Y7xhdTJNbzqVdqNfI`, // Replace with your actual API key
-              'Content-Type': 'application/json'
+    try {
+      const response = await axios.post(
+        `${API_URL}?key=${API_KEY}`,
+        {
+          contents: [
+            {
+              parts: [
+                {
+                  text: `You are an AI assistant for Heritage Link, a museum ticketing system. Provide helpful, concise responses about booking tickets, museum information, and exhibits. User query: ${input}`
+                }
+              ]
             }
+          ]
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
           }
-        );
-        response = apiResponse.data.choices[0].message.content;
-      } catch (error) {
-        console.error('Error fetching response from API:', error);
-        response = "I apologize, there was an error processing your request. How else can I assist you with HeritageLink's services?";
-      }
+        }
+      );
+
+      const aiResponse = response.data.candidates[0].content.parts[0].text;
+      setMessages(prev => [...prev, { text: aiResponse, sender: 'ai' }]);
+    } catch (error) {
+      console.error('Error fetching response from API:', error);
+      setMessages(prev => [...prev, { text: "I apologize, there was an error processing your request. How else can I assist you with HeritageLink's services?", sender: 'ai' }]);
     }
 
-    setMessages(prev => [...prev, { text: response, sender: 'ai' }]);
     setIsLoading(false);
   };
 
   const handleClearChat = () => {
     setMessages([]);
-    setContext({});
   };
 
   return (
@@ -109,70 +108,96 @@ const ChatSection = () => {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
-            className="overflow-hidden bg-white rounded-lg shadow-xl w-80 md:w-96"
+            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.95 }}
+            transition={{ duration: 0.2 }}
+            className="w-[350px] h-[600px] bg-white rounded-lg shadow-2xl overflow-hidden flex flex-col"
           >
-            <div className="flex items-center justify-between p-4 text-white bg-gradient-to-r from-[#2b6cb0] to-[#3182ce]">
-              <h3 className="text-lg font-semibold">HeritageLink Assistant</h3>
-              <div className="flex items-center">
-                <button onClick={handleClearChat} className="mr-2 text-white hover:text-gray-200">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+            <div className="flex items-center justify-between p-4 text-white bg-blue-600">
+              <div className="flex items-center space-x-2">
+                <div className="flex items-center justify-center w-8 h-8 font-bold text-blue-600 bg-white rounded-full">
+                  HL
+                </div>
+                <div>
+                  <h3 className="font-semibold">HeritageLink Assistant</h3>
+                  <p className="text-xs text-blue-200">Always here to help</p>
+                </div>
+              </div>
+              <div className="flex items-center space-x-2">
+                <button onClick={handleClearChat} className="text-white hover:text-blue-200">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
                   </svg>
                 </button>
-                <button onClick={() => setIsOpen(false)} className="text-white hover:text-gray-200">
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
+                <button onClick={() => setIsOpen(false)} className="text-white hover:text-blue-200">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
                   </svg>
                 </button>
               </div>
             </div>
-            <div className="p-4 overflow-y-auto bg-white h-80">
-              {messages.map((message, index) => (
-                <div key={index} className={`mb-4 ${message.sender === 'user' ? 'text-right' : 'text-left'}`}>
-                  <span className={`inline-block p-2 rounded-lg ${message.sender === 'user' ? 'bg-gradient-to-r from-[#2b6cb0] to-[#3182ce] text-white' : 'bg-gray-100 text-[#2b6cb0]'}`}>
-                    {message.text}
-                  </span>
-                </div>
-              ))}
+            <div className="flex-1 p-4 space-y-4 overflow-y-auto">
+              <AnimatePresence>
+                {messages.map((message, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.2 }}
+                    className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
+                  >
+                    <div className={`max-w-[70%] p-3 rounded-lg ${
+                      message.sender === 'user'
+                        ? 'bg-blue-600 text-white'
+                        : 'bg-gray-200 text-gray-800'
+                    }`}>
+                      {message.text}
+                    </div>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
               {isLoading && (
-                <div className="text-center">
-                  <span className="inline-block p-2 text-[#2b6cb0] bg-gray-100 rounded-lg">
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="flex justify-start"
+                >
+                  <div className="bg-gray-200 text-gray-800 p-3 rounded-lg max-w-[70%]">
                     Thinking...
-                  </span>
-                </div>
+                  </div>
+                </motion.div>
               )}
               <div ref={messagesEndRef} />
             </div>
-            <div className="p-4 bg-gradient-to-r from-[#2b6cb0] to-[#3182ce]">
-              <div className="flex mb-2">
-                <input
+            <div className="p-4 bg-gray-100">
+              <div className="flex mb-2 space-x-2">
+                <Input
                   type="text"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
-                  placeholder="Browse Predefined Questions..."
-                  className="flex-grow p-2 border rounded-l-lg focus:outline-none focus:ring-2 focus:ring-[#2b6cb0]"
+                  placeholder="Type your message..."
+                  className="flex-grow"
                 />
-                <button
-                  onClick={handleSendMessage}
-                  disabled={isLoading}
-                  className="p-2 text-white bg-[#2b6cb0] rounded-r-lg hover:bg-[#1e4e8c] focus:outline-none focus:ring-2 focus:ring-[#2b6cb0] transition-colors duration-300"
-                >
-                  Send
-                </button>
+                <Button onClick={handleSendMessage} disabled={isLoading}>
+                  <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
+                  </svg>
+                </Button>
               </div>
               <div className="flex flex-wrap gap-2">
                 {predefinedQuestions.map((question, index) => (
-                  <button
+                  <Button
                     key={index}
+                    variant="ghost"
+                    size="sm"
                     onClick={() => setInput(question)}
-                    className="px-2 py-1 text-xs text-[#2b6cb0] bg-white rounded-full hover:bg-blue-100 transition-colors duration-300"
+                    className="text-xs"
                   >
                     {question}
-                  </button>
+                  </Button>
                 ))}
               </div>
             </div>
@@ -184,13 +209,10 @@ const ChatSection = () => {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => setIsOpen(true)}
-          className="p-4 text-white transition duration-300 rounded-full shadow-lg bg-gradient-to-r from-[#2b6cb0] to-[#3182ce] hover:from-[#1e4e8c] hover:to-[#2563eb]"
-          style={{
-            boxShadow: '0 0 0 4px rgba(255, 255, 255, 0.7), 0 4px 6px rgba(0, 0, 0, 0.1)',
-          }}
+          className="p-4 text-white transition-colors duration-200 bg-blue-600 rounded-full shadow-lg hover:bg-blue-700"
         >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
+          <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
           </svg>
         </motion.button>
       )}
