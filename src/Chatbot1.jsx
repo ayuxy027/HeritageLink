@@ -5,7 +5,7 @@ import axios from 'axios';
 const API_KEY = 'AIzaSyCPOQB5cv8R1ucsx6Y7xhdTJNbzqVdqNfI';
 const API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent';
 
-const Button = ({ className, variant = 'default', size = 'default', children, ...props }) => {
+const Button = React.forwardRef(({ className, variant = 'default', size = 'default', children, ...props }, ref) => {
   const baseStyle = "inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none";
   const variants = {
     default: "bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500",
@@ -16,25 +16,49 @@ const Button = ({ className, variant = 'default', size = 'default', children, ..
     sm: "h-8 px-2 rounded-md",
     lg: "h-12 px-8 rounded-md",
   };
-  
+
   return (
     <button
       className={`${baseStyle} ${variants[variant]} ${sizes[size]} ${className}`}
+      ref={ref}
       {...props}
     >
       {children}
     </button>
   );
-};
+});
 
-const Input = ({ className, ...props }) => {
+const Input = React.forwardRef(({ className, ...props }, ref) => {
   return (
     <input
       className={`flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
+      ref={ref}
       {...props}
     />
   );
-};
+});
+
+const TypingIndicator = () => (
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    exit={{ opacity: 0 }}
+    transition={{ duration: 0.3 }}
+    className="flex justify-start"
+  >
+    <div className="bg-gray-200 text-gray-800 p-3 rounded-lg max-w-[70%]">
+      <motion.div
+        animate={{ y: [0, -5, 0] }}
+        transition={{ repeat: Infinity, duration: 1, ease: "easeInOut" }}
+        className="flex space-x-1"
+      >
+        <div className="w-2 h-2 bg-blue-600 rounded-full" />
+        <div className="w-2 h-2 bg-blue-600 rounded-full" />
+        <div className="w-2 h-2 bg-blue-600 rounded-full" />
+      </motion.div>
+    </div>
+  </motion.div>
+);
 
 const ChatSection = () => {
   const [messages, setMessages] = useState([]);
@@ -75,7 +99,7 @@ const ChatSection = () => {
             {
               parts: [
                 {
-                  text: `You are an AI assistant for Heritage Link Made By Team Innova8ers, a museum ticketing system. Provide helpful, concise responses about booking tickets, museum information, and exhibits. User query: ${input}`
+                  text: `You are an AI assistant for Heritage Link, a museum ticketing system. Provide concise, focused responses about booking tickets, museum information, and exhibits. Avoid using emojis and stay on topic. User query: ${input}`
                 }
               ]
             }
@@ -108,24 +132,28 @@ const ChatSection = () => {
         {isOpen && (
           <motion.div
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
-            animate={{ 
-              opacity: 1, 
-              y: 0, 
+            animate={{
+              opacity: 1,
+              y: 0,
               scale: 1,
               width: isExpanded ? '500px' : '350px',
               height: isExpanded ? '80vh' : '600px'
             }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.3, type: "spring", stiffness: 260, damping: 20 }}
             className="flex flex-col overflow-hidden bg-white rounded-lg shadow-2xl"
           >
-            <div className="flex items-center justify-between p-4 text-white bg-blue-600 cursor-move">
+            <motion.div
+              className="flex items-center justify-between p-4 text-white bg-blue-600 cursor-move"
+              whileHover={{ backgroundColor: "#2563EB" }}
+              transition={{ duration: 0.2 }}
+            >
               <div className="flex items-center space-x-2">
                 <div className="flex items-center justify-center w-8 h-8 font-bold text-blue-600 bg-white rounded-full">
-                  HL
+                  AI
                 </div>
                 <div>
-                  <h3 className="font-semibold">HeritageLink Assistant</h3>
+                  <h3 className="font-semibold">Heritage Link Assistant</h3>
                   <p className="text-xs text-blue-200">Always here to help</p>
                 </div>
               </div>
@@ -152,7 +180,7 @@ const ChatSection = () => {
                   </svg>
                 </Button>
               </div>
-            </div>
+            </motion.div>
             <div className="flex-1 p-4 space-y-4 overflow-y-auto">
               <AnimatePresence>
                 {messages.map((message, index) => (
@@ -164,35 +192,16 @@ const ChatSection = () => {
                     transition={{ duration: 0.2 }}
                     className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
                   >
-                    <div className={`max-w-[70%] p-3 rounded-lg ${
-                      message.sender === 'user'
+                    <div className={`max-w-[70%] p-3 rounded-lg ${message.sender === 'user'
                         ? 'bg-blue-600 text-white'
                         : 'bg-gray-200 text-gray-800'
-                    }`}>
+                      }`}>
                       {message.text}
                     </div>
                   </motion.div>
                 ))}
               </AnimatePresence>
-              {isLoading && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="flex justify-start"
-                >
-                  <div className="bg-gray-200 text-gray-800 p-3 rounded-lg max-w-[70%]">
-                    <motion.div
-                      animate={{ y: [0, -5, 0] }}
-                      transition={{ repeat: Infinity, duration: 1 }}
-                      className="flex space-x-1"
-                    >
-                      <div className="w-2 h-2 bg-blue-600 rounded-full" />
-                      <div className="w-2 h-2 bg-blue-600 rounded-full" />
-                      <div className="w-2 h-2 bg-blue-600 rounded-full" />
-                    </motion.div>
-                  </div>
-                </motion.div>
-              )}
+              {isLoading && <TypingIndicator />}
               <div ref={messagesEndRef} />
             </div>
             <div className="p-4 bg-gray-100">
