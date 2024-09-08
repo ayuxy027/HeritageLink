@@ -10,6 +10,7 @@ yarn-debug.log*
 yarn-error.log*
 
 # OS generated files
+.DS_Store
 .DS_Store          # macOS
 Thumbs.db          # Windows
 ehthumbs.db        # Windows
