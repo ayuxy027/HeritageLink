@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import Button from '../shared/Button';
 
 const navItems = [
-  { name: 'Home', link: '/' },
   { name: 'Explore', link: '/explore' },
   { name: 'Events', link: '/events' },
   { name: 'Collections', link: '/collections' },

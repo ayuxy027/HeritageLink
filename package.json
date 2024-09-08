@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "axios": "^1.7.7",
+    "dotenv": "^16.4.5",
     "framer-motion": "^11.5.2",
     "fuse.js": "^7.0.0",
     "lucide-react": "^0.438.0",

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import Button from '../shared/Button';
 import { FaArrowRight, FaCalendarAlt } from 'react-icons/fa';
+import '../../css/cursor.css';
 
 const HeroSection = () => {
   const dynamicWords = ["Blazing-Fast", "AI-Powered", "Hassle-Free"];
