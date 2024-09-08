@@ -7,7 +7,7 @@ import FeatureSection from '../components/home/FeatureSection';
 import TestimonialSection from '../components/home/TestimonialSection';
 import FAQSection from '../components/home/FAQSection';
 import CTASection from '../components/home/CTASection';
-import ChatBot from '../components/home/Chatbot';
+import Chatbot from '../components/home/Chatbot';
 
 function Home() {
   return (
@@ -20,7 +20,7 @@ function Home() {
       <FAQSection />
       <CTASection />
       <Footer />
-      <ChatBot />
+      <Chatbot />
     </div>
   );
 }
