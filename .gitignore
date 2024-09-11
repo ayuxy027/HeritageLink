@@ -55,7 +55,6 @@ public/
 .env
 
 # Package manager lock files
-package-lock.json
 yarn.lock
 .pnp.*
 .yarn-integrity
