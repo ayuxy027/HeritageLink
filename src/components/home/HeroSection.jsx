@@ -1,82 +1,194 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import Button from '../shared/Button';
-import { FaArrowRight, FaCalendarAlt } from 'react-icons/fa';
-import '../../css/cursor.css';
+'use client'
 
-const HeroSection = () => {
-  const dynamicWords = ["Blazing-Fast", "AI-Powered", "Hassle-Free"];
-  const [dynamicText, setDynamicText] = useState('');
-  const [wordIndex, setWordIndex] = useState(0);
-  const [isDeleting, setIsDeleting] = useState(false);
+import React, { useState, useEffect, useCallback } from 'react'
+import { motion, useAnimation } from 'framer-motion'
+import { ArrowRight, CalendarDays, Ticket, Clock, Mouse, Globe, Camera, Map, Headphones, Coffee } from 'lucide-react'
+
+const dynamicWords = ["Blazing-Fast", "AI-Powered", "Hassle-Free"]
+
+export default function HeroSection() {
+  const [dynamicText, setDynamicText] = useState('')
+  const [wordIndex, setWordIndex] = useState(0)
+  const [isDeleting, setIsDeleting] = useState(false)
+  const controls = useAnimation()
 
   const handleTyping = useCallback(() => {
-    const currentWord = dynamicWords[wordIndex];
-    const shouldDelete = isDeleting && dynamicText === '';
-    const shouldChangeWord = !isDeleting && dynamicText === currentWord;
+    const currentWord = dynamicWords[wordIndex]
+    const shouldDelete = isDeleting && dynamicText === ''
+    const shouldChangeWord = !isDeleting && dynamicText === currentWord
 
     if (shouldDelete) {
-      setIsDeleting(false);
-      setWordIndex((prevIndex) => (prevIndex + 1) % dynamicWords.length);
+      setIsDeleting(false)
+      setWordIndex((prevIndex) => (prevIndex + 1) % dynamicWords.length)
     } else if (shouldChangeWord) {
-      setIsDeleting(true);
+      setIsDeleting(true)
     } else {
       setDynamicText(prevText =>
         isDeleting ? currentWord.slice(0, prevText.length - 1) : currentWord.slice(0, prevText.length + 1)
-      );
+      )
     }
-  }, [dynamicText, isDeleting, wordIndex, dynamicWords]);
+  }, [dynamicText, isDeleting, wordIndex])
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      handleTyping();
-    }, isDeleting ? 150 : 250);
+      handleTyping()
+    }, isDeleting ? 150 : 250)
+    return () => clearTimeout(timer)
+  }, [handleTyping, isDeleting])
 
-    return () => clearTimeout(timer);
-  }, [handleTyping, isDeleting]);
+  useEffect(() => {
+    controls.start({
+      y: 0,
+      opacity: 1,
+      transition: { duration: 0.8, ease: "easeOut" }
+    })
+  }, [controls])
 
   return (
-    <section className="relative py-16 overflow-hidden bg-gradient-to-b from-gray-50 to-white sm:py-24 lg:py-32">
+    <section className="relative py-20 overflow-hidden sm:py-24 lg:py-32 bg-proj font-body">
       <div className="absolute inset-0 overflow-hidden">
-        <svg className="absolute right-0 w-1/2 h-full text-gray-100 transform translate-x-1/2" fill="currentColor" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-          <polygon points="50,0 100,0 50,100 0,100" />
-        </svg>
-        <svg className="absolute left-0 w-1/4 h-full transform -translate-x-1/2 text-blue-50" fill="currentColor" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-          <circle cx="50" cy="50" r="50" />
-        </svg>
-        <svg className="absolute top-0 w-1/4 left-1/4 h-1/4 text-yellow-50" fill="currentColor" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-          <polygon points="0,0 100,0 50,100" />
-        </svg>
+        <motion.div
+          className="absolute inset-0 opacity-20"
+          animate={{
+            background: [
+              "radial-gradient(circle, rgba(255,255,255,0) 0%, rgba(200,200,255,0.3) 100%)",
+              "radial-gradient(circle, rgba(255,255,255,0) 0%, rgba(255,200,200,0.3) 100%)",
+              "radial-gradient(circle, rgba(255,255,255,0) 0%, rgba(200,255,200,0.3) 100%)",
+            ],
+          }}
+          transition={{ duration: 10, repeat: Infinity, repeatType: "reverse" }}
+        />
       </div>
-      <div className="relative max-w-6xl px-4 mx-auto sm:px-6 lg:px-8">
-        <div className="text-center lg:text-left">
-          <h1 className="text-3xl font-bold leading-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-700 sm:text-4xl sm:leading-tight lg:leading-tight lg:text-5xl font-pj">
+      <div className="relative flex flex-col items-center px-4 mx-auto max-w-7xl sm:px-6 lg:px-8 lg:flex-row">
+        <motion.div 
+          className="text-center lg:text-left lg:w-1/2"
+          initial={{ opacity: 0, y: 20 }}
+          animate={controls}
+        >
+          <motion.h1 
+            className="text-4xl font-bold leading-tight text-white sm:text-5xl sm:leading-tight lg:leading-tight lg:text-6xl"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
             Experience History with, <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-700">
+            <motion.span 
+              className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-yellow-500"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+            >
               {dynamicText}
-              <span className="cursor" aria-hidden="true"></span>
-            </span>
+              <span className="animate-blink">|</span>
+            </motion.span>
             <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-700">Bookings</span>
-          </h1>
-          <p className="max-w-xl mx-auto mt-4 text-lg text-gray-600 sm:mt-6 font-inter lg:mx-0">
-            Transform museum visits with our chat powered ticketing chatbot,
-            <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-yellow-500">Bookings</span>
+          </motion.h1>
+          <motion.p 
+            className="mt-4 text-xl text-blue-100 sm:mt-6"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+          >
+            Transform museum visits with our IRC supported ticketing chatbot.
             Skip the queues and enjoy seamless booking.
-          </p>
-          <div className="flex flex-col items-center justify-center mt-8 space-y-3 sm:flex-row sm:space-y-0 sm:space-x-4 lg:justify-start">
-            <Button className="w-full sm:w-auto">
+          </motion.p>
+          <motion.div 
+            className="flex flex-col justify-center mt-8 space-y-4 sm:flex-row lg:justify-start sm:space-y-0 sm:space-x-4"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+          >
+            <Button>
               Book Tickets
-              <FaArrowRight className="ml-2" />
+              <ArrowRight className="w-5 h-5 ml-2" />
             </Button>
-            <Button variant="secondary" className="w-full sm:w-auto">
+            <Button variant="secondary">
               View Slots
-              <FaCalendarAlt className="ml-2" />
+              <CalendarDays className="w-5 h-5 ml-2" />
             </Button>
-          </div>
+          </motion.div>
+        </motion.div>
+        <div className="lg:w-1/2 h-[500px] mt-12 lg:mt-0 relative">
+          <FloatingIcon Icon={Ticket} size={120} top="50%" left="50%" scale={[1, 1.1, 1]} rotate={[0, 5, -5, 0]} />
+          <FloatingIcon Icon={CalendarDays} size={64} top="25%" left="25%" y={[0, -20, 0]} />
+          <FloatingIcon Icon={Clock} size={64} top="75%" left="75%" y={[0, 20, 0]} />
+          <FloatingIcon Icon={Mouse} size={48} top="66%" left="33%" x={[0, 30, 0]} y={[0, -30, 0]} />
+          <FloatingIcon Icon={Globe} size={56} top="16%" left="75%" rotate={[0, 360]} duration={10} />
+          <FloatingIcon Icon={Camera} size={52} top="83%" left="25%" scale={[1, 1.2, 1]} />
+          <FloatingIcon Icon={Map} size={60} top="50%" left="83%" x={[0, 20, 0]} />
+          <FloatingIcon Icon={Headphones} size={44} top="75%" left="16%" y={[0, -15, 0]} duration={2} />
+          <FloatingIcon Icon={Coffee} size={40} top="33%" left="66%" rotate={[0, -10, 10, 0]} duration={3} />
         </div>
       </div>
+      <ParticleBackground />
     </section>
-  );
-};
+  )
+}
 
-export default HeroSection;
+function Button({ children, variant = "primary", className = "" }) {
+  const baseClasses = "flex items-center justify-center px-6 py-3 text-base font-medium rounded-md transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
+  const variantClasses = variant === "primary" 
+    ? "bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-blue-900" 
+    : "bg-blue-700 hover:bg-blue-600 text-white border border-blue-500"
+
+  return (
+    <motion.button
+      className={`${baseClasses} ${variantClasses} ${className}`}
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
+    >
+      {children}
+    </motion.button>
+  )
+}
+
+function FloatingIcon({ Icon, size, top, left, ...motionProps }) {
+  return (
+    <motion.div 
+      className="absolute text-white"
+      style={{ top, left }}
+      animate={{
+        y: [0, -10, 0],
+        ...motionProps.animate
+      }}
+      transition={{
+        duration: 5,
+        ease: "easeInOut",
+        times: [0, 0.5, 1],
+        repeat: Infinity,
+        ...motionProps.transition
+      }}
+    >
+      <Icon size={size} />
+    </motion.div>
+  )
+}
+
+function ParticleBackground() {
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {[...Array(20)].map((_, i) => (
+        <motion.div
+          key={i}
+          className="absolute bg-white rounded-full opacity-20"
+          style={{
+            width: Math.random() * 4 + 1,
+            height: Math.random() * 4 + 1,
+            top: `${Math.random() * 100}%`,
+            left: `${Math.random() * 100}%`,
+          }}
+          animate={{
+            y: [0, -30, 0],
+            opacity: [0.2, 0.5, 0.2],
+          }}
+          transition={{
+            duration: Math.random() * 5 + 5,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        />
+      ))}
+    </div>
+  )
+}

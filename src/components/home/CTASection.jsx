@@ -12,7 +12,7 @@ const CTASection = () => {
         <p className="mb-8 text-xl">
           Book your tickets now and enjoy a seamless, queue-free visit to our museum.
         </p>
-        <Button className="px-8 py-3 text-lg font-semibold text-blue-700 transition-all duration-300 transform bg-white rounded-full hover:bg-blue-100 hover:scale-105">
+        <Button className="px-8 py-3 text-lg font-semibold text-white transition-all duration-300 transform rounded-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600">
           <FaTicketAlt className="inline-block mr-2" /> Book Your Visit
         </Button>
       </div>
