@@ -1,12 +1,12 @@
 'use client'
 
 import React, { useState, useEffect, useCallback } from 'react'
-import { motion, useAnimation } from 'framer-motion'
-import { ArrowRight, CalendarDays, Ticket, Clock, Mouse, Globe, Camera, Map, Headphones, Coffee } from 'lucide-react'
+import { motion, useAnimation, AnimatePresence } from 'framer-motion'
+import { ArrowRight, CalendarDays, Ticket, Clock, Mouse, Globe, Camera, Map, Headphones, Coffee, Palette, Book, Microscope, Compass, Briefcase, Lightbulb, Glasses, Feather, Leaf, Star } from 'lucide-react'
 
 const dynamicWords = ["Blazing-Fast", "AI-Powered", "Hassle-Free"]
 
-export default function HeroSection() {
+export default function Component() {
   const [dynamicText, setDynamicText] = useState('')
   const [wordIndex, setWordIndex] = useState(0)
   const [isDeleting, setIsDeleting] = useState(false)
@@ -32,7 +32,7 @@ export default function HeroSection() {
   useEffect(() => {
     const timer = setTimeout(() => {
       handleTyping()
-    }, isDeleting ? 150 : 250)
+    }, isDeleting ? 120 : 180) // Reduced typewriter speed
     return () => clearTimeout(timer)
   }, [handleTyping, isDeleting])
 
@@ -109,17 +109,37 @@ export default function HeroSection() {
             </Button>
           </motion.div>
         </motion.div>
-        <div className="lg:w-1/2 h-[500px] mt-12 lg:mt-0 relative">
-          <FloatingIcon Icon={Ticket} size={120} top="50%" left="50%" scale={[1, 1.1, 1]} rotate={[0, 5, -5, 0]} />
-          <FloatingIcon Icon={CalendarDays} size={64} top="25%" left="25%" y={[0, -20, 0]} />
-          <FloatingIcon Icon={Clock} size={64} top="75%" left="75%" y={[0, 20, 0]} />
-          <FloatingIcon Icon={Mouse} size={48} top="66%" left="33%" x={[0, 30, 0]} y={[0, -30, 0]} />
-          <FloatingIcon Icon={Globe} size={56} top="16%" left="75%" rotate={[0, 360]} duration={10} />
-          <FloatingIcon Icon={Camera} size={52} top="83%" left="25%" scale={[1, 1.2, 1]} />
-          <FloatingIcon Icon={Map} size={60} top="50%" left="83%" x={[0, 20, 0]} />
-          <FloatingIcon Icon={Headphones} size={44} top="75%" left="16%" y={[0, -15, 0]} duration={2} />
-          <FloatingIcon Icon={Coffee} size={40} top="33%" left="66%" rotate={[0, -10, 10, 0]} duration={3} />
-        </div>
+        <AnimatePresence>
+          {typeof window !== 'undefined' && window.innerWidth >= 640 && (
+            <motion.div
+              key="animations"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="lg:w-1/2 h-[500px] mt-12 lg:mt-0 relative"
+            >
+              <FloatingIcon Icon={Ticket} size={120} top="50%" left="50%" scale={[1, 1.1, 1]} rotate={[0, 5, -5, 0]} />
+              <FloatingIcon Icon={CalendarDays} size={64} top="25%" left="25%" y={[0, -20, 0]} />
+              <FloatingIcon Icon={Clock} size={64} top="75%" left="75%" y={[0, 20, 0]} />
+              <FloatingIcon Icon={Mouse} size={48} top="66%" left="33%" x={[0, 30, 0]} y={[0, -30, 0]} />
+              <FloatingIcon Icon={Globe} size={56} top="16%" left="75%" rotate={[0, 360]} duration={10} />
+              <FloatingIcon Icon={Camera} size={52} top="83%" left="25%" scale={[1, 1.2, 1]} />
+              <FloatingIcon Icon={Map} size={60} top="50%" left="83%" x={[0, 20, 0]} />
+              <FloatingIcon Icon={Headphones} size={44} top="75%" left="16%" y={[0, -15, 0]} duration={2} />
+              <FloatingIcon Icon={Coffee} size={40} top="33%" left="66%" rotate={[0, -10, 10, 0]} duration={3} />
+              <FloatingIcon Icon={Palette} size={48} top="10%" left="40%" scale={[1, 1.15, 1]} duration={4} />
+              <FloatingIcon Icon={Book} size={52} top="60%" left="10%" y={[0, 25, 0]} duration={3.5} />
+              <FloatingIcon Icon={Microscope} size={56} top="40%" left="90%" rotate={[0, -15, 15, 0]} duration={4.5} />
+              <FloatingIcon Icon={Compass} size={44} top="5%" left="60%" rotate={[0, 360]} duration={8} />
+              <FloatingIcon Icon={Briefcase} size={48} top="85%" left="45%" scale={[1, 1.1, 1]} duration={3} />
+              <FloatingIcon Icon={Lightbulb} size={40} top="20%" left="5%" y={[0, -15, 0]} duration={2.5} />
+              <FloatingIcon Icon={Glasses} size={36} top="45%" left="70%" rotate={[0, -10, 10, 0]} duration={3.5} />
+              <FloatingIcon Icon={Feather} size={32} top="70%" left="5%" y={[0, 20, 0]} duration={4} />
+              <FloatingIcon Icon={Leaf} size={28} top="15%" left="90%" rotate={[0, 360]} duration={9} />
+              <FloatingIcon Icon={Star} size={24} top="90%" left="85%" scale={[1, 1.3, 1]} duration={2.5} />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
       <ParticleBackground />
     </section>
@@ -146,7 +166,7 @@ function Button({ children, variant = "primary", className = "" }) {
 function FloatingIcon({ Icon, size, top, left, ...motionProps }) {
   return (
     <motion.div 
-      className="absolute text-white"
+      className="absolute text-white opacity-70"
       style={{ top, left }}
       animate={{
         y: [0, -10, 0],
@@ -168,7 +188,7 @@ function FloatingIcon({ Icon, size, top, left, ...motionProps }) {
 function ParticleBackground() {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {[...Array(20)].map((_, i) => (
+      {[...Array(30)].map((_, i) => (
         <motion.div
           key={i}
           className="absolute bg-white rounded-full opacity-20"
