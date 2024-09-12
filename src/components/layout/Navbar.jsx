@@ -1,7 +1,7 @@
 'use client'
 
-import React, { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import React, { useState, useEffect } from 'react'
+import { motion, useScroll, useMotionValueEvent } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
 
 const navItems = [
@@ -13,13 +13,26 @@ const navItems = [
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false)
+  const { scrollY } = useScroll()
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    setIsScrolled(latest > 50)
+  })
 
   const toggleMenu = () => {
     setIsOpen(!isOpen)
   }
 
   return (
-    <nav className="absolute top-0 left-0 right-0 z-50 font-body">
+    <motion.nav
+      className={`fixed top-0 left-0 right-0 z-50 font-body transition-colors duration-300 ease-in-out ${
+        isScrolled ? 'bg-blue-900/90 backdrop-blur-sm shadow-md' : 'bg-transparent'
+      }`}
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+    >
       <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
         <div className="flex justify-between h-20">
           {/* Logo */}
@@ -30,16 +43,21 @@ export default function Navbar() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <h1 className="text-xl font-bold text-white transition duration-500 ease-in-out sm:text-2xl lg:text-3xl">
+              <motion.h1 
+                className="text-xl font-bold text-white sm:text-2xl lg:text-3xl"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.2 }}
+              >
                 HeritageLink
-              </h1>
+              </motion.h1>
             </motion.a>
           </div>
 
           {/* Desktop Navigation Items */}
           <div className="hidden sm:ml-6 sm:flex sm:items-center sm:space-x-8">
-            {navItems.map((item) => (
-              <NavItem key={item.name} href={item.link} text={item.name} />
+            {navItems.map((item, index) => (
+              <NavItem key={item.name} href={item.link} text={item.name} index={index} />
             ))}
           </div>
 
@@ -61,47 +79,43 @@ export default function Navbar() {
         </div>
       </div>
       {/* Mobile menu */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3, ease: 'easeInOut' }}
-            className="sm:hidden bg-white/10 backdrop-blur-md"
-          >
-            <div className="px-2 pt-2 pb-3 space-y-1">
-              {navItems.map((item) => (
-                <MobileNavItem key={item.name} href={item.link} text={item.name} />
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </nav>
+      <motion.div
+        className={`sm:hidden overflow-hidden ${isScrolled ? 'bg-blue-900/90 backdrop-blur-sm' : 'bg-transparent'}`}
+        initial={{ height: 0 }}
+        animate={{ height: isOpen ? 'auto' : 0 }}
+        transition={{ duration: 0.3, ease: 'easeInOut' }}
+      >
+        <div className="px-2 pt-2 pb-3 space-y-1">
+          {navItems.map((item) => (
+            <MobileNavItem key={item.name} href={item.link} text={item.name} />
+          ))}
+        </div>
+      </motion.div>
+    </motion.nav>
   )
 }
 
-// Desktop Navigation Item Component
-function NavItem({ href, text }) {
+function NavItem({ href, text, index }) {
   return (
     <motion.a
       href={href}
       className="px-3 py-2 text-base font-medium text-white rounded-md hover:text-yellow-300"
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.1 * index }}
     >
       {text}
     </motion.a>
   )
 }
 
-// Mobile Navigation Item Component
 function MobileNavItem({ href, text }) {
   return (
     <motion.a
       href={href}
-      className="block px-3 py-2 text-lg font-medium text-white rounded-md hover:text-yellow-300"
+      className="block px-3 py-2 text-base font-medium text-white rounded-md hover:text-yellow-300"
       whileHover={{ backgroundColor: 'rgba(255, 255, 255, 0.1)', scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
     >
@@ -110,7 +124,6 @@ function MobileNavItem({ href, text }) {
   )
 }
 
-// Navigation Button Component
 function NavButton({ href, text, variant = "secondary" }) {
   const baseClasses = "px-4 py-2 text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
   const variantClasses = variant === "primary"
