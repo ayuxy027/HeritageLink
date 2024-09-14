@@ -1,28 +1,28 @@
-'use client'
-
-import React, { useState, useEffect } from 'react'
-import { motion, useScroll, useMotionValueEvent } from 'framer-motion'
-import { Menu, X } from 'lucide-react'
+// Navbar.jsx
+import React, { useState } from 'react';
+import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
+import { Menu, X } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const navItems = [
   { name: 'Explore', link: '/explore' },
   { name: 'Events', link: '/events' },
-  { name: 'Collections', link: '/collections' },
-  { name: 'About', link: '/about' },
-]
+  { name: 'FAQ', link: '/faq' },
+  { name: 'Contact', link: '/contact' },
+];
 
 export default function Navbar() {
-  const [isOpen, setIsOpen] = useState(false)
-  const [isScrolled, setIsScrolled] = useState(false)
-  const { scrollY } = useScroll()
+  const [isOpen, setIsOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const { scrollY } = useScroll();
 
   useMotionValueEvent(scrollY, "change", (latest) => {
-    setIsScrolled(latest > 50)
-  })
+    setIsScrolled(latest > 50);
+  });
 
   const toggleMenu = () => {
-    setIsOpen(!isOpen)
-  }
+    setIsOpen(!isOpen);
+  };
 
   return (
     <motion.nav
@@ -57,7 +57,7 @@ export default function Navbar() {
           {/* Desktop Navigation Items */}
           <div className="hidden sm:ml-6 sm:flex sm:items-center sm:space-x-8">
             {navItems.map((item, index) => (
-              <NavItem key={item.name} href={item.link} text={item.name} index={index} />
+              <NavItem key={item.name} to={item.link} text={item.name} index={index} />
             ))}
           </div>
 
@@ -87,18 +87,17 @@ export default function Navbar() {
       >
         <div className="px-2 pt-2 pb-3 space-y-1">
           {navItems.map((item) => (
-            <MobileNavItem key={item.name} href={item.link} text={item.name} />
+            <MobileNavItem key={item.name} to={item.link} text={item.name} />
           ))}
         </div>
       </motion.div>
     </motion.nav>
-  )
+  );
 }
 
-function NavItem({ href, text, index }) {
+function NavItem({ to, text, index }) {
   return (
-    <motion.a
-      href={href}
+    <motion.div
       className="px-3 py-2 text-base font-medium text-white rounded-md hover:text-yellow-300"
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
@@ -106,42 +105,42 @@ function NavItem({ href, text, index }) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.1 * index }}
     >
-      {text}
-    </motion.a>
-  )
+      <Link to={to}>{text}</Link>
+    </motion.div>
+  );
 }
 
-function MobileNavItem({ href, text }) {
+function MobileNavItem({ to, text }) {
   return (
-    <motion.a
-      href={href}
+    <motion.div
       className="block px-3 py-2 text-base font-medium text-white rounded-md hover:text-yellow-300"
       whileHover={{ backgroundColor: 'rgba(255, 255, 255, 0.1)', scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
     >
-      {text}
-    </motion.a>
-  )
+      <Link to={to}>{text}</Link>
+    </motion.div>
+  );
 }
 
 function NavButton({ href, text, variant = "secondary" }) {
-  const baseClasses = "px-4 py-2 text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
+  const baseClasses = "px-4 py-2 text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500";
   const variantClasses = variant === "primary"
     ? "bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-blue-900"
-    : "bg-white/10 hover:bg-white/20 text-white"
+    : "bg-white/10 hover:bg-white/20 text-white";
 
   return (
-    <motion.a
-      href={href}
+    <motion.div
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
     >
-      <motion.button
-        className={`${baseClasses} ${variantClasses}`}
-        whileHover={{ boxShadow: '0 0 15px rgba(255, 255, 255, 0.3)' }}
-      >
-        {text}
-      </motion.button>
-    </motion.a>
-  )
+      <Link to={href}>
+        <button
+          className={`${baseClasses} ${variantClasses}`}
+          whileHover={{ boxShadow: '0 0 15px rgba(255, 255, 255, 0.3)' }}
+        >
+          {text}
+        </button>
+      </Link>
+    </motion.div>
+  );
 }
