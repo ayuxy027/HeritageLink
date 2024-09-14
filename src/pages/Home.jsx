@@ -17,7 +17,6 @@ function Home() {
       <FeatureSection />
       <TestimonialSection />
       <CTASection />
-      <Footer />
       <ChatBot />
     </div>
   );
