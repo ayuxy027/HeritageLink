@@ -1,6 +1,5 @@
-'use client'
-
 import React, { useState, useEffect, useCallback } from 'react'
+import { Link } from 'react-router-dom';
 import { motion, useAnimation, AnimatePresence } from 'framer-motion'
 import { ArrowRight, CalendarDays, Ticket, Clock, Mouse, Globe, Camera, Map, Headphones, Coffee, Palette, Book, Microscope, Compass, Briefcase, Lightbulb, Glasses, Feather, Leaf, Star } from 'lucide-react'
 
@@ -99,11 +98,11 @@ export default function Component() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
           >
-            <Button>
+            <Button to="/book">
               Book Tickets
               <ArrowRight className="w-5 h-5 ml-2" />
             </Button>
-            <Button variant="secondary">
+            <Button variant="secondary" to="/book">
               View Slots
               <CalendarDays className="w-5 h-5 ml-2" />
             </Button>
@@ -146,20 +145,23 @@ export default function Component() {
   )
 }
 
-function Button({ children, variant = "primary", className = "" }) {
+function Button({ children, variant = "primary", className = "", to = "" }) {
   const baseClasses = "flex items-center justify-center px-6 py-3 text-base font-medium rounded-md transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
   const variantClasses = variant === "primary" 
     ? "bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-blue-900" 
     : "bg-blue-700 hover:bg-blue-600 text-white border border-blue-500"
 
+  const ButtonComponent = to ? Link : motion.button;
+
   return (
-    <motion.button
+    <ButtonComponent
+      to={to}
       className={`${baseClasses} ${variantClasses} ${className}`}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
     >
       {children}
-    </motion.button>
+    </ButtonComponent>
   )
 }
 

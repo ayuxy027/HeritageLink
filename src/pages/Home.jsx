@@ -11,7 +11,6 @@ import ChatBot from '../components/home/ChatBot.jsx';
 function Home() {
   return (
     <div className="min-h-screen text-gray-900 bg-white">
-      <Navbar />
       <HeroSection />
       <StatsSection />
       <FeatureSection />
