@@ -26,13 +26,14 @@ export default function Navbar() {
 
   return (
     <motion.nav
-      className={`fixed top-0 left-0 right-0 z-50 font-body transition-colors duration-300 ease-in-out ${
-        isScrolled ? 'bg-blue-900/90 backdrop-blur-sm shadow-md' : 'bg-transparent'
-      }`}
+      className={`fixed top-0 left-0 right-0 z-50 font-body transition-colors duration-300 ease-in-out 
+    ${isScrolled ? 'bg-blue-900/90 backdrop-blur-sm shadow-md' : 'bg-transparent'}
+  `}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ type: 'spring', stiffness: 300, damping: 30 }}
     >
+
       <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
         <div className="flex justify-between h-20">
           {/* Logo */}
@@ -43,7 +44,7 @@ export default function Navbar() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <motion.h1 
+              <motion.h1
                 className="text-xl font-bold text-white sm:text-2xl lg:text-3xl"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -80,12 +81,12 @@ export default function Navbar() {
       </div>
       {/* Mobile menu */}
       <motion.div
-        className={`sm:hidden overflow-hidden ${isScrolled ? 'bg-blue-900/90 backdrop-blur-sm' : 'bg-transparent'}`}
+        className={`sm:hidden overflow-hidden bg-white`}
         initial={{ height: 0 }}
         animate={{ height: isOpen ? 'auto' : 0 }}
         transition={{ duration: 0.3, ease: 'easeInOut' }}
       >
-        <div className="px-2 pt-2 pb-3 space-y-1">
+        <div className="px-4 py-4 space-y-2">
           {navItems.map((item) => (
             <MobileNavItem key={item.name} to={item.link} text={item.name} />
           ))}
@@ -94,6 +95,7 @@ export default function Navbar() {
     </motion.nav>
   );
 }
+
 
 function NavItem({ to, text, index }) {
   return (
