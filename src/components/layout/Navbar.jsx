@@ -1,8 +1,7 @@
-// Navbar.jsx
 import React, { useState } from 'react';
-import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 const navItems = [
   { name: 'Explore', link: '/explore' },
@@ -15,6 +14,7 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const { scrollY } = useScroll();
+  const location = useLocation();
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     setIsScrolled(latest > 50);
@@ -27,13 +27,12 @@ export default function Navbar() {
   return (
     <motion.nav
       className={`fixed top-0 left-0 right-0 z-50 font-body transition-colors duration-300 ease-in-out 
-    ${isScrolled ? 'bg-blue-900/90 backdrop-blur-sm shadow-md' : 'bg-transparent'}
-  `}
+        ${isScrolled ? 'bg-indigo-900/90 backdrop-blur-sm shadow-md' : 'bg-proj'}
+      `}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ type: 'spring', stiffness: 300, damping: 30 }}
     >
-
       <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
         <div className="flex justify-between h-20">
           {/* Logo */}
@@ -44,7 +43,7 @@ export default function Navbar() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <motion.h1
+              <motion.h1 
                 className="text-xl font-bold text-white sm:text-2xl lg:text-3xl"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -58,7 +57,13 @@ export default function Navbar() {
           {/* Desktop Navigation Items */}
           <div className="hidden sm:ml-6 sm:flex sm:items-center sm:space-x-8">
             {navItems.map((item, index) => (
-              <NavItem key={item.name} to={item.link} text={item.name} index={index} />
+              <NavItem 
+                key={item.name} 
+                to={item.link} 
+                text={item.name} 
+                index={index}
+                isActive={location.pathname === item.link}
+              />
             ))}
           </div>
 
@@ -80,27 +85,38 @@ export default function Navbar() {
         </div>
       </div>
       {/* Mobile menu */}
-      <motion.div
-        className={`sm:hidden overflow-hidden bg-white`}
-        initial={{ height: 0 }}
-        animate={{ height: isOpen ? 'auto' : 0 }}
-        transition={{ duration: 0.3, ease: 'easeInOut' }}
-      >
-        <div className="px-4 py-4 space-y-2">
-          {navItems.map((item) => (
-            <MobileNavItem key={item.name} to={item.link} text={item.name} />
-          ))}
-        </div>
-      </motion.div>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            className="sm:hidden bg-blue-100/95 backdrop-blur-sm"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: [0.04, 0.62, 0.23, 0.98] }}
+          >
+            <div className="px-2 pt-2 pb-3 space-y-1">
+              {navItems.map((item) => (
+                <MobileNavItem 
+                  key={item.name} 
+                  to={item.link} 
+                  text={item.name}
+                  isActive={location.pathname === item.link}
+                />
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.nav>
   );
 }
 
-
-function NavItem({ to, text, index }) {
+function NavItem({ to, text, index, isActive }) {
   return (
     <motion.div
-      className="px-3 py-2 text-base font-medium text-white rounded-md hover:text-yellow-300"
+      className={`px-3 py-2 text-base font-medium rounded-md ${
+        isActive ? 'text-yellow-400' : 'text-white hover:text-yellow-300'
+      }`}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
       initial={{ opacity: 0, y: -20 }}
@@ -112,14 +128,24 @@ function NavItem({ to, text, index }) {
   );
 }
 
-function MobileNavItem({ to, text }) {
+function MobileNavItem({ to, text, isActive }) {
   return (
     <motion.div
-      className="block px-3 py-2 text-base font-medium text-white rounded-md hover:text-yellow-300"
-      whileHover={{ backgroundColor: 'rgba(255, 255, 255, 0.1)', scale: 1.05 }}
+      className="block overflow-hidden rounded-md"
+      whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
     >
-      <Link to={to}>{text}</Link>
+      <Link to={to} className="block">
+        <motion.div 
+          className={`px-3 py-2 text-base font-medium transition-all duration-300 ease-in-out ${
+            isActive ? 'text-yellow-600 bg-blue-200' : 'text-blue-800 hover:bg-blue-200'
+          }`}
+          whileHover={{ x: 5 }}
+          transition={{ duration: 0.2 }}
+        >
+          {text}
+        </motion.div>
+      </Link>
     </motion.div>
   );
 }
@@ -136,12 +162,12 @@ function NavButton({ href, text, variant = "secondary" }) {
       whileTap={{ scale: 0.95 }}
     >
       <Link to={href}>
-        <button
+        <motion.button
           className={`${baseClasses} ${variantClasses}`}
           whileHover={{ boxShadow: '0 0 15px rgba(255, 255, 255, 0.3)' }}
         >
           {text}
-        </button>
+        </motion.button>
       </Link>
     </motion.div>
   );

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
 import { Send, MapPin, Mail, Phone, ArrowRight, User, MessageSquare } from "lucide-react";
 
@@ -28,7 +27,6 @@ const Contact = () => {
 
   return (
     <>
-      <Navbar />
       <section className="relative py-32 overflow-hidden bg-proj font-body">
         <BackgroundAnimation />
         <BlueMeteor />
@@ -139,7 +137,6 @@ const Contact = () => {
         </div>
         <ParticleBackground />
       </section>
-      <Footer />
     </>
   );
 };

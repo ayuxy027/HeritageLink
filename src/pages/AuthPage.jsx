@@ -1,13 +1,6 @@
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { ArrowRight, Mail, Lock, Eye, EyeOff, User, Compass, Camera, Ticket, Book, Globe, CalendarDays, Clock, Mouse, Headphones, Coffee, Palette, Microscope, Briefcase, Lightbulb, Glasses, Feather, Leaf, Star } from "lucide-react"
-
-const monuments = [
-  "M12 2L2 7v15h20V7L12 2zm0 2.73l6 3.18v10.36H6V7.91l6-3.18zm0 2.54L8 9.5v7h8v-7l-4-2.23z",
-  "M3 21h18v-2H3v2zm0-4h18v-2H3v2zm0-4h18v-2H3v2zm0-4h18V7H3v2zm0-6v2h18V3H3z",
-  "M12 2L2 7v15h20V7L12 2zm0 2.73l6 3.18v10.36H6V7.91l6-3.18zm0 2.54L8 9.5v7h8v-7l-4-2.23z",
-  "M12 2l-5.5 9h11L12 2zm0 3.84L13.93 9h-3.87L12 5.84zM17.5 13c-2.49 0-4.5 2.01-4.5 4.5s2.01 4.5 4.5 4.5 4.5-2.01 4.5-4.5-2.01-4.5-4.5-4.5zm0 7c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5zM3 21.5h8v-8H3v8zm2-6h4v4H5v-4z",
-]
 
 export default function AuthPage() {
   const [isSignUp, setIsSignUp] = useState(true)
