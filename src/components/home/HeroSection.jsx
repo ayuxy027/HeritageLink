@@ -151,17 +151,17 @@ function Button({ children, variant = "primary", className = "", to = "" }) {
     ? "bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-blue-900" 
     : "bg-blue-700 hover:bg-blue-600 text-white border border-blue-500"
 
-  const ButtonComponent = to ? Link : motion.button;
+  const MotionLink = motion(Link);
 
   return (
-    <ButtonComponent
+    <MotionLink
       to={to}
       className={`${baseClasses} ${variantClasses} ${className}`}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
     >
       {children}
-    </ButtonComponent>
+    </MotionLink>
   )
 }
 
