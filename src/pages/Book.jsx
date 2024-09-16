@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import confetti from 'canvas-confetti'
-import { ChevronLeft, ChevronRight, Edit2, Info, Calendar, Users, Clock, Star } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Edit2, Info, Users, Clock } from 'lucide-react'
 
 const timeSlots = [
   { time: '9 AM–11 AM', available: 5 },

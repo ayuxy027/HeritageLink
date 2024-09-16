@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 import Home from './pages/Home';
@@ -22,7 +22,8 @@ function App() {
           <Route path="/faq" element={<FAQ />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/login" element={<AuthPage />} />
-          <Route path="/book" element={<Book />} />
+          <Route path="/book" element={<Navigate to="/book-1" replace />} />
+          <Route path="/book-:step" element={<Book />} />
         </Routes>
         <Footer />
       </div>
