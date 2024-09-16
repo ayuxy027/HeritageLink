@@ -111,7 +111,7 @@ export default function FAQ() {
           className="mt-12 text-center"
         >
           <Link 
-            href="/support" 
+            to="/contact"
             className="inline-flex items-center justify-center px-6 py-3 text-lg font-medium text-white transition-colors duration-300 rounded-full bg-proj hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
           >
             <Database className="mr-2 text-blue-200" size={24} />
