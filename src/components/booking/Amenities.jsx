@@ -3,12 +3,12 @@ import { motion } from 'framer-motion';
 import { Info } from 'lucide-react';
 
 const amenities = [
-  { name: 'Tour Guide', price: 200, icon: '🧑‍🏫' },
-  { name: 'Wheelchair for Elderly', price: 50, icon: '👵' },
-  { name: 'Audio Guide', price: 100, icon: '🎧' },
-  { name: 'Photography Permit', price: 150, icon: '📷' },
-  { name: 'Locker Service', price: 75, icon: '🔒' },
-  { name: 'Café Voucher', price: 100, icon: '☕' },
+  { name: 'Tour Guide', price: 100, icon: '🧑‍🏫' },
+  { name: 'Wheelchair for Elderly', price: 20, icon: '👵' },
+  { name: 'Audio Guide', price: 30, icon: '🎧' },
+  { name: 'Photography Permit', price: 20, icon: '📷' },
+  { name: 'Locker Service', price: 20, icon: '🔒' },
+  { name: 'Café Voucher', price: 80, icon: '☕' },
 ];
 
 const Amenities = ({ formData, setFormData, calculateTotal }) => {
