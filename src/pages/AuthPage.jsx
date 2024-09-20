@@ -7,16 +7,16 @@ export default function AuthPage() {
   const [showPassword, setShowPassword] = useState(false)
 
   return (
-    <section className="relative py-20 overflow-hidden sm:py-24 lg:py-32 bg-proj font-body">
+    <section className="relative py-8 overflow-hidden sm:py-12 lg:py-2 bg-proj font-body">
       <BackgroundAnimation />
       <div className="relative flex flex-col items-center px-4 mx-auto max-w-7xl sm:px-6 lg:px-8 lg:flex-row">
-        <motion.div 
+        <motion.div
           className="w-full lg:w-1/2 lg:pr-8"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <motion.h1 
+          <motion.h1
             className="text-4xl font-bold leading-tight text-center text-white sm:text-5xl sm:leading-tight lg:leading-tight lg:text-6xl lg:text-left"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -24,16 +24,16 @@ export default function AuthPage() {
           >
             {isSignUp ? "Begin Your Exploration" : "Welcome Back, Explorer"}
           </motion.h1>
-          <motion.p 
+          <motion.p
             className="mt-4 text-xl text-center text-blue-100 sm:mt-6 lg:text-left"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
-            Discover the world's most precious historical sites with HeritageLink. 
+            Discover the world's most precious historical sites with HeritageLink.
             {isSignUp ? " Sign up now to start your adventure!" : " Sign in to continue your journey."}
           </motion.p>
-          <motion.form 
+          <motion.form
             className="mt-8 space-y-6"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -73,7 +73,7 @@ export default function AuthPage() {
               <ArrowRight className="w-5 h-5 ml-2" />
             </Button>
           </motion.form>
-          <motion.div 
+          <motion.div
             className="mt-6"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -92,7 +92,7 @@ export default function AuthPage() {
               <SocialButton icon="facebook" />
             </div>
           </motion.div>
-          <motion.p 
+          <motion.p
             className="mt-8 text-sm text-center text-gray-300 lg:text-left"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -111,9 +111,9 @@ export default function AuthPage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="lg:w-1/2 h-[500px] mt-12 lg:mt-0 relative"
+              className="lg:w-1/2 h-[500px] mt-1 lg:mt-0 relative"
             >
-              <FloatingIcon Icon={Ticket} size={120} top="50%" left="50%" scale={[1, 1.1, 1]} rotate={[0, 5, -5, 0]} />
+              <FloatingIcon Icon={Ticket} size={120} top="10%" left="50%" scale={[1, 1.1, 1]} rotate={[0, 5, -5, 0]} />
               <FloatingIcon Icon={CalendarDays} size={64} top="25%" left="25%" y={[0, -20, 0]} />
               <FloatingIcon Icon={Clock} size={64} top="75%" left="75%" y={[0, 20, 0]} />
               <FloatingIcon Icon={Mouse} size={48} top="66%" left="33%" x={[0, 30, 0]} y={[0, -30, 0]} />
@@ -173,7 +173,7 @@ function Button({ children }) {
 }
 
 function SocialButton({ icon }) {
-  const iconPath = icon === 'google' 
+  const iconPath = icon === 'google'
     ? "M20.64 12.2c0-.63-.06-1.25-.16-1.84H12v3.49h4.84c-.22 1.13-.86 2.08-1.83 2.72v2.26h2.96c1.73-1.59 2.72-3.93 2.72-6.63z M12 21c2.47 0 4.55-.82 6.06-2.22l-2.96-2.26c-.83.56-1.89.88-3.1.88-2.39 0-4.41-1.61-5.13-3.77H3.77v2.34C5.25 18.85 8.39 21 12 21z M6.87 13.63c-.19-.55-.3-1.14-.3-1.75s.11-1.2.3-1.75V7.79H3.77C3.29 9.07 3 10.5 3 12s.29 2.93.77 4.21l3.1-2.58z M12 6.38c1.35 0 2.56.46 3.51 1.37l2.62-2.62C16.65 3.67 14.47 3 12 3 8.39 3 5.25 5.15 3.77 8.15l3.1 2.58c.72-2.16 2.74-3.77 5.13-3.77z"
     : "M20.89 2H3.11A1.11 1.11 0 002 3.11v17.78A1.11 1.11 0 003.11 22h9.67v-7.73h-2.63v-3.04h2.63V9.08c0-2.61 1.59-4.03 3.92-4.03 1.11 0 2.07.08 2.35.12v2.72h-1.61c-1.26 0-1.51.6-1.51 1.48v1.94h3.02l-.39 3.04h-2.63V22h5.16A1.11 1.11 0 0022 20.89V3.11A1.11 1.11 0 0020.89 2z"
 
@@ -193,7 +193,7 @@ function SocialButton({ icon }) {
 
 function FloatingIcon({ Icon, size, top, left, ...motionProps }) {
   return (
-    <motion.div 
+    <motion.div
       className="absolute text-white opacity-70"
       style={{ top, left }}
       animate={{
