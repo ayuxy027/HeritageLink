@@ -31,12 +31,12 @@ const BookingLayout = () => {
             <div
               key={step.number}
               className={`flex flex-col items-center ${
-                currentStep === step.number ? 'text-blue-600' : 'text-gray-400'
+                currentStep === step.number ? 'text-proj' : 'text-gray-400'
               }`}
             >
               <div
                 className={`w-8 h-8 flex items-center justify-center rounded-full ${
-                  currentStep === step.number ? 'bg-blue-600 text-white' : 'bg-gray-200'
+                  currentStep === step.number ? 'bg-proj text-white' : 'bg-gray-200'
                 }`}
               >
                 {step.number}
@@ -47,7 +47,7 @@ const BookingLayout = () => {
         </div>
         <div className="relative w-full h-2 bg-gray-200 rounded-full">
           <div
-            className="absolute top-0 left-0 h-2 transition-all duration-300 ease-in-out bg-blue-600 rounded-full"
+            className="absolute top-0 left-0 h-2 transition-all duration-300 ease-in-out rounded-full bg-proj"
             style={{ width: `${((currentStep - 1) / 4) * 100}%` }}
           ></div>
         </div>

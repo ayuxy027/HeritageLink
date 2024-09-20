@@ -38,7 +38,7 @@ const Amenities = ({ formData, setFormData, calculateTotal }) => {
                     : formData.amenities.filter(a => a !== amenity.name)
                   setFormData({ ...formData, amenities: newAmenities })
                 }}
-                className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                className="w-5 h-5 text-transparent border-gray-300 rounded bg-proj bg-clip-border focus:ring-blue-500"
               />
               <label
                 htmlFor={`amenity-${index}`}
@@ -56,11 +56,11 @@ const Amenities = ({ formData, setFormData, calculateTotal }) => {
         </div>
       </motion.div>
       <motion.div
-        className="mt-6 text-xl font-bold text-center text-transparent bg-blue-600 bg-clip-text"
+        className="mt-6 text-xl font-bold text-center text-transparent bg-proj bg-clip-text"
         animate={{ scale: [1, 1.1, 1] }}
         transition={{ duration: 2, repeat: Infinity, repeatType: "reverse" }}
       >
-        Total: ₹{calculateTotal()} (including ₹100 booking fee)
+        Total: ₹{calculateTotal()} (including ₹20 booking fee)
       </motion.div>
     </div>
   );

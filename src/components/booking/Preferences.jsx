@@ -104,7 +104,7 @@ const Preferences = ({ formData, setFormData, errors }) => {
           id="preVisitEmail"
           checked={formData.preVisitEmail}
           onChange={(e) => setFormData({ ...formData, preVisitEmail: e.target.checked })}
-          className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+          className="w-5 h-5 text-transparent border-gray-300 rounded bg-proj bg-clip-text focus:ring-blue-500"
         />
         <label
           htmlFor="preVisitEmail"

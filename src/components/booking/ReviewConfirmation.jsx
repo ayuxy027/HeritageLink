@@ -43,7 +43,7 @@ const ReviewConfirmation = ({ formData, calculateTotal, onEdit }) => {
       </motion.div>
       <motion.button
         onClick={() => onEdit(1)}
-        className="w-full px-4 py-3 text-sm font-medium text-blue-600 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        className="w-full px-4 py-3 text-sm font-medium text-transparent bg-blue-100 border border-transparent rounded-md bg-proj bg-clip-text hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
         whileHover={{ scale: 1.03 }}
         whileTap={{ scale: 0.98 }}
       >

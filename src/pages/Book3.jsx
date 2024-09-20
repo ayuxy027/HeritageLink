@@ -20,7 +20,7 @@ const Book3 = () => {
       const amenityPrice = amenities.find(a => a.name === amenity)?.price || 0;
       return total + amenityPrice;
     }, 0);
-    return amenitiesTotal + 100; // Adding 100 rupees booking fee
+    return amenitiesTotal + 20; // Adding 100 rupees booking fee
   };
 
   const handleNext = () => {
@@ -56,10 +56,10 @@ const Book3 = () => {
 export default Book3;
 
 const amenities = [
-  { name: 'Tour Guide', price: 200, icon: '🧑‍🏫' },
-  { name: 'Wheelchair for Elderly', price: 50, icon: '👵' },
-  { name: 'Audio Guide', price: 100, icon: '🎧' },
-  { name: 'Photography Permit', price: 150, icon: '📷' },
-  { name: 'Locker Service', price: 75, icon: '🔒' },
-  { name: 'Café Voucher', price: 100, icon: '☕' },
+  { name: 'Tour Guide', price: 100, icon: '🧑‍🏫' },
+  { name: 'Wheelchair for Elderly', price: 20, icon: '👵' },
+  { name: 'Audio Guide', price: 30, icon: '🎧' },
+  { name: 'Photography Permit', price: 20, icon: '📷' },
+  { name: 'Locker Service', price: 20, icon: '🔒' },
+  { name: 'Café Voucher', price: 80, icon: '☕' },
 ];

@@ -26,118 +26,116 @@ const Contact = () => {
   };
 
   return (
-    <>
-      <section className="relative py-32 overflow-hidden bg-proj font-body">
-        <BackgroundAnimation />
-        <BlueMeteor />
-        <div className="relative flex flex-col items-center px-4 mx-auto max-w-7xl sm:px-6 lg:px-8 lg:flex-row">
-          <motion.div 
-            className="w-full lg:w-1/2 lg:pr-8"
+    <section className="relative bg-proj font-body">
+      <BackgroundAnimation />
+      <BlueMeteor />
+      <div className="relative flex flex-col items-center px-4 mx-auto max-w-7xl sm:px-6 lg:px-8 lg:flex-row lg:py-16">
+        <motion.div 
+          className="w-full lg:w-1/2 lg:pr-8"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+        >
+          <motion.h1 
+            className="mb-6 text-4xl font-bold leading-tight text-center text-white sm:text-5xl sm:leading-tight lg:leading-tight lg:text-6xl lg:text-left"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            Get in Touch
+          </motion.h1>
+          <motion.p 
+            className="mb-8 text-xl text-center text-blue-100 lg:text-left"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <motion.h1 
-              className="mb-6 text-4xl font-bold leading-tight text-center text-white sm:text-5xl sm:leading-tight lg:leading-tight lg:text-6xl lg:text-left"
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-            >
-              Get in Touch
-            </motion.h1>
-            <motion.p 
-              className="mb-8 text-xl text-center text-blue-100 lg:text-left"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-            >
-              We're here to assist you on your heritage journey. Reach out to us for any queries or support.
-            </motion.p>
-            <motion.form 
-              className="space-y-6"
-              onSubmit={handleSubmit}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.6 }}
-            >
-              <InputField
-                id="name"
-                type="text"
-                label="Full Name"
-                icon={<User className="text-blue-300" size={20} />}
-                value={formData.name}
-                onChange={handleChange}
-              />
-              <InputField
-                id="email"
-                type="email"
-                label="Email Address"
-                icon={<Mail className="text-blue-300" size={20} />}
-                value={formData.email}
-                onChange={handleChange}
-              />
-              <InputField
-                id="phone"
-                type="tel"
-                label="Phone Number"
-                icon={<Phone className="text-blue-300" size={20} />}
-                value={formData.phone}
-                onChange={handleChange}
-              />
-              <InputField
-                id="message"
-                type="textarea"
-                label="Your Message"
-                icon={<MessageSquare className="text-blue-300" size={20} />}
-                value={formData.message}
-                onChange={handleChange}
-              />
-              <Button type="submit">
-                Send Message
-                <Send className="w-5 h-5 ml-2" />
-              </Button>
-            </motion.form>
-          </motion.div>
-          <motion.div
-            className="mt-12 lg:w-1/2 lg:mt-0"
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
-            <div className="h-full p-8 text-white rounded-lg bg-white/10 backdrop-blur-md">
-              <h3 className="mb-6 text-2xl font-bold">Contact Information</h3>
-              <div className="space-y-6">
-                <ContactInfo
-                  icon={<MapPin className="w-6 h-6 text-yellow-400" />}
-                  title="Address"
-                  content="Pune, Maharashtra 441101, India"
-                />
-                <ContactInfo
-                  icon={<Mail className="w-6 h-6 text-yellow-400" />}
-                  title="Email"
-                  content="support@heritagelink.com"
-                />
-                <ContactInfo
-                  icon={<Phone className="w-6 h-6 text-yellow-400" />}
-                  title="Phone"
-                  content="+91 123 456 7890"
-                />
-              </div>
-              <div className="mt-8">
-                <Link
-                  to="/"
-                  className="inline-flex items-center text-yellow-400 transition-colors hover:text-yellow-300"
-                >
-                  Back to Home
-                  <ArrowRight className="w-5 h-5 ml-2" />
-                </Link>
-              </div>
+            We're here to assist you on your heritage journey. Reach out to us for any queries or support.
+          </motion.p>
+          <motion.form 
+            className="space-y-6"
+            onSubmit={handleSubmit}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+          >
+            <InputField
+              id="name"
+              type="text"
+              label="Full Name"
+              icon={<User className="text-blue-300" size={20} />}
+              value={formData.name}
+              onChange={handleChange}
+            />
+            <InputField
+              id="email"
+              type="email"
+              label="Email Address"
+              icon={<Mail className="text-blue-300" size={20} />}
+              value={formData.email}
+              onChange={handleChange}
+            />
+            <InputField
+              id="phone"
+              type="tel"
+              label="Phone Number"
+              icon={<Phone className="text-blue-300" size={20} />}
+              value={formData.phone}
+              onChange={handleChange}
+            />
+            <InputField
+              id="message"
+              type="textarea"
+              label="Your Message"
+              icon={<MessageSquare className="text-blue-300" size={20} />}
+              value={formData.message}
+              onChange={handleChange}
+            />
+            <Button type="submit">
+              Send Message
+              <Send className="w-5 h-5 ml-2" />
+            </Button>
+          </motion.form>
+        </motion.div>
+        <motion.div
+          className="mt-12 lg:w-1/2 lg:mt-0"
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+        >
+          <div className="h-full p-8 text-white rounded-lg bg-white/10 backdrop-blur-md">
+            <h3 className="mb-6 text-2xl font-bold">Contact Information</h3>
+            <div className="space-y-6">
+              <ContactInfo
+                icon={<MapPin className="w-6 h-6 text-yellow-400" />}
+                title="Address"
+                content="Pune, Maharashtra 441101, India"
+              />
+              <ContactInfo
+                icon={<Mail className="w-6 h-6 text-yellow-400" />}
+                title="Email"
+                content="support@heritagelink.com"
+              />
+              <ContactInfo
+                icon={<Phone className="w-6 h-6 text-yellow-400" />}
+                title="Phone"
+                content="+91 123 456 7890"
+              />
             </div>
-          </motion.div>
-        </div>
-        <ParticleBackground />
-      </section>
-    </>
+            <div className="mt-8">
+              <Link
+                to="/"
+                className="inline-flex items-center text-yellow-400 transition-colors hover:text-yellow-300"
+              >
+                Back to Home
+                <ArrowRight className="w-5 h-5 ml-2" />
+              </Link>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+      <ParticleBackground />
+    </section>
   );
 };
 

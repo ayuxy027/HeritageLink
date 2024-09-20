@@ -1,9 +1,9 @@
 'use client'
 
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
-import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronDown, HelpCircle, MessageCircle, Zap, Globe, Smartphone, ChartBar, Calendar, QrCode, Video, Languages, Database } from 'lucide-react'
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ChevronDown, HelpCircle, MessageCircle, Zap, Globe, Smartphone, ChartBar, Calendar, QrCode, Video, Languages, Database } from 'lucide-react';
 
 const faqs = [
   {
@@ -56,17 +56,17 @@ const faqs = [
     answer: 'HeritageLink provides valuable analytics and insights to museum management, helping them make data-driven decisions about exhibit popularity, visitor flow, and operational efficiency.',
     icon: ChartBar
   }
-]
+];
 
 export default function FAQ() {
-  const [activeIndex, setActiveIndex] = useState(null)
+  const [activeIndex, setActiveIndex] = useState(null);
 
   const toggleFAQ = (index) => {
-    setActiveIndex(activeIndex === index ? null : index)
-  }
+    setActiveIndex(activeIndex === index ? null : index);
+  };
 
   return (
-    <section className="relative py-20 mt-8 overflow-hidden bg-white">
+    <section className="relative py-20 mt-0 overflow-hidden bg-white">
       <BackgroundAnimation />
       <div className="relative z-10 max-w-4xl px-4 mx-auto">
         <motion.h2 
@@ -120,7 +120,7 @@ export default function FAQ() {
         </motion.div>
       </div>
     </section>
-  )
+  );
 }
 
 function FAQItem({ faq, index, isActive, toggleFAQ }) {
@@ -180,7 +180,7 @@ function FAQItem({ faq, index, isActive, toggleFAQ }) {
         )}
       </AnimatePresence>
     </motion.div>
-  )
+  );
 }
 
 function BackgroundAnimation() {
@@ -208,5 +208,5 @@ function BackgroundAnimation() {
         />
       ))}
     </div>
-  )
+  );
 }

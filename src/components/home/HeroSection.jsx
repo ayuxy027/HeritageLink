@@ -44,7 +44,7 @@ export default function Component() {
   }, [controls])
 
   return (
-    <section className="relative py-20 overflow-hidden sm:py-24 lg:py-32 bg-proj font-body">
+    <section className="relative py-0 overflow-hidden sm:py-20 lg:py-20 bg-proj font-body">
       <div className="absolute inset-0 overflow-hidden">
         <motion.div
           className="absolute inset-0 opacity-20"
