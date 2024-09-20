@@ -14,12 +14,14 @@ const Book5 = () => {
   }, [location.state]);
 
   const calculateTotal = () => {
-    const amenitiesTotal = formData.amenities.reduce((total, amenity) => {
+    const amenitiesSelected = formData.amenities || []; // Default to an empty array if undefined
+    const amenitiesTotal = amenitiesSelected.reduce((total, amenity) => {
       const amenityPrice = amenities.find(a => a.name === amenity)?.price || 0;
       return total + amenityPrice;
     }, 0);
     return amenitiesTotal + 100; // Adding 100 rupees booking fee
   };
+
 
   const handleSubmit = () => {
     // Here you would typically send the data to your backend
@@ -43,15 +45,15 @@ const Book5 = () => {
       <h1 className="mb-6 text-3xl font-bold text-center">Review and Confirm</h1>
       <ReviewConfirmation formData={formData} calculateTotal={calculateTotal} onEdit={handleEdit} />
       <div className="flex justify-between mt-6">
-        <button 
-          onClick={handlePrevious} 
+        <button
+          onClick={handlePrevious}
           className="px-4 py-2 text-gray-800 transition duration-300 bg-gray-300 rounded-md hover:bg-gray-400"
         >
           Previous
         </button>
-        <button 
-          onClick={handleSubmit} 
-          className="px-4 py-2 text-white transition duration-300 bg-green-600 rounded-md hover:bg-green-700"
+        <button
+          onClick={handleSubmit}
+          className="px-4 py-2 text-white transition duration-300 rounded-md bg-proj hover:bg-blue-600"
         >
           Confirm Booking
         </button>

@@ -73,7 +73,7 @@ export default function FAQ() {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="mb-12 text-4xl font-bold text-center text-transparent bg-proj bg-clip-text"
+          className="mb-12 text-4xl font-semibold text-center text-transparent bg-proj bg-clip-text"
         >
           Frequently Asked Questions
         </motion.h2>
