@@ -8,7 +8,11 @@ import Events from './pages/Events';
 import FAQ from './pages/FAQ';
 import Contact from './pages/Contact';
 import AuthPage from './pages/AuthPage';
-import Book from './pages/Book';
+import Book1 from './pages/Book1';
+import Book2 from './pages/Book2';
+import Book3 from './pages/Book3';
+import Book4 from './pages/Book4';
+import Book5 from './pages/Book5';
 
 function App() {
   return (
@@ -22,7 +26,11 @@ function App() {
           <Route path="/faq" element={<FAQ />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/login" element={<AuthPage />} />
-          <Route path="/book" element={<Book />} />
+          <Route path="/book-1" element={<Book1 />} />
+          <Route path="/book-2" element={<Book2 />} />
+          <Route path="/book-3" element={<Book3 />} />
+          <Route path="/book-4" element={<Book4 />} />
+          <Route path="/book-5" element={<Book5 />} />
         </Routes>
         <Footer />
       </div>
