@@ -1,57 +1,54 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { Users, Mail, ChevronRight, User, Phone } from 'lucide-react';
-import { BackgroundPattern } from '../components/shared/BackgroundPattern';
+"use client"
 
-const Book1 = () => {
+import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { motion } from 'framer-motion'
+import { Users, Mail, ChevronRight, User, Phone } from 'lucide-react'
+import { BackgroundPattern } from '../components/shared/BackgroundPattern'
+
+export default function Book1() {
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
     attendees: 1,
     email: '',
-  });
-  const [errors, setErrors] = useState({});
-  const navigate = useNavigate();
+  })
+  const [errors, setErrors] = useState({})
+  const navigate = useNavigate()
 
   const validateForm = () => {
-    const newErrors = {};
-    if (!formData.name) newErrors.name = 'Name is required';
-    if (!formData.phone) newErrors.phone = 'Phone number is required';
-    if (formData.attendees < 1) newErrors.attendees = 'At least one attendee is required';
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
+    const newErrors = {}
+    if (!formData.name.trim()) newErrors.name = 'Name is required'
+    if (!formData.phone.trim()) newErrors.phone = 'Phone number is required'
+    if (formData.attendees < 1) newErrors.attendees = 'At least one attendee is required'
+    if (formData.email && !/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = 'Invalid email format'
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
+  }
 
   const handleNext = () => {
     if (validateForm()) {
-      navigate('/book-2', { state: { formData } });
+      navigate('/book-2', { state: { formData } })
     }
-  };
+  }
 
   const fadeInUp = {
     initial: { opacity: 0, y: 20 },
     animate: { opacity: 1, y: 0 },
     transition: { duration: 0.6, ease: "easeOut" }
-  };
-
-  const scaleIn = {
-    initial: { opacity: 0, scale: 0.9 },
-    animate: { opacity: 1, scale: 1 },
-    transition: { duration: 0.4, ease: "easeOut" }
-  };
+  }
 
   return (
     <div className="relative flex items-center justify-center min-h-screen py-12 bg-gray-50 font-body">
       <BackgroundPattern />
       <motion.div 
-        className="z-10 w-full max-w-2xl p-12 bg-white rounded-lg shadow-lg"
+        className="z-10 w-full max-w-xl p-8 bg-white shadow-xl rounded-2xl"
         initial={{ opacity: 0, scale: 0.95, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
       >
         <motion.h1 
-          className="mb-6 text-3xl font-bold text-center text-transparent bg-proj bg-clip-text"
+          className="mb-6 text-4xl font-bold text-center text-transparent bg-proj bg-clip-text"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.6, ease: "easeOut" }}
@@ -75,7 +72,7 @@ const Book1 = () => {
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 placeholder="Enter your name"
-                className="w-full py-3 pl-10 pr-4 text-gray-900 placeholder-gray-400 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                className="w-full py-3 pl-10 pr-4 text-gray-900 placeholder-gray-400 border border-gray-300 rounded-md focus:ring-proj focus:border-proj"
               />
               <User className="absolute w-5 h-5 text-gray-400 transform -translate-y-1/2 left-3 top-1/2" />
             </div>
@@ -84,7 +81,7 @@ const Book1 = () => {
           <motion.div variants={fadeInUp}>
             <label htmlFor="phone" className="block mb-2 text-sm font-medium text-gray-700">Phone Number</label>
             <div className="flex">
-              <select className="w-24 px-3 py-3 bg-white border border-gray-300 rounded-l-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+              <select className="w-24 px-3 py-3 bg-white border border-gray-300 rounded-l-md focus:outline-none focus:ring-proj focus:border-proj">
                 <option value="in">🇮🇳 +91</option>
                 <option value="us">🇺🇸 +1</option>
                 <option value="uk">🇬🇧 +44</option>
@@ -95,7 +92,7 @@ const Book1 = () => {
                   value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                   placeholder="Enter phone number"
-                  className="w-full py-3 pl-10 pr-4 text-gray-900 placeholder-gray-400 border border-gray-300 rounded-r-md focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full py-3 pl-10 pr-4 text-gray-900 placeholder-gray-400 border border-gray-300 rounded-r-md focus:ring-proj focus:border-proj"
                 />
                 <Phone className="absolute w-5 h-5 text-gray-400 transform -translate-y-1/2 left-3 top-1/2" />
               </div>
@@ -112,7 +109,7 @@ const Book1 = () => {
                 max={10}
                 value={formData.attendees}
                 onChange={(e) => setFormData({ ...formData, attendees: parseInt(e.target.value) })}
-                className="w-full py-3 pl-10 pr-12 text-gray-900 placeholder-gray-400 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                className="w-full py-3 pl-10 pr-4 text-gray-900 placeholder-gray-400 border border-gray-300 rounded-md focus:ring-proj focus:border-proj"
               />
               <Users className="absolute w-5 h-5 text-gray-400 transform -translate-y-1/2 left-3 top-1/2" />
             </div>
@@ -127,16 +124,16 @@ const Book1 = () => {
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 placeholder="Enter your email"
-                className="w-full py-3 pl-10 pr-4 text-gray-900 placeholder-gray-400 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                className="w-full py-3 pl-10 pr-4 text-gray-900 placeholder-gray-400 border border-gray-300 rounded-md focus:ring-proj focus:border-proj"
               />
               <Mail className="absolute w-5 h-5 text-gray-400 transform -translate-y-1/2 left-3 top-1/2" />
             </div>
+            {errors.email && <p className="mt-1 text-xs text-red-500">{errors.email}</p>}
           </motion.div>
         </motion.div>
         <motion.button 
           onClick={handleNext} 
-          className="flex items-center justify-center w-full px-6 py-3 mt-8 text-lg font-medium text-white transition duration-300 rounded-2xl bg-proj hover:bg-proj-hover focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-          variants={scaleIn}
+          className="flex items-center justify-center w-full px-6 py-3 mt-8 text-lg font-medium text-white transition duration-300 rounded-full bg-proj hover:bg-proj-hover focus:outline-none focus:ring-2 focus:ring-proj focus:ring-offset-2"
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.97 }}
         >
@@ -145,7 +142,5 @@ const Book1 = () => {
         </motion.button>
       </motion.div>
     </div>
-  );
-};
-
-export default Book1;
+  )
+}
