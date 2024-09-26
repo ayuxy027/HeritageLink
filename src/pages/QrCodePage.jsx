@@ -5,15 +5,25 @@ import { motion } from "framer-motion"
 import { BackgroundPattern } from '../components/shared/BackgroundPattern'
 import { ChevronLeft } from 'lucide-react'
 
+const formatBookingDetailsForQR = (details) => {
+    return `Booking Ref: #${details.bookingId || 'N/A'}
+Name: ${details.name}
+Date: ${formatDate(details.date || Date.now())}
+Time: ${details.timeSlot}
+Guests: ${details.guests}
+Amenities: ${details.amenities ? details.amenities.join(', ') : 'None'}
+Total: ₹${details.total}`;
+};
+
 const formatDate = (timestamp) => {
     const date = new Date(timestamp);
     const options = { weekday: 'short', day: 'numeric', month: 'long', year: 'numeric' };
     const formattedDate = date.toLocaleDateString('en-GB', options);
-    
+
     const day = date.getDate();
     const suffix = (day % 10 === 1 && day !== 11) ? 'st' :
-                   (day % 10 === 2 && day !== 12) ? 'nd' :
-                   (day % 10 === 3 && day !== 13) ? 'rd' : 'th';
+        (day % 10 === 2 && day !== 12) ? 'nd' :
+            (day % 10 === 3 && day !== 13) ? 'rd' : 'th';
 
     return formattedDate.replace(/\d+/, day + suffix);
 };
@@ -66,7 +76,7 @@ const QrCodePage = () => {
                         <QRCode
                             size={256}
                             style={{ height: "auto", maxWidth: "100%", width: "100%" }}
-                            value={JSON.stringify(bookingDetails)}
+                            value={formatBookingDetailsForQR(bookingDetails)}
                             viewBox={`0 0 256 256`}
                         />
                     </div>
