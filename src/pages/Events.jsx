@@ -82,14 +82,14 @@ export default function Events() {
   return (
     <section className="relative py-8 mt-0 overflow-hidden bg-white">
       <BackgroundAnimation />
-      <div className="relative z-10 max-w-7xl px-4 mx-auto">
+      <div className="relative z-10 px-4 mx-auto max-w-7xl">
         <motion.h2 
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           className="mb-12 text-5xl font-semibold text-center text-transparent bg-proj bg-clip-text"
         >
-          Discover Our Exciting Events
+          Discover Events
         </motion.h2>
 
         <motion.div 
@@ -105,7 +105,7 @@ export default function Events() {
               }
             }
           }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3"
         >
           {events.map((event, index) => (
             <EventCard key={index} event={event} />
@@ -119,10 +119,10 @@ export default function Events() {
           className="mt-16 text-center"
         >
           <Link 
-            to="/events"
-            className="inline-flex items-center justify-center px-8 py-4 text-lg font-medium text-white transition-all duration-300 rounded-full bg-proj hover:bg-blue-600 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 shadow-lg hover:shadow-xl"
+            to="/explore"
+            className="inline-flex items-center justify-center px-8 py-4 text-lg font-medium text-white transition-all duration-300 rounded-full shadow-lg bg-proj hover:bg-blue-600 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 hover:shadow-xl"
           >
-            View More Events
+            Explore More Events
             <ChevronRight className="ml-2" size={20} />
           </Link>
         </motion.div>
@@ -149,7 +149,7 @@ function EventCard({ event }) {
       whileHover={{ scale: 1.05 }}
       className="flex flex-col h-full overflow-hidden transition-all duration-300 bg-white border rounded-lg shadow-md border-opacity-20 hover:shadow-lg border-proj"
     >
-      <div className="p-6 flex-grow">
+      <div className="flex-grow p-6">
         <div className="flex items-center justify-between mb-4">
           <motion.div
             className="p-3 bg-blue-100 rounded-full"
@@ -166,8 +166,8 @@ function EventCard({ event }) {
             Book Now
           </Link>
         </div>
-        <h3 className="text-xl font-bold text-transparent bg-proj bg-clip-text mb-2">{event.title}</h3>
-        <div className="space-y-2 mb-4">
+        <h3 className="mb-2 text-xl font-bold text-transparent bg-proj bg-clip-text">{event.title}</h3>
+        <div className="mb-4 space-y-2">
           <p className="flex items-center text-sm text-gray-600">
             <Calendar className="mr-2 text-blue-500" size={16} />
             {event.date}
