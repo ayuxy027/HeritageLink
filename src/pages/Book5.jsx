@@ -62,12 +62,17 @@ export default function Book5() {
   const handleSubmit = () => {
     console.log('Booking submitted:', formData)
     triggerConfetti()
-    toast.success('Booking confirmed! Thank you for choosing our museum.', {
-      duration: 5000,
+    toast.success('Booking confirmed! Generating your QR code...', {
+      duration: 3000,
       icon: '🎉',
     })
     setTimeout(() => {
-      navigate('/')
+      const bookingDetails = {
+        ...formData,
+        bookingId: Math.random().toString(36).substr(2, 9),
+        total: calculateTotal()
+      }
+      navigate('/qr-code', { state: bookingDetails })
     }, 5000)
   }
 

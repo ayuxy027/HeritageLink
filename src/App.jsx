@@ -18,6 +18,7 @@ const Book2 = lazy(() => import('./pages/Book2'));
 const Book3 = lazy(() => import('./pages/Book3'));
 const Book4 = lazy(() => import('./pages/Book4'));
 const Book5 = lazy(() => import('./pages/Book5'));
+const QrCodePage = lazy(() => import('./pages/QrCodePage'));
 
 function App() {
   return (
@@ -44,6 +45,9 @@ function App() {
                 <Route path="/book-3" element={<Book3 />} />
                 <Route path="/book-4" element={<Book4 />} />
                 <Route path="/book-5" element={<Book5 />} />
+
+                {/* QR Code Page */}
+                <Route path="/qr-code" element={<QrCodePage />} />
 
                 {/* Catch-all route for 404 */}
                 <Route path="*" element={<Navigate to="/" replace />} />
