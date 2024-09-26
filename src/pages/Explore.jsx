@@ -1,202 +1,255 @@
-import React, { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { museumData, categories, durations, locations } from './museumData'
+import React, { useState, useEffect, useCallback } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Search, Filter, Grid, List, Calendar, Clock, MapPin, Tag, DollarSign, HelpCircle, ChevronDown, X } from 'lucide-react';
 
-const Button = ({ children, className, ...props }) => (
+// Assume these are imported from your data file
+const museumData = {
+  exhibitions: [
+    { id: 'e1', type: 'exhibition', title: 'Ancient India', description: 'Explore the rich history of ancient India through artifacts and interactive displays.', image: '/placeholder.svg?height=400&width=600', availability: 'Daily', time: '10:00 AM - 6:00 PM', location: 'New Delhi', category: 'History', price: 250 },
+    { id: 'e2', type: 'exhibition', title: 'Modern Art of India', description: 'A curated collection of contemporary Indian art pieces from renowned artists.', image: '/placeholder.svg?height=400&width=600', availability: 'Tue-Sun', time: '11:00 AM - 7:00 PM', location: 'Mumbai', category: 'Art', price: 300 },
+    // Add more exhibitions as needed
+  ],
+  collections: [
+    { id: 'c1', type: 'collection', title: 'Mughal Miniatures', description: 'A stunning collection of intricate Mughal miniature paintings from the 16th-19th centuries.', image: '/placeholder.svg?height=400&width=600', location: 'Jaipur', category: 'Art', price: 200 },
+    { id: 'c2', type: 'collection', title: 'Ancient Sculptures', description: 'Marvel at the exquisite sculptures from various periods of Indian history.', image: '/placeholder.svg?height=400&width=600', location: 'Khajuraho', category: 'Sculpture', price: 180 },
+    // Add more collections as needed
+  ],
+  tours: [
+    { id: 't1', type: 'tour', title: 'Highlights of Indian History', description: 'A guided tour covering the main highlights of Indian history across multiple galleries.', image: '/placeholder.svg?height=400&width=600', duration: '2 hours', location: 'New Delhi', category: 'History', price: 500 },
+    { id: 't2', type: 'tour', title: 'Art Through the Ages', description: 'Experience the evolution of Indian art from ancient times to the modern era.', image: '/placeholder.svg?height=400&width=600', duration: '1.5 hours', location: 'Mumbai', category: 'Art', price: 450 },
+    // Add more tours as needed
+  ]
+};
+
+const categories = ['All', 'History', 'Art', 'Sculpture', 'Architecture', 'Science'];
+const durations = ['All', 'Short (< 1 hour)', 'Medium (1-2 hours)', 'Long (> 2 hours)'];
+const locations = ['All', 'New Delhi', 'Mumbai', 'Jaipur', 'Khajuraho', 'Kolkata'];
+
+const Button = React.forwardRef(({ children, className, ...props }, ref) => (
   <button
-    className={`px-4 py-2 font-semibold text-white rounded-lg transition-all duration-300 ${className}`}
+    ref={ref}
+    className={`px-6 py-3 font-medium text-lg text-white rounded-full transition-all duration-300 ${className}`}
     {...props}
   >
     {children}
   </button>
-)
+));
 
-const Select = ({ value, onChange, options, className }) => (
-  <select
-    value={value}
-    onChange={(e) => onChange(e.target.value)}
-    className={`p-2 bg-white border-2 border-blue-200 rounded-lg focus:border-blue-400 focus:outline-none ${className}`}
-  >
-    {options.map((option) => (
-      <option key={option} value={option}>
-        {option}
-      </option>
-    ))}
-  </select>
-)
+const Select = ({ value, onChange, options, className, label }) => (
+  <div className="space-y-2">
+    <label className="block text-sm font-medium text-gray-700">{label}</label>
+    <div className="relative">
+      <select
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className={`appearance-none w-full p-3 pr-10 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-proj focus:border-transparent ${className}`}
+      >
+        {options.map((option) => (
+          <option key={option} value={option}>
+            {option}
+          </option>
+        ))}
+      </select>
+      <ChevronDown className="absolute text-gray-400 transform -translate-y-1/2 pointer-events-none top-1/2 right-3" size={20} />
+    </div>
+  </div>
+);
 
 const Card = ({ children, className, ...props }) => (
-  <div
-    className={`bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl ${className}`}
+  <motion.div
+    layout
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    exit={{ opacity: 0, y: -20 }}
+    transition={{ duration: 0.5 }}
+    className={`bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl ${className}`}
     {...props}
   >
     {children}
-  </div>
-)
+  </motion.div>
+);
 
 const ExplorePage = () => {
-  const [searchTerm, setSearchTerm] = useState('')
-  const [activeTab, setActiveTab] = useState('exhibitions')
-  const [selectedCategory, setSelectedCategory] = useState('All')
-  const [selectedDuration, setSelectedDuration] = useState('All')
-  const [selectedLocation, setSelectedLocation] = useState('All')
-  const [isFilterOpen, setIsFilterOpen] = useState(false)
-  const [sortBy, setSortBy] = useState('default')
-  const [viewMode, setViewMode] = useState('grid')
-  const [showHelp, setShowHelp] = useState(false)
-  const [visibleItems, setVisibleItems] = useState(6)
-  const navigate = useNavigate()
+  const [searchTerm, setSearchTerm] = useState('');
+  const [activeTab, setActiveTab] = useState('exhibitions');
+  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [selectedDuration, setSelectedDuration] = useState('All');
+  const [selectedLocation, setSelectedLocation] = useState('All');
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [sortBy, setSortBy] = useState('default');
+  const [viewMode, setViewMode] = useState('grid');
+  const [showHelp, setShowHelp] = useState(false);
+  const [visibleItems, setVisibleItems] = useState(6);
 
   const allItems = [
     ...museumData.exhibitions,
     ...museumData.collections,
     ...museumData.tours
-  ]
+  ];
 
-  const [filteredItems, setFilteredItems] = useState(allItems)
+  const [filteredItems, setFilteredItems] = useState(allItems);
 
-  useEffect(() => {
-    const filtered = allItems.filter(item =>
+  const filterAndSortItems = useCallback(() => {
+    let filtered = allItems.filter(item =>
       item.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
-      (activeTab === 'exhibitions' ? item.type === 'exhibition' :
-        activeTab === 'collections' ? item.type === 'collection' :
-          item.type === 'tour') &&
+      (activeTab === 'all' || item.type === activeTab.slice(0, -1)) &&
       (selectedCategory === 'All' || item.category === selectedCategory) &&
       (selectedLocation === 'All' || item.location === selectedLocation) &&
       (selectedDuration === 'All' ||
-        (selectedDuration === 'Short' && item.duration && parseInt(item.duration) < 60) ||
-        (selectedDuration === 'Medium' && item.duration && parseInt(item.duration) >= 60 && parseInt(item.duration) <= 120) ||
-        (selectedDuration === 'Long' && item.duration && parseInt(item.duration) > 120))
-    )
+        (selectedDuration === 'Short (< 1 hour)' && item.duration && parseInt(item.duration) < 60) ||
+        (selectedDuration === 'Medium (1-2 hours)' && item.duration && parseInt(item.duration) >= 60 && parseInt(item.duration) <= 120) ||
+        (selectedDuration === 'Long (> 2 hours)' && item.duration && parseInt(item.duration) > 120))
+    );
 
-    const sortedItems = [...filtered].sort((a, b) => {
-      switch (sortBy) {
-        case 'price-low-high':
-          return a.price - b.price
-        case 'price-high-low':
-          return b.price - a.price
-        case 'name-a-z':
-          return a.title.localeCompare(b.title)
-        case 'name-z-a':
-          return b.title.localeCompare(a.title)
-        default:
-          return 0
-      }
-    })
+    switch (sortBy) {
+      case 'price-low-high':
+        filtered.sort((a, b) => a.price - b.price);
+        break;
+      case 'price-high-low':
+        filtered.sort((a, b) => b.price - a.price);
+        break;
+      case 'name-a-z':
+        filtered.sort((a, b) => a.title.localeCompare(b.title));
+        break;
+      case 'name-z-a':
+        filtered.sort((a, b) => b.title.localeCompare(a.title));
+        break;
+      default:
+        break;
+    }
 
-    setFilteredItems(sortedItems)
-  }, [searchTerm, activeTab, selectedCategory, selectedDuration, selectedLocation, sortBy])
+    setFilteredItems(filtered);
+  }, [searchTerm, activeTab, selectedCategory, selectedDuration, selectedLocation, sortBy]);
 
-  const handleBookNow = (item) => {
-    navigate(`/book?id=${item.id}&type=${item.type}`)
-  }
+  useEffect(() => {
+    filterAndSortItems();
+  }, [filterAndSortItems]);
 
   const loadMore = () => {
-    setVisibleItems(prevVisibleItems => prevVisibleItems + 3)
-  }
+    setVisibleItems(prevVisibleItems => prevVisibleItems + 3);
+  };
+
+  const resetFilters = () => {
+    setSelectedCategory('All');
+    setSelectedDuration('All');
+    setSelectedLocation('All');
+    setSortBy('default');
+  };
 
   return (
-    <div className="min-h-screen p-4 font-sans bg-gradient-to-b from-blue-50 to-white sm:p-6 md:p-8">
-      <div className="mx-auto max-w-7xl">
-        <h1 className="mb-8 text-4xl font-semibold text-center text-transparent bg-clip-text bg-proj sm:text-5xl lg:text-5xl">
+    <div className="min-h-screen p-8 font-sans bg-gradient-to-b from-gray-50 to-white">
+      <div className="mx-auto space-y-12 max-w-7xl">
+        <motion.h1 
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="text-5xl font-bold text-center text-transparent bg-proj bg-clip-text sm:text-6xl lg:text-7xl"
+        >
           Explore Indian Museums
-        </h1>
+        </motion.h1>
 
-        <div className="flex flex-col items-center justify-between mb-6 space-y-4 md:flex-row md:space-y-0 md:space-x-4">
-          <div className="relative w-full md:w-1/2">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="space-y-6"
+        >
+          <div className="relative w-full max-w-2xl mx-auto">
             <input
               type="text"
               placeholder="Search exhibitions, collections, or tours..."
-              className="w-full py-3 pl-12 pr-4 text-gray-700 transition-all duration-300 bg-white border-2 border-blue-200 rounded-full focus:border-blue-400 focus:outline-none"
+              className="w-full py-4 pr-4 text-lg text-gray-700 transition-all duration-300 bg-white border-2 border-gray-200 rounded-full pl-14 focus:border-proj focus:outline-none focus:ring-2 focus:ring-proj focus:ring-opacity-50"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
-            <svg xmlns="http://www.w3.org/2000/svg" className="absolute w-6 h-6 text-blue-500 transform -translate-y-1/2 left-4 top-1/2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
+            <Search className="absolute w-6 h-6 text-gray-400 transform -translate-y-1/2 left-5 top-1/2" />
           </div>
 
-          <div className="flex flex-wrap items-center justify-center gap-4 sm:flex-nowrap">
+          <div className="flex flex-wrap items-center justify-center gap-4">
             <Button
               onClick={() => setIsFilterOpen(!isFilterOpen)}
-              className="transform bg-blue-600 hover:bg-blue-700 active:bg-blue-800 active:scale-95"
+              className="bg-proj hover:bg-opacity-90 active:bg-opacity-100"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="inline-block w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
-              </svg>
+              <Filter className="inline-block w-5 h-5 mr-2" />
               Filters
             </Button>
             <Select
               value={sortBy}
               onChange={setSortBy}
               options={['default', 'price-low-high', 'price-high-low', 'name-a-z', 'name-z-a']}
-              className="text-gray-700"
+              className="text-gray-700 min-w-[200px]"
+              label="Sort by"
             />
-            <div className="flex items-center p-1 space-x-2 bg-white border-2 border-blue-200 rounded-full">
+            <div className="flex items-center p-1 space-x-2 bg-white border-2 border-gray-200 rounded-full">
               <Button
                 onClick={() => setViewMode('grid')}
-                className={`rounded-full ${viewMode === 'grid' ? 'bg-blue-600' : 'bg-white text-gray-600'}`}
+                className={`rounded-full ${viewMode === 'grid' ? 'bg-proj' : 'bg-white text-gray-600'}`}
               >
-                <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-                </svg>
+                <Grid className="w-5 h-5" />
               </Button>
               <Button
                 onClick={() => setViewMode('list')}
-                className={`rounded-full ${viewMode === 'list' ? 'bg-blue-600' : 'bg-white text-gray-600'}`}
+                className={`rounded-full ${viewMode === 'list' ? 'bg-proj' : 'bg-white text-gray-600'}`}
               >
-                <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
-                </svg>
+                <List className="w-5 h-5" />
               </Button>
             </div>
           </div>
-        </div>
+        </motion.div>
 
-        {isFilterOpen && (
-          <div className="p-6 mb-6 bg-white shadow-lg rounded-xl">
-            <div className="flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0 sm:space-x-4">
-              <div className="flex items-center space-x-4">
-                <span className="font-semibold text-gray-700">Category:</span>
-                <Select
-                  value={selectedCategory}
-                  onChange={setSelectedCategory}
-                  options={categories}
-                  className="text-gray-700"
-                />
+        <AnimatePresence>
+          {isFilterOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3 }}
+              className="overflow-hidden bg-white shadow-lg rounded-xl"
+            >
+              <div className="p-6 space-y-6">
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
+                  <Select
+                    value={selectedCategory}
+                    onChange={setSelectedCategory}
+                    options={categories}
+                    className="text-gray-700"
+                    label="Category"
+                  />
+                  <Select
+                    value={selectedDuration}
+                    onChange={setSelectedDuration}
+                    options={durations}
+                    className="text-gray-700"
+                    label="Duration"
+                  />
+                  <Select
+                    value={selectedLocation}
+                    onChange={setSelectedLocation}
+                    options={locations}
+                    className="text-gray-700"
+                    label="Location"
+                  />
+                </div>
+                <div className="flex justify-end">
+                  <Button onClick={resetFilters} className="text-gray-700 bg-gray-200 hover:bg-gray-300">
+                    Reset Filters
+                  </Button>
+                </div>
               </div>
-              <div className="flex items-center space-x-4">
-                <span className="font-semibold text-gray-700">Duration:</span>
-                <Select
-                  value={selectedDuration}
-                  onChange={setSelectedDuration}
-                  options={durations}
-                  className="text-gray-700"
-                />
-              </div>
-              <div className="flex items-center space-x-4">
-                <span className="font-semibold text-gray-700">Location:</span>
-                <Select
-                  value={selectedLocation}
-                  onChange={setSelectedLocation}
-                  options={locations}
-                  className="text-gray-700"
-                />
-              </div>
-            </div>
-          </div>
-        )}
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-        <div className="mb-8 overflow-x-auto">
+        <div className="overflow-x-auto">
           <div className="inline-flex border-b border-gray-200">
-            {['exhibitions', 'collections', 'tours'].map((tab) => (
+            {['all', 'exhibitions', 'collections', 'tours'].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`py-2 px-4 font-medium text-sm focus:outline-none transition-colors duration-300 whitespace-nowrap ${
+                className={`py-4 px-8 font-medium text-lg focus:outline-none transition-colors duration-300 whitespace-nowrap ${
                   activeTab === tab
-                    ? 'border-b-2 border-blue-600 text-blue-600'
-                    : 'text-gray-500 hover:text-blue-600'
+                    ? 'border-b-2 border-proj text-proj'
+                    : 'text-gray-500 hover:text-proj'
                 }`}
               >
                 {tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -205,128 +258,168 @@ const ExplorePage = () => {
           </div>
         </div>
 
-        <div className={`grid gap-6 sm:gap-8 ${
-          viewMode === 'grid' 
-            ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4' 
-            : 'grid-cols-1'
-        }`}>
-          {filteredItems.slice(0, visibleItems).map((item) => (
-            <Card key={item.id} className={`group ${viewMode === 'list' ? 'sm:flex' : ''}`}>
-              <div className={`relative overflow-hidden ${viewMode === 'list' ? 'sm:w-1/3' : 'h-48'}`}>
-                <img src={item.image} alt={item.title} className="object-cover w-full h-full transition-transform duration-300 transform group-hover:scale-110" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60"></div>
-                <div className="absolute bottom-0 left-0 right-0 p-4">
-                  <h3 className="text-lg font-bold text-white sm:text-xl md:text-2xl">{item.title}</h3>
+        <motion.div 
+          layout
+          className={`grid gap-8 ${
+            viewMode === 'grid' 
+              ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'
+              : 'grid-cols-1'
+          }`}
+        >
+          <AnimatePresence>
+            {filteredItems.slice(0, visibleItems).map((item) => (
+              <Card key={item.id} className={`group ${viewMode === 'list' ? 'sm:flex' : ''}`}>
+                <div className={`relative ${viewMode === 'list' ? 'sm:w-1/3' : 'h-64'}`}>
+                  <img src={item.image} alt={item.title} className="object-cover w-full h-full transition-transform duration-300 transform group-hover:scale-105" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60"></div>
+                  <div className="absolute bottom-0 left-0 right-0 p-6">
+                    <h3 className="text-2xl font-bold text-white">{item.title}</h3>
+                  </div>
                 </div>
-              </div>
-              <div className={`p-6 ${viewMode === 'list' ? 'sm:w-2/3' : ''}`}>
-                <p className="mb-4 text-sm text-gray-600 line-clamp-3">{item.description}</p>
-                <div className="space-y-2 text-sm text-gray-500">
-                  {item.type === 'exhibition' && (
-                    <>
+                <div className={`p-6 flex flex-col justify-between ${viewMode === 'list' ? 'sm:w-2/3' : 'h-64'}`}>
+                  <div>
+                    <p className="mb-4 text-gray-600 line-clamp-3">{item.description}</p>
+                    <div className="grid grid-cols-2 gap-4 text-sm text-gray-500">
+                      {item.type === 'exhibition' && (
+                        <>
+                          <div className="flex items-center space-x-2">
+                            <Calendar className="flex-shrink-0 w-5 h-5 text-proj" />
+                            <span>{item.availability}</span>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <Clock className="flex-shrink-0 w-5 h-5 text-proj" />
+                            <span>{item.time}</span>
+                          </div>
+                        </>
+                      )}
+                      {item.type === 'tour' && (
+                        <div className="flex items-center space-x-2">
+                          <Clock className="flex-shrink-0 w-5 h-5 text-proj" />
+                          <span>{item.duration}</span>
+                        </div>
+                      )}
                       <div className="flex items-center space-x-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="flex-shrink-0 w-4 h-4 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                        </svg>
-                        <span>{item.availability}</span>
+                        <MapPin className="flex-shrink-0 w-5 h-5 text-proj" />
+                        <span>{item.location}</span>
                       </div>
                       <div className="flex items-center space-x-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="flex-shrink-0 w-4 h-4 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        <span>{item.time}</span>
+                        <Tag className="flex-shrink-0 w-5 h-5 text-proj" />
+                        <span>{item.category}</span>
                       </div>
-                    </>
-                  )}
-                  {item.type === 'tour' && (
-                    <div className="flex items-center space-x-2">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="flex-shrink-0 w-4 h-4 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                      <span>{item.duration}</span>
                     </div>
-                  )}
-                  <div className="flex items-center space-x-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="flex-shrink-0 w-4 h-4 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                    </svg>
-                    <span>{item.location}</span>
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="flex-shrink-0 w-4 h-4 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
-                    </svg>
-                    <span className="font-semibold text-blue-600">₹{item.price}</span>
+                  <div className="flex items-center justify-between mt-6">
+                    <span className="text-2xl font-bold text-proj">₹{item.price}</span>
+                    <Button
+                      onClick={() => {/* Handle booking logic */}}
+                      className="bg-proj hover:bg-opacity-90 active:bg-opacity-100"
+                    >
+                      {item.type === 'collection' ? 'View Collection' : 'Book Now'}
+                    </Button>
                   </div>
                 </div>
-                <div className="mt-4">
-                  <Button
-                    onClick={() => handleBookNow(item)}
-                    className="w-full transform bg-blue-600 hover:bg-blue-700 active:bg-blue-800 active:scale-95 group-hover:shadow-lg"
-                  >
-                    {item.type === 'collection' ? 'View Collection' : 'Book Now'}
-                  </Button>
-                </div>
-              </div>
-            </Card>
-          ))}
-        </div>
+              </Card>
+            ))}
+          </AnimatePresence>
+        </motion.div>
 
         {visibleItems < filteredItems.length && (
-          <div className="mt-8 text-center">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="text-center"
+          >
             <Button
               onClick={loadMore}
-              className="bg-blue-600 hover:bg-blue-700 active:bg-blue-800"
+              className="bg-proj hover:bg-opacity-90 active:bg-opacity-100"
             >
               View More
             </Button>
-          </div>
+          </motion.div>
         )}
 
         {filteredItems.length === 0 && (
-          <div className="py-12 text-center">
-            <p className="text-2xl font-semibold text-blue-600">No items found matching your criteria.</p>
-            <p className="mt-2 text-lg text-gray-500">Try adjusting your filters or search term.</p>
-          </div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="py-12 text-center"
+          >
+            <p className="text-3xl font-bold text-proj">No items found matching your criteria.</p>
+            <p className="mt-4 text-xl text-gray-500">Try adjusting your filters or search term.</p>
+          </motion.div>
         )}
       </div>
 
-      <div className="fixed bottom-4 right-4">
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5 }}
+        className="fixed bottom-8 right-8"
+      >
         <Button
           onClick={() => setShowHelp(true)}
-          className="flex items-center justify-center w-12 h-12 transition-all duration-300 transform bg-blue-600 rounded-full shadow-lg hover:bg-blue-700 active:bg-blue-800 hover:shadow-xl hover:scale-105 active:scale-95"
+          className="flex items-center justify-center w-16 h-16 transition-all duration-300 transform rounded-full shadow-lg bg-proj hover:bg-opacity-90 active:bg-opacity-100 hover:shadow-xl hover:scale-105 active:scale-95"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
+          <HelpCircle className="w-8 h-8" />
         </Button>
-      </div>
+      </motion.div>
 
-      {showHelp && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-xl">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-2xl font-bold text-blue-600">Help</h2>
-              <button onClick={() => setShowHelp(false)} className="text-gray-500 hover:text-gray-700">
-                <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-            <ul className="space-y-2 text-gray-600">
-              <li>• Use the search bar to find specific exhibitions, collections, or tours.</li>
-              <li>• Filter results by category, duration, and location using the "Filters" button.</li>
-              <li>• Sort items by price or name using the dropdown menu.</li>
-              <li>• Switch between grid and list view using the icons.</li>
-              <li>• Click "Book Now" or "View Collection" to proceed with your selection.</li>
-              <li>• Use the "View More" button to load additional items.</li>
-            </ul>
-          </div>
-        </div>
-      )}
+      <AnimatePresence>
+        {showHelp && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+          >
+            <motion.div
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+              transition={{ duration: 0.3 }}
+              className="w-full max-w-2xl p-8 bg-white shadow-2xl rounded-xl"
+            >
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-3xl font-bold text-transparent bg-proj bg-clip-text">Help</h2>
+                <button onClick={() => setShowHelp(false)} className="text-gray-500 transition-colors duration-300 hover:text-gray-700">
+                  <X className="w-8 h-8" />
+                </button>
+              </div>
+              <ul className="space-y-4 text-lg text-gray-600">
+                <li className="flex items-start">
+                  <Search className="flex-shrink-0 w-6 h-6 mt-1 mr-4 text-proj" />
+                  Use the search bar to find specific exhibitions, collections, or tours.
+                </li>
+                <li className="flex items-start">
+                  <Filter className="flex-shrink-0 w-6 h-6 mt-1 mr-4 text-proj" />
+                  Filter results by category, duration, and location using the "Filters" button.
+                </li>
+                <li className="flex items-start">
+                  <ChevronDown className="flex-shrink-0 w-6 h-6 mt-1 mr-4 text-proj" />
+                  Sort items by price or name using the dropdown menu.
+                </li>
+                <li className="flex items-start">
+                  <Grid className="flex-shrink-0 w-6 h-6 mt-1 mr-4 text-proj" />
+                  Switch between grid and list view using the icons.
+                </li>
+                <li className="flex items-start">
+                  <DollarSign className="flex-shrink-0 w-6 h-6 mt-1 mr-4 text-proj" />
+                  Click "Book Now" or "View Collection" to proceed with your selection.
+                </li>
+                <li className="flex items-start">
+                  <ChevronDown className="flex-shrink-0 w-6 h-6 mt-1 mr-4 text-proj" />
+                  Use the "View More" button to load additional items.
+                </li>
+              </ul>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
-  )
-}
+  );
+};
 
-export default ExplorePage
+export default ExplorePage;

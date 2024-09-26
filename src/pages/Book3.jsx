@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import Amenities from '../components/booking/Amenities';
+import { motion } from 'framer-motion';
+import { Info } from 'lucide-react';
 
 const Book3 = () => {
   const [formData, setFormData] = useState({
@@ -15,12 +16,21 @@ const Book3 = () => {
     }
   }, [location.state]);
 
+  const amenities = [
+    { name: 'Tour Guide', price: 100, icon: '🧑‍🏫' },
+    { name: 'Wheelchair for Elderly', price: 20, icon: '👵' },
+    { name: 'Audio Guide', price: 30, icon: '🎧' },
+    { name: 'Photography Permit', price: 20, icon: '📷' },
+    { name: 'Locker Service', price: 20, icon: '🔒' },
+    { name: 'Café Voucher', price: 80, icon: '☕' },
+  ];
+
   const calculateTotal = () => {
     const amenitiesTotal = formData.amenities.reduce((total, amenity) => {
       const amenityPrice = amenities.find(a => a.name === amenity)?.price || 0;
       return total + amenityPrice;
     }, 0);
-    return amenitiesTotal + 20; // Adding 100 rupees booking fee
+    return amenitiesTotal + 20; // Adding 20 rupees booking fee
   };
 
   const handleNext = () => {
@@ -31,10 +41,66 @@ const Book3 = () => {
     navigate('/book-2', { state: { formData } });
   };
 
+  const fadeInUp = {
+    initial: { opacity: 0, y: 20 },
+    animate: { opacity: 1, y: 0 },
+    exit: { opacity: 0, y: -20 },
+    transition: { duration: 0.5 }
+  };
+
   return (
     <div className="container max-w-2xl p-4 mx-auto">
       <h1 className="mb-6 text-3xl font-bold text-center">Amenities</h1>
-      <Amenities formData={formData} setFormData={setFormData} calculateTotal={calculateTotal} />
+      <div className="space-y-6">
+        <motion.div variants={fadeInUp}>
+          <label className="block text-lg font-medium">Select Additional Services & Amenities</label>
+          <div className="grid grid-cols-2 gap-4 mt-2">
+            {amenities.map((amenity, index) => (
+              <motion.div
+                key={index}
+                className={`flex items-center p-4 space-x-3 bg-white border-2 rounded-lg transition-colors duration-300 ${
+                  formData.amenities.includes(amenity.name)
+                    ? 'border-blue-600 bg-blue-50'
+                    : 'border-gray-200 hover:border-blue-300'
+                }`}
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <input
+                  type="checkbox"
+                  id={`amenity-${index}`}
+                  checked={formData.amenities.includes(amenity.name)}
+                  onChange={(e) => {
+                    const newAmenities = e.target.checked
+                      ? [...formData.amenities, amenity.name]
+                      : formData.amenities.filter(a => a !== amenity.name)
+                    setFormData({ ...formData, amenities: newAmenities })
+                  }}
+                  className="w-5 h-5 text-transparent border-gray-300 rounded bg-proj bg-clip-border focus:ring-blue-500"
+                />
+                <label
+                  htmlFor={`amenity-${index}`}
+                  className="flex-1 cursor-pointer"
+                >
+                  <div className="flex items-center">
+                    <span className="mr-2 text-2xl">{amenity.icon}</span>
+                    <span className="font-medium">{amenity.name}</span>
+                  </div>
+                  <span className="block mt-1 text-sm text-gray-500">₹{amenity.price}</span>
+                </label>
+                <Info className="w-5 h-5 text-gray-400" />
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+        <motion.div
+          className="mt-6 text-xl font-bold text-center text-transparent bg-proj bg-clip-text"
+          animate={{ scale: [1, 1.1, 1] }}
+          transition={{ duration: 2, repeat: Infinity, repeatType: "reverse" }}
+        >
+          Total: ₹{calculateTotal()} (including ₹20 booking fee)
+        </motion.div>
+      </div>
       <div className="flex justify-between mt-6">
         <button 
           onClick={handlePrevious} 
@@ -54,12 +120,3 @@ const Book3 = () => {
 };
 
 export default Book3;
-
-const amenities = [
-  { name: 'Tour Guide', price: 100, icon: '🧑‍🏫' },
-  { name: 'Wheelchair for Elderly', price: 20, icon: '👵' },
-  { name: 'Audio Guide', price: 30, icon: '🎧' },
-  { name: 'Photography Permit', price: 20, icon: '📷' },
-  { name: 'Locker Service', price: 20, icon: '🔒' },
-  { name: 'Café Voucher', price: 80, icon: '☕' },
-];
