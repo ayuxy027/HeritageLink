@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Info } from 'lucide-react';
+import { Info, ChevronLeft, ChevronRight } from 'lucide-react';
+import { BackgroundPattern } from '../components/shared/BackgroundPattern';
 
 const Book3 = () => {
   const [formData, setFormData] = useState({
@@ -44,24 +45,49 @@ const Book3 = () => {
   const fadeInUp = {
     initial: { opacity: 0, y: 20 },
     animate: { opacity: 1, y: 0 },
-    exit: { opacity: 0, y: -20 },
-    transition: { duration: 0.5 }
+    transition: { duration: 0.6, ease: "easeOut" }
+  };
+
+  const scaleIn = {
+    initial: { opacity: 0, scale: 0.9 },
+    animate: { opacity: 1, scale: 1 },
+    transition: { duration: 0.4, ease: "easeOut" }
   };
 
   return (
-    <div className="container max-w-2xl p-4 mx-auto">
-      <h1 className="mb-6 text-3xl font-bold text-center">Amenities</h1>
-      <div className="space-y-6">
-        <motion.div variants={fadeInUp}>
-          <label className="block text-lg font-medium">Select Additional Services & Amenities</label>
-          <div className="grid grid-cols-2 gap-4 mt-2">
+    <div className="relative flex items-center justify-center min-h-screen bg-gray-50 font-body">
+      <BackgroundPattern />
+      <motion.div 
+        className="z-10 w-full max-w-2xl p-8 bg-white rounded-lg shadow-lg"
+        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+      >
+        <motion.h1 
+          className="mb-6 text-3xl font-bold text-center text-transparent bg-proj bg-clip-text"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.6, ease: "easeOut" }}
+        >
+          Amenities
+        </motion.h1>
+        <motion.div 
+          className="space-y-4"
+          initial="initial"
+          animate="animate"
+          variants={{
+            initial: { opacity: 0 },
+            animate: { opacity: 1, transition: { staggerChildren: 0.1 } }
+          }}
+        >
+          <motion.div variants={fadeInUp} className="grid grid-cols-2 gap-4">
             {amenities.map((amenity, index) => (
               <motion.div
                 key={index}
-                className={`flex items-center p-4 space-x-3 bg-white border-2 rounded-lg transition-colors duration-300 ${
+                className={`flex items-center p-3 space-x-2 bg-white border-2 rounded-lg transition-colors duration-300 ${
                   formData.amenities.includes(amenity.name)
-                    ? 'border-blue-600 bg-blue-50'
-                    : 'border-gray-200 hover:border-blue-300'
+                    ? 'border-proj bg-proj bg-opacity-10'
+                    : 'border-gray-200 hover:border-proj'
                 }`}
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.98 }}
@@ -76,45 +102,53 @@ const Book3 = () => {
                       : formData.amenities.filter(a => a !== amenity.name)
                     setFormData({ ...formData, amenities: newAmenities })
                   }}
-                  className="w-5 h-5 text-transparent border-gray-300 rounded bg-proj bg-clip-border focus:ring-blue-500"
+                  className="w-4 h-4 border-gray-300 rounded text-proj focus:ring-proj"
                 />
                 <label
                   htmlFor={`amenity-${index}`}
-                  className="flex-1 cursor-pointer"
+                  className="flex-1 text-sm cursor-pointer"
                 >
                   <div className="flex items-center">
-                    <span className="mr-2 text-2xl">{amenity.icon}</span>
+                    <span className="mr-1 text-lg">{amenity.icon}</span>
                     <span className="font-medium">{amenity.name}</span>
                   </div>
-                  <span className="block mt-1 text-sm text-gray-500">₹{amenity.price}</span>
+                  <span className="block text-xs text-gray-500">₹{amenity.price}</span>
                 </label>
-                <Info className="w-5 h-5 text-gray-400" />
+                <Info className="w-4 h-4 text-gray-400" />
               </motion.div>
             ))}
-          </div>
+          </motion.div>
         </motion.div>
         <motion.div
           className="mt-6 text-xl font-bold text-center text-transparent bg-proj bg-clip-text"
-          animate={{ scale: [1, 1.1, 1] }}
+          animate={{ scale: [1, 1.05, 1] }}
           transition={{ duration: 2, repeat: Infinity, repeatType: "reverse" }}
         >
           Total: ₹{calculateTotal()} (including ₹20 booking fee)
         </motion.div>
-      </div>
-      <div className="flex justify-between mt-6">
-        <button 
-          onClick={handlePrevious} 
-          className="px-4 py-2 text-gray-800 transition duration-300 bg-gray-300 rounded-md hover:bg-gray-400"
-        >
-          Previous
-        </button>
-        <button 
-          onClick={handleNext} 
-          className="px-4 py-2 text-white transition duration-300 bg-blue-600 rounded-md hover:bg-blue-700"
-        >
-          Next
-        </button>
-      </div>
+        <div className="flex justify-between mt-6">
+          <motion.button 
+            onClick={handlePrevious} 
+            className="flex items-center justify-center px-4 py-2 text-sm font-medium transition duration-300 bg-white border-2 rounded-lg text-proj border-proj hover:bg-proj hover:text-white focus:outline-none focus:ring-2 focus:ring-proj focus:ring-offset-2"
+            variants={scaleIn}
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
+          >
+            <ChevronLeft className="w-4 h-4 mr-1" />
+            Previous
+          </motion.button>
+          <motion.button 
+            onClick={handleNext} 
+            className="flex items-center justify-center px-4 py-2 text-sm font-medium text-white transition duration-300 rounded-lg bg-proj hover:bg-proj-hover focus:outline-none focus:ring-2 focus:ring-proj focus:ring-offset-2"
+            variants={scaleIn}
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
+          >
+            Next
+            <ChevronRight className="w-4 h-4 ml-1" />
+          </motion.button>
+        </div>
+      </motion.div>
     </div>
   );
 };
