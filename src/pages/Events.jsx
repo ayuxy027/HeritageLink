@@ -5,89 +5,89 @@ import { Calendar, Clock, MapPin, Music, Microscope, Palette, Cpu, Ticket, Chevr
 
 const events = [
   {
-    title: "Ancient Egypt: Unveiling the Mysteries",
-    date: "June 15 - September 30, 2024",
-    time: "10:00 AM - 6:00 PM",
-    location: "Main Exhibition Hall",
-    description: "Explore the wonders of Ancient Egypt through our extensive collection of artifacts and interactive displays.",
+    title: "Indus Valley Civilization: Ancient Wonders",
+    date: "June 15 - July 31, 2024",
+    time: "10:00 AM - 5:00 PM",
+    location: "National Museum, Delhi",
+    description: "Explore Indus Valley artifacts and interactive displays.",
     icon: Palette
   },
   {
-    title: "Renaissance Masters: Art and Innovation",
-    date: "July 1 - October 31, 2024",
+    title: "Mughal Art: A Legacy of Innovation",
+    date: "July 1 - August 31, 2024",
     time: "9:00 AM - 5:00 PM",
-    location: "West Wing Gallery",
-    description: "Immerse yourself in the beauty of Renaissance art with our curated exhibition featuring works from legendary artists.",
+    location: "Chhatrapati Shivaji Museum, Mumbai",
+    description: "Curated exhibition of Mughal art and architecture.",
     icon: Palette
   },
   {
-    title: "Dinosaur Discovery Days",
-    date: "August 5 - August 20, 2024",
-    time: "11:00 AM - 4:00 PM",
-    location: "Paleontology Center",
-    description: "A family-friendly event showcasing our paleontology collection with hands-on activities for young explorers.",
+    title: "Dinosaur Discovery: India’s Prehistoric Past",
+    date: "August 5 - August 15, 2024",
+    time: "11:00 AM - 3:00 PM",
+    location: "Birla Science Museum, Hyderabad",
+    description: "Hands-on activities showcasing India’s prehistoric life.",
     icon: Microscope
   },
   {
-    title: "Modern Marvels: Technology Through Time",
-    date: "September 10 - December 15, 2024",
-    time: "10:00 AM - 7:00 PM",
-    location: "Innovation Pavilion",
-    description: "Witness the evolution of technology from ancient times to the present day in this innovative exhibition.",
+    title: "Modern Marvels: India's Tech Journey",
+    date: "September 10 - October 31, 2024",
+    time: "10:00 AM - 6:00 PM",
+    location: "Visvesvaraya Museum, Bangalore",
+    description: "Evolution of technology from ancient to modern times.",
     icon: Cpu
   },
   {
-    title: "Cultural Fusion: World Music Concert Series",
+    title: "Swar Sangam: Indian Classical Music",
     date: "Every Saturday in October 2024",
-    time: "7:00 PM - 10:00 PM",
-    location: "Grand Auditorium",
-    description: "Experience a blend of global musical traditions with live performances in our grand hall.",
+    time: "7:00 PM - 9:00 PM",
+    location: "India Habitat Centre, Delhi",
+    description: "Live classical music performances from maestros.",
     icon: Music
   },
   {
-    title: "Photography Through the Ages",
-    date: "November 1 - January 31, 2025",
-    time: "9:00 AM - 6:00 PM",
-    location: "Visual Arts Center",
-    description: "Discover the evolution of photography from its inception to the digital age in this comprehensive exhibition.",
+    title: "Photography in Indian History",
+    date: "November 1 - December 15, 2024",
+    time: "9:00 AM - 5:00 PM",
+    location: "Kolkata Museum of Modern Art",
+    description: "Photography journey from early days to digital era.",
     icon: Camera
   },
   {
-    title: "Literary Legends: A Celebration of Words",
-    date: "December 1 - February 28, 2025",
-    time: "10:00 AM - 8:00 PM",
-    location: "Library Annex",
-    description: "Explore the works and lives of literary giants through rare manuscripts, first editions, and interactive displays.",
+    title: "Indian Literary Legends",
+    date: "December 1 - January 15, 2025",
+    time: "10:00 AM - 7:00 PM",
+    location: "Jaipur Literature Museum",
+    description: "Rare manuscripts and exhibits of India’s literary icons.",
     icon: Book
   },
   {
-    title: "World Cultures: A Global Journey",
-    date: "January 15 - April 30, 2025",
-    time: "9:00 AM - 7:00 PM",
-    location: "International Gallery",
-    description: "Embark on a virtual journey around the world, exploring diverse cultures, traditions, and artifacts.",
+    title: "India’s Cultural Diversity",
+    date: "January 15 - February 28, 2025",
+    time: "9:00 AM - 6:00 PM",
+    location: "National Museum, Delhi",
+    description: "Explore India’s cultural heritage and artifacts.",
     icon: Globe
   },
   {
-    title: "Cinema Retrospective: A Century of Film",
-    date: "February 1 - May 31, 2025",
-    time: "11:00 AM - 9:00 PM",
-    location: "Multimedia Theater",
-    description: "Celebrate the art of cinema with classic screenings, memorabilia, and interactive film history exhibits.",
+    title: "Bollywood: 100 Years of Indian Cinema",
+    date: "February 1 - March 15, 2025",
+    time: "11:00 AM - 8:00 PM",
+    location: "Film City, Mumbai",
+    description: "Film screenings, memorabilia, and interactive exhibits.",
     icon: Film
   }
 ];
 
 export default function Events() {
   return (
-    <section className="relative py-20 mt-0 overflow-hidden bg-white">
+    <section className="relative py-8 mt-0 overflow-hidden bg-white">
       <BackgroundAnimation />
       <div className="relative z-10 max-w-7xl px-4 mx-auto">
         <motion.h2 
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="mb-12 text-5xl font-bold text-center text-transparent bg-proj bg-clip-text"
+          className="mb-12 text-5xl font-semibold text-center text-transparent bg-proj bg-clip-text"
         >
           Discover Our Exciting Events
         </motion.h2>

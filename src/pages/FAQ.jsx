@@ -66,7 +66,7 @@ export default function FAQ() {
   };
 
   return (
-    <section className="relative py-20 mt-0 overflow-hidden bg-white">
+    <section className="relative py-8 mt-0 overflow-hidden bg-white">
       <BackgroundAnimation />
       <div className="relative z-10 max-w-4xl px-4 mx-auto">
         <motion.h2 
