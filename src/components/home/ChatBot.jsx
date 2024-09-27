@@ -1,19 +1,19 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Typewriter } from 'react-simple-typewriter';
-import { getAIResponse } from './aiService';
+import React, { useState, useEffect, useRef } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Typewriter } from 'react-simple-typewriter'
+import { getAIResponse } from './aiService'
 
-const Button = React.forwardRef(({ className, variant = 'default', size = 'default', children, ...props }, ref) => {
-  const baseStyle = "inline-flex items-center justify-center text-sm font-medium transition-all focus:outline-none disabled:opacity-50 disabled:pointer-events-none rounded-full";
+const Button = React.forwardRef(({ className = '', variant = 'default', size = 'default', children, ...props }, ref) => {
+  const baseStyle = "inline-flex items-center justify-center text-sm font-medium transition-all focus:outline-none disabled:opacity-50 disabled:pointer-events-none rounded-full"
   const variants = {
     default: "bg-blue-600 text-white hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2",
     ghost: "text-blue-600 hover:bg-blue-100 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2",
-  };
+  }
   const sizes = {
     default: "h-10 px-4 py-2",
     sm: "h-8 px-3 py-1 text-xs",
     lg: "h-12 px-6 py-3",
-  };
+  }
 
   return (
     <button
@@ -23,18 +23,18 @@ const Button = React.forwardRef(({ className, variant = 'default', size = 'defau
     >
       {children}
     </button>
-  );
-});
+  )
+})
 
-const Input = React.forwardRef(({ className, ...props }, ref) => {
+const Input = React.forwardRef(({ className = '', ...props }, ref) => {
   return (
     <input
       className={`flex h-12 w-full rounded-full border border-gray-300 bg-white px-4 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${className}`}
       ref={ref}
       {...props}
     />
-  );
-});
+  )
+})
 
 const ThinkingIndicator = () => (
   <motion.div
@@ -58,16 +58,16 @@ const ThinkingIndicator = () => (
       </motion.div>
     </div>
   </motion.div>
-);
+)
 
-const ChatBot = () => {
-  const [messages, setMessages] = useState([]);
-  const [input, setInput] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
-  const [isExpanded, setIsExpanded] = useState(false);
-  const messagesEndRef = useRef(null);
-  const [showWelcomeMessage, setShowWelcomeMessage] = useState(true);
+export default function ChatBot() {
+  const [messages, setMessages] = useState([])
+  const [input, setInput] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
+  const [isExpanded, setIsExpanded] = useState(false)
+  const messagesEndRef = useRef(null)
+  const [showWelcomeMessage, setShowWelcomeMessage] = useState(true)
 
   const predefinedQuestions = [
     "How to get started",
@@ -76,52 +76,53 @@ const ChatBot = () => {
     "Contact Staff",
     "History of the Museum",
     "Amenities Available",
-  ];
+  ]
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+  }
 
   useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
+    scrollToBottom()
+  }, [messages])
 
   useEffect(() => {
     if (isOpen && showWelcomeMessage) {
-      setTimeout(() => {
+      const timer = setTimeout(() => {
         setMessages([
           {
             text: "Welcome to HeritageLink! I'm your AI assistant, here to help you explore our museum and book tickets. How may I assist you today?",
             sender: 'ai'
           }
-        ]);
-        setShowWelcomeMessage(false);
-      }, 500);
+        ])
+        setShowWelcomeMessage(false)
+      }, 500)
+      return () => clearTimeout(timer)
     }
-  }, [isOpen, showWelcomeMessage]);
+  }, [isOpen, showWelcomeMessage])
 
   const handleSendMessage = async () => {
-    if (!input.trim()) return;
+    if (!input.trim()) return
 
-    setIsLoading(true);
-    setMessages(prev => [...prev, { text: input, sender: 'user' }]);
-    setInput('');
+    setIsLoading(true)
+    setMessages(prev => [...prev, { text: input, sender: 'user' }])
+    setInput('')
 
     try {
-      const aiResponse = await getAIResponse(input);
-      setMessages(prev => [...prev, { text: aiResponse, sender: 'ai' }]);
+      const aiResponse = await getAIResponse(input)
+      setMessages(prev => [...prev, { text: aiResponse, sender: 'ai' }])
     } catch (error) {
-      console.error('Error getting AI response:', error);
-      setMessages(prev => [...prev, { text: "I apologize, but I'm unable to process that request at the moment. How else can I assist you with HeritageLink's services or provide information about our exhibits and Indian cultural heritage?", sender: 'ai' }]);
+      console.error('Error getting AI response:', error)
+      setMessages(prev => [...prev, { text: "I apologize, but I'm unable to process that request at the moment. How else can I assist you with HeritageLink's services or provide information about our exhibits and Indian cultural heritage?", sender: 'ai' }])
     }
 
-    setIsLoading(false);
-  };
+    setIsLoading(false)
+  }
 
   const handleClearChat = () => {
-    setMessages([]);
-    setShowWelcomeMessage(true);
-  };
+    setMessages([])
+    setShowWelcomeMessage(true)
+  }
 
   return (
     <div className="fixed z-50 bottom-4 right-4">
@@ -133,8 +134,8 @@ const ChatBot = () => {
               opacity: 1,
               y: 0,
               scale: 1,
-              width: isExpanded ? '550px' : '400px',
-              height: isExpanded ? '85vh' : '650px'
+              width: isExpanded ? 'min(95vw, 600px)' : 'min(90vw, 400px)',
+              height: isExpanded ? 'min(90vh, 750px)' : 'min(80vh, 650px)'
             }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.5, type: "spring", stiffness: 200, damping: 25 }}
@@ -144,44 +145,44 @@ const ChatBot = () => {
             }}
           >
             <motion.div
-              className="flex items-center justify-between p-6 text-white cursor-move bg-gradient-to-r from-blue-500 to-indigo-600 rounded-t-3xl"
+              className="flex items-center justify-between p-4 text-white cursor-move md:p-6 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-t-3xl"
               whileHover={{ backgroundImage: 'linear-gradient(to right, #3B82F6, #4F46E5)' }}
               transition={{ duration: 0.3 }}
             >
               <div className="flex items-center space-x-3">
-                <div className="flex items-center justify-center w-12 h-12 text-lg font-bold text-blue-600 bg-white rounded-full shadow-inner">
+                <div className="flex items-center justify-center w-10 h-10 text-lg font-bold text-blue-600 bg-white rounded-full shadow-inner md:w-12 md:h-12">
                   AI
                 </div>
                 <div>
-                  <h3 className="font-semibold text-md">Heritage Link Assistant</h3>
-                  <p className="text-sm text-blue-200">Your cultural guide</p>
+                  <h3 className="text-sm font-semibold md:text-md">Heritage Link Assistant</h3>
+                  <p className="text-xs text-blue-200 md:text-sm">Your cultural guide</p>
                 </div>
               </div>
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-1 md:space-x-2">
                 <Button variant="ghost" size="sm" onClick={handleClearChat} className="text-white hover:text-black">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 md:w-5 md:h-5" viewBox="0 0 20 20" fill="currentColor">
                     <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
                   </svg>
                 </Button>
                 <Button variant="ghost" size="sm" onClick={() => setIsExpanded(!isExpanded)} className="text-white hover:text-black">
                   {isExpanded ? (
-                    <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 md:w-5 md:h-5" viewBox="0 0 20 20" fill="currentColor">
                       <path fillRule="evenodd" d="M5 10a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1z" clipRule="evenodd" />
                     </svg>
                   ) : (
-                    <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 md:w-5 md:h-5" viewBox="0 0 20 20" fill="currentColor">
                       <path fillRule="evenodd" d="M3 4a1 1 0 011-1h4a1 1 0 010 2H6.414l2.293 2.293a1 1 0 11-1.414 1.414L5 6.414V8a1 1 0 01-2 0V4zm9 1a1 1 0 010-2h4a1 1 0 011 1v4a1 1 0 01-2 0V6.414l-2.293 2.293a1 1 0 11-1.414-1.414L13.586 5H12zm-9 7a1 1 0 012 0v1.586l2.293-2.293a1 1 0 111.414 1.414L6.414 15H8a1 1 0 010 2H4a1 1 0 01-1-1v-4zm13-1a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 010-2h1.586l-2.293-2.293a1 1 0 111.414-1.414L15 13.586V12a1 1 0 011-1z" clipRule="evenodd" />
                     </svg>
                   )}
                 </Button>
                 <Button variant="ghost" size="sm" onClick={() => setIsOpen(false)} className="text-white hover:text-black">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 md:w-5 md:h-5" viewBox="0 0 20 20" fill="currentColor">
                     <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
                   </svg>
                 </Button>
               </div>
             </motion.div>
-            <div className="flex-1 p-6 space-y-4 overflow-y-auto bg-gradient-to-b from-blue-50 to-white">
+            <div className="flex-1 p-4 space-y-4 overflow-y-auto md:p-6 bg-gradient-to-b from-blue-50 to-white">
               <AnimatePresence>
                 {messages.map((message, index) => (
                   <motion.div
@@ -193,10 +194,11 @@ const ChatBot = () => {
                     className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
                   >
                     <div
-                      className={`max-w-[80%] p-4 rounded-2xl shadow-md ${message.sender === 'user'
-                        ? 'bg-gradient-to-br from-blue-500 to-blue-600 text-white'
-                        : 'bg-white text-gray-800 border border-gray-100'
-                        }`}
+                      className={`max-w-[85%] p-3 md:p-4 rounded-2xl shadow-md ${
+                        message.sender === 'user'
+                          ? 'bg-gradient-to-br from-blue-500 to-blue-600 text-white'
+                          : 'bg-white text-gray-800 border border-gray-100'
+                      }`}
                     >
                       {message.sender === 'ai' ? (
                         <Typewriter
@@ -214,7 +216,7 @@ const ChatBot = () => {
               {isLoading && <ThinkingIndicator />}
               <div ref={messagesEndRef} />
             </div>
-            <div className="p-6 bg-gradient-to-b from-white to-blue-50 rounded-b-3xl">
+            <div className="p-4 md:p-6 bg-gradient-to-b from-white to-blue-50 rounded-b-3xl">
               <div className="flex mb-4 space-x-2">
                 <Input
                   type="text"
@@ -264,7 +266,5 @@ const ChatBot = () => {
         </motion.button>
       )}
     </div>
-  );
-};
-
-export default ChatBot;
+  )
+}
