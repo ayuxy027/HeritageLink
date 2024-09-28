@@ -141,7 +141,7 @@ export default function Book5() {
           </motion.div>
           <motion.button
             onClick={() => handleEdit(1)}
-            className="w-full px-4 py-3 text-sm font-medium rounded-xl text-proj bg-proj bg-opacity-10 hover:bg-opacity-20 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-proj"
+            className="w-full px-4 py-3 text-sm font-medium text-white rounded-xl text-proj bg-proj bg-opacity-10 hover:bg-opacity-20 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-proj"
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
           >
