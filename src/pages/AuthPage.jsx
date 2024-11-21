@@ -1,52 +1,10 @@
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { ArrowRight, Mail, Lock, Eye, EyeOff, User, Compass, Camera, Ticket, Book, Globe, CalendarDays, Clock, Mouse, Headphones, Coffee, Palette, Microscope, Briefcase, Lightbulb, Glasses, Feather, Leaf, Star } from "lucide-react"
-import { signUp, signIn, signInWithGoogle } from '../lib/supabaseClient'
-import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../contexts/AuthContext'
 
 export default function AuthPage() {
   const [isSignUp, setIsSignUp] = useState(true)
   const [showPassword, setShowPassword] = useState(false)
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [name, setName] = useState("")
-  const [error, setError] = useState(null)
-  const navigate = useNavigate()
-  const { user } = useAuth()
-
-  useEffect(() => {
-    if (user) {
-      navigate('/')
-    }
-  }, [user, navigate])
-
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    setError(null)
-    try {
-      if (isSignUp) {
-        const { error } = await signUp(email, password)
-        if (error) throw error
-        alert("Check your email for the confirmation link!")
-      } else {
-        const { error } = await signIn(email, password)
-        if (error) throw error
-        navigate('/')
-      }
-    } catch (error) {
-      setError(error.message)
-    }
-  }
-
-  const handleGoogleSignIn = async () => {
-    try {
-      const { error } = await signInWithGoogle()
-      if (error) throw error
-    } catch (error) {
-      setError(error.message)
-    }
-  }
 
   return (
     <section className="relative py-8 overflow-hidden sm:py-12 lg:py-2 bg-proj font-body">
@@ -80,7 +38,6 @@ export default function AuthPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.6 }}
-            onSubmit={handleSubmit}
           >
             {isSignUp && (
               <InputField
@@ -88,8 +45,6 @@ export default function AuthPage() {
                 type="text"
                 label="Full Name"
                 icon={<User className="text-blue-300" size={20} />}
-                value={name}
-                onChange={(e) => setName(e.target.value)}
               />
             )}
             <InputField
@@ -97,8 +52,6 @@ export default function AuthPage() {
               type="email"
               label="Email Address"
               icon={<Mail className="text-blue-300" size={20} />}
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
             />
             <InputField
               id="password"
@@ -114,15 +67,12 @@ export default function AuthPage() {
                   {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
               }
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
             />
-            <Button type="submit">
+            <Button>
               {isSignUp ? "Start Your Adventure" : "Continue Your Journey"}
               <ArrowRight className="w-5 h-5 ml-2" />
             </Button>
           </motion.form>
-          {error && <p className="mt-2 text-sm text-red-500">{error}</p>}
           <motion.div
             className="mt-6"
             initial={{ opacity: 0 }}
@@ -138,7 +88,7 @@ export default function AuthPage() {
               </div>
             </div>
             <div className="grid grid-cols-2 gap-4 mt-6">
-              <SocialButton icon="google" onClick={handleGoogleSignIn} />
+              <SocialButton icon="google" />
               <SocialButton icon="facebook" />
             </div>
           </motion.div>
@@ -182,7 +132,7 @@ export default function AuthPage() {
   )
 }
 
-function InputField({ id, type, label, icon, rightIcon, value, onChange }) {
+function InputField({ id, type, label, icon, rightIcon }) {
   return (
     <div className="space-y-1">
       <label htmlFor={id} className="block text-sm font-medium text-gray-200">
@@ -199,8 +149,6 @@ function InputField({ id, type, label, icon, rightIcon, value, onChange }) {
           required
           className="block w-full py-3 pl-10 pr-10 text-white placeholder-gray-400 transition-colors border-gray-300 rounded-lg bg-white/10 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
           placeholder={`Enter your ${label.toLowerCase()}`}
-          value={value}
-          onChange={onChange}
         />
         {rightIcon && (
           <div className="absolute inset-y-0 right-0 flex items-center pr-3">
@@ -212,10 +160,9 @@ function InputField({ id, type, label, icon, rightIcon, value, onChange }) {
   )
 }
 
-function Button({ children, type = "button" }) {
+function Button({ children }) {
   return (
     <motion.button
-      type={type}
       className="flex items-center justify-center w-full px-6 py-3 text-base font-medium text-blue-900 transition-all duration-300 ease-in-out rounded-md bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
@@ -225,7 +172,7 @@ function Button({ children, type = "button" }) {
   )
 }
 
-function SocialButton({ icon, onClick }) {
+function SocialButton({ icon }) {
   const iconPath = icon === 'google'
     ? "M20.64 12.2c0-.63-.06-1.25-.16-1.84H12v3.49h4.84c-.22 1.13-.86 2.08-1.83 2.72v2.26h2.96c1.73-1.59 2.72-3.93 2.72-6.63z M12 21c2.47 0 4.55-.82 6.06-2.22l-2.96-2.26c-.83.56-1.89.88-3.1.88-2.39 0-4.41-1.61-5.13-3.77H3.77v2.34C5.25 18.85 8.39 21 12 21z M6.87 13.63c-.19-.55-.3-1.14-.3-1.75s.11-1.2.3-1.75V7.79H3.77C3.29 9.07 3 10.5 3 12s.29 2.93.77 4.21l3.1-2.58z M12 6.38c1.35 0 2.56.46 3.51 1.37l2.62-2.62C16.65 3.67 14.47 3 12 3 8.39 3 5.25 5.15 3.77 8.15l3.1 2.58c.72-2.16 2.74-3.77 5.13-3.77z"
     : "M20.89 2H3.11A1.11 1.11 0 002 3.11v17.78A1.11 1.11 0 003.11 22h9.67v-7.73h-2.63v-3.04h2.63V9.08c0-2.61 1.59-4.03 3.92-4.03 1.11 0 2.07.08 2.35.12v2.72h-1.61c-1.26 0-1.51.6-1.51 1.48v1.94h3.02l-.39 3.04h-2.63V22h5.16A1.11 1.11 0 0022 20.89V3.11A1.11 1.11 0 0020.89 2z"
@@ -235,7 +182,6 @@ function SocialButton({ icon, onClick }) {
       className="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-700 transition-all duration-300 ease-in-out bg-white rounded-md shadow-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
-      onClick={onClick}
     >
       <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24" fill="currentColor">
         <path d={iconPath} />

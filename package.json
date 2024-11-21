@@ -10,10 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.45.4",
     "axios": "^1.7.7",
     "canvas-confetti": "^1.9.3",
-    "dotenv": "^16.4.5",
     "framer-motion": "^11.5.5",
     "html2canvas": "^1.4.1",
     "lucide-react": "^0.439.0",

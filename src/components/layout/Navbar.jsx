@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
-import { Menu, X, LogOut } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext';
-import { signOut } from '../../lib/supabaseClient';
 
 const navItems = [
   { name: 'Explore', link: '/explore' },
@@ -17,7 +15,6 @@ export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const { scrollY } = useScroll();
   const location = useLocation();
-  const { user } = useAuth();
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     setIsScrolled(latest > 50);
@@ -25,14 +22,6 @@ export default function Navbar() {
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
-  };
-
-  const handleSignOut = async () => {
-    try {
-      await signOut();
-    } catch (error) {
-      console.error('Error signing out:', error);
-    }
   };
 
   return (
@@ -83,19 +72,10 @@ export default function Navbar() {
               ))}
             </div>
 
-            {/* Auth buttons and Mobile Menu Toggle */}
+            {/* Login, Book Now buttons and Mobile Menu Toggle */}
             <div className="flex items-center space-x-2 sm:space-x-4">
-              {user ? (
-                <>
-                  <span className="hidden text-white sm:inline-block">Welcome, {user.email}</span>
-                  <NavButton onClick={handleSignOut} text="Sign Out" icon={<LogOut size={16} />} />
-                </>
-              ) : (
-                <>
-                  <NavButton href="/login" text="Login" />
-                  <NavButton href="/book" text="Book Now" variant="primary" />
-                </>
-              )}
+              <NavButton href="/login" text="Login" />
+              <NavButton href="/book" text="Book Now" variant="primary" />
               <motion.button
                 onClick={toggleMenu}
                 type="button"
@@ -128,13 +108,6 @@ export default function Navbar() {
                     isActive={location.pathname === item.link}
                   />
                 ))}
-                {user && (
-                  <MobileNavItem 
-                    to="#" 
-                    text="Sign Out" 
-                    onClick={handleSignOut}
-                  />
-                )}
               </div>
             </motion.div>
           )}
@@ -161,76 +134,47 @@ function NavItem({ to, text, index, isActive }) {
   );
 }
 
-function MobileNavItem({ to, text, isActive, onClick }) {
+function MobileNavItem({ to, text, isActive }) {
   return (
     <motion.div
       className="block overflow-hidden rounded-md"
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
     >
-      {onClick ? (
-        <button onClick={onClick} className="w-full text-left">
-          <motion.div 
-            className={`px-3 py-2 text-base font-medium transition-all duration-300 ease-in-out text-blue-800 hover:bg-blue-200`}
-            whileHover={{ x: 5 }}
-            transition={{ duration: 0.2 }}
-          >
-            {text}
-          </motion.div>
-        </button>
-      ) : (
-        <Link to={to} className="block">
-          <motion.div 
-            className={`px-3 py-2 text-base font-medium transition-all duration-300 ease-in-out ${
-              isActive ? 'text-yellow-600 bg-blue-200' : 'text-blue-800 hover:bg-blue-200'
-            }`}
-            whileHover={{ x: 5 }}
-            transition={{ duration: 0.2 }}
-          >
-            {text}
-          </motion.div>
-        </Link>
-      )}
+      <Link to={to} className="block">
+        <motion.div 
+          className={`px-3 py-2 text-base font-medium transition-all duration-300 ease-in-out ${
+            isActive ? 'text-yellow-600 bg-blue-200' : 'text-blue-800 hover:bg-blue-200'
+          }`}
+          whileHover={{ x: 5 }}
+          transition={{ duration: 0.2 }}
+        >
+          {text}
+        </motion.div>
+      </Link>
     </motion.div>
   );
 }
 
-function NavButton({ href, text, variant = "secondary", onClick, icon }) {
-  const baseClasses = "px-4 py-2 text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 flex items-center";
+function NavButton({ href, text, variant = "secondary" }) {
+  const baseClasses = "px-4 py-2 text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500";
   const variantClasses = variant === "primary"
     ? "bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-blue-900"
     : "bg-white/10 hover:bg-white/20 text-white";
-
-  const ButtonContent = () => (
-    <>
-      {icon && <span className="mr-2">{icon}</span>}
-      {text}
-    </>
-  );
 
   return (
     <motion.div
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
     >
-      {onClick ? (
+      <Link to={href}>
         <motion.button
-          onClick={onClick}
           className={`${baseClasses} ${variantClasses}`}
           whileHover={{ boxShadow: '0 0 15px rgba(255, 255, 255, 0.3)' }}
         >
-          <ButtonContent />
+          {text}
         </motion.button>
-      ) : (
-        <Link to={href}>
-          <motion.button
-            className={`${baseClasses} ${variantClasses}`}
-            whileHover={{ boxShadow: '0 0 15px rgba(255, 255, 255, 0.3)' }}
-          >
-            <ButtonContent />
-          </motion.button>
-        </Link>
-      )}
+      </Link>
     </motion.div>
   );
 }
