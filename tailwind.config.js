@@ -8,8 +8,11 @@ module.exports = {
       },
       backgroundImage: {
         'proj': 'linear-gradient(to right, #2b6cb0, #3182ce)',
-        'proj-hover': 'linear-gradient(to right, #1e4e8c, #2563eb)', // Slightly darker gradient for hover
+        'proj-hover': 'linear-gradient(to right, #1e4e8c, #2563eb)',
       },
+      colors: {
+        'proj': '#2b6cb0', // Using the starting color of your gradient for consistency
+      }
     },
   },
   variants: {

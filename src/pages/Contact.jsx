@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import Footer from '../components/layout/Footer';
 import { Send, MapPin, Mail, Phone, ArrowRight, User, MessageSquare } from "lucide-react";
+import '../styles/shared-input.css';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -29,7 +30,7 @@ const Contact = () => {
     <section className="relative bg-proj font-body">
       <BackgroundAnimation />
       <BlueMeteor />
-      <div className="relative flex flex-col items-center px-4 mx-auto max-w-7xl sm:px-6 lg:px-8 lg:flex-row lg:py-16">
+      <div className="flex relative flex-col items-center px-4 mx-auto max-w-7xl sm:px-6 lg:px-8 lg:flex-row lg:py-16">
         <motion.div 
           className="w-full lg:w-1/2 lg:pr-8"
           initial={{ opacity: 0, y: 20 }}
@@ -93,7 +94,7 @@ const Contact = () => {
             />
             <Button type="submit">
               Send Message
-              <Send className="w-5 h-5 ml-2" />
+              <Send className="ml-2 w-5 h-5" />
             </Button>
           </motion.form>
         </motion.div>
@@ -103,7 +104,7 @@ const Contact = () => {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
         >
-          <div className="h-full p-8 text-white rounded-lg bg-white/10 backdrop-blur-md">
+          <div className="p-8 h-full text-white rounded-lg backdrop-blur-md bg-white/10">
             <h3 className="mb-6 text-2xl font-bold">Contact Information</h3>
             <div className="space-y-6">
               <ContactInfo
@@ -128,7 +129,7 @@ const Contact = () => {
                 className="inline-flex items-center text-yellow-400 transition-colors hover:text-yellow-300"
               >
                 Back to Home
-                <ArrowRight className="w-5 h-5 ml-2" />
+                <ArrowRight className="ml-2 w-5 h-5" />
               </Link>
             </div>
           </div>
@@ -141,14 +142,14 @@ const Contact = () => {
 
 const InputField = ({ id, type, label, icon, value, onChange }) => (
   <div className="relative">
-    <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+    <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
       {icon}
     </div>
     {type === "textarea" ? (
       <textarea
         id={id}
         rows={4}
-        className="block w-full py-3 pl-10 pr-3 text-white placeholder-gray-400 transition-colors border-gray-300 rounded-lg bg-white/10 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
+        className="textarea-base input-with-icon"
         placeholder={label}
         value={value}
         onChange={onChange}
@@ -158,7 +159,7 @@ const InputField = ({ id, type, label, icon, value, onChange }) => (
       <input
         type={type}
         id={id}
-        className="block w-full py-3 pl-10 pr-3 text-white placeholder-gray-400 transition-colors border-gray-300 rounded-lg bg-white/10 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
+        className="input-base input-with-icon"
         placeholder={label}
         value={value}
         onChange={onChange}
@@ -171,7 +172,7 @@ const InputField = ({ id, type, label, icon, value, onChange }) => (
 const Button = ({ children, type = "button" }) => (
   <motion.button
     type={type}
-    className="flex items-center justify-center w-full px-6 py-3 text-base font-medium text-blue-900 transition-all duration-300 ease-in-out rounded-md bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
+    className="flex justify-center items-center px-6 py-3 w-full text-base font-medium text-blue-900 bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-md transition-all duration-300 ease-in-out hover:from-yellow-500 hover:to-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
     whileHover={{ scale: 1.05 }}
     whileTap={{ scale: 0.95 }}
   >
@@ -204,7 +205,7 @@ const BackgroundAnimation = () => (
 );
 
 const ParticleBackground = () => (
-  <div className="absolute inset-0 overflow-hidden pointer-events-none">
+  <div className="overflow-hidden absolute inset-0 pointer-events-none">
     {[...Array(30)].map((_, i) => (
       <motion.div
         key={i}

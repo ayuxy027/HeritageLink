@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Users, Mail, ChevronRight, User, Phone } from 'lucide-react'
 import { BackgroundPattern } from '../components/shared/BackgroundPattern'
+import '../styles/shared-input.css'
 
 export default function Book1() {
   const [formData, setFormData] = useState({
@@ -39,16 +40,16 @@ export default function Book1() {
   }
 
   return (
-    <div className="relative flex items-center justify-center min-h-screen py-12 bg-gray-50 font-body">
+    <div className="flex relative justify-center items-center py-12 min-h-screen bg-gray-50 font-body">
       <BackgroundPattern />
       <motion.div 
-        className="z-10 w-full max-w-xl p-8 bg-white shadow-xl rounded-2xl"
+        className="z-10 p-8 w-full max-w-xl bg-white rounded-2xl shadow-xl"
         initial={{ opacity: 0, scale: 0.95, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
       >
         <motion.h1 
-          className="mb-6 text-4xl font-bold text-center text-transparent bg-proj bg-clip-text"
+          className="mb-6 text-4xl font-bold text-center text-transparent bg-clip-text bg-proj"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.6, ease: "easeOut" }}
@@ -72,16 +73,16 @@ export default function Book1() {
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 placeholder="Enter your name"
-                className="w-full py-3 pl-10 pr-4 text-gray-900 placeholder-gray-400 border border-gray-300 rounded-md focus:ring-proj focus:border-proj"
+                className="input-base input-with-icon"
               />
-              <User className="absolute w-5 h-5 text-gray-400 transform -translate-y-1/2 left-3 top-1/2" />
+              <User className="absolute left-3 top-1/2 w-5 h-5 text-gray-400 transform -translate-y-1/2" />
             </div>
             {errors.name && <p className="mt-1 text-xs text-red-500">{errors.name}</p>}
           </motion.div>
           <motion.div variants={fadeInUp}>
             <label htmlFor="phone" className="block mb-2 text-sm font-medium text-gray-700">Phone Number</label>
             <div className="flex">
-              <select className="w-24 px-3 py-3 bg-white border border-gray-300 rounded-l-md focus:outline-none focus:ring-proj focus:border-proj">
+              <select className="px-3 py-3 w-24 bg-white rounded-l-md border border-gray-300 focus:outline-none focus:ring-proj focus:border-proj">
                 <option value="in">🇮🇳 +91</option>
                 <option value="us">🇺🇸 +1</option>
                 <option value="uk">🇬🇧 +44</option>
@@ -92,9 +93,9 @@ export default function Book1() {
                   value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                   placeholder="Enter phone number"
-                  className="w-full py-3 pl-10 pr-4 text-gray-900 placeholder-gray-400 border border-gray-300 rounded-r-md focus:ring-proj focus:border-proj"
+                  className="py-3 pr-4 pl-10 w-full placeholder-gray-400 text-gray-900 rounded-r-md border border-gray-300 focus:ring-proj focus:border-proj"
                 />
-                <Phone className="absolute w-5 h-5 text-gray-400 transform -translate-y-1/2 left-3 top-1/2" />
+                <Phone className="absolute left-3 top-1/2 w-5 h-5 text-gray-400 transform -translate-y-1/2" />
               </div>
             </div>
             {errors.phone && <p className="mt-1 text-xs text-red-500">{errors.phone}</p>}
@@ -109,9 +110,9 @@ export default function Book1() {
                 max={10}
                 value={formData.attendees}
                 onChange={(e) => setFormData({ ...formData, attendees: parseInt(e.target.value) })}
-                className="w-full py-3 pl-10 pr-4 text-gray-900 placeholder-gray-400 border border-gray-300 rounded-md focus:ring-proj focus:border-proj"
+                className="py-3 pr-4 pl-10 w-full placeholder-gray-400 text-gray-900 rounded-md border border-gray-300 focus:ring-proj focus:border-proj"
               />
-              <Users className="absolute w-5 h-5 text-gray-400 transform -translate-y-1/2 left-3 top-1/2" />
+              <Users className="absolute left-3 top-1/2 w-5 h-5 text-gray-400 transform -translate-y-1/2" />
             </div>
             {errors.attendees && <p className="mt-1 text-xs text-red-500">{errors.attendees}</p>}
           </motion.div>
@@ -124,21 +125,21 @@ export default function Book1() {
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 placeholder="Enter your email"
-                className="w-full py-3 pl-10 pr-4 text-gray-900 placeholder-gray-400 border border-gray-300 rounded-md focus:ring-proj focus:border-proj"
+                className="py-3 pr-4 pl-10 w-full placeholder-gray-400 text-gray-900 rounded-md border border-gray-300 focus:ring-proj focus:border-proj"
               />
-              <Mail className="absolute w-5 h-5 text-gray-400 transform -translate-y-1/2 left-3 top-1/2" />
+              <Mail className="absolute left-3 top-1/2 w-5 h-5 text-gray-400 transform -translate-y-1/2" />
             </div>
             {errors.email && <p className="mt-1 text-xs text-red-500">{errors.email}</p>}
           </motion.div>
         </motion.div>
         <motion.button 
           onClick={handleNext} 
-          className="flex items-center justify-center w-full px-6 py-3 mt-8 text-lg font-medium text-white transition duration-300 rounded-full bg-proj hover:bg-proj-hover focus:outline-none focus:ring-2 focus:ring-proj focus:ring-offset-2"
+          className="flex justify-center items-center px-6 py-3 mt-8 w-full text-lg font-medium text-white rounded-full transition duration-300 bg-proj hover:bg-proj-hover focus:outline-none focus:ring-2 focus:ring-proj focus:ring-offset-2"
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.97 }}
         >
           Next
-          <ChevronRight className="w-6 h-6 ml-2" />
+          <ChevronRight className="ml-2 w-6 h-6" />
         </motion.button>
       </motion.div>
     </div>

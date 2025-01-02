@@ -1,0 +1,40 @@
+/* Base input styles */
+.input-base {
+    @apply w-full py-3.5 px-4 text-gray-700 bg-white rounded-xl
+    border-2 border-gray-200 transition-all duration-300
+    placeholder:text-gray-400 shadow-sm
+    focus:outline-none focus:ring-2 focus:ring-proj/50 focus:border-proj
+    hover:border-proj/30 hover:shadow-md;
+}
+
+/* Input with icon */
+.input-with-icon {
+    @apply pl-12;
+}
+
+/* Select base styles */
+.select-base {
+    @apply w-full py-3.5 px-4 text-gray-700 bg-white rounded-xl
+    border-2 border-gray-200 transition-all duration-300
+    shadow-sm appearance-none
+    focus:outline-none focus:ring-2 focus:ring-proj/50 focus:border-proj
+    hover:border-proj/30 hover:shadow-md;
+}
+
+/* Textarea base styles */
+.textarea-base {
+    @apply w-full py-3.5 px-4 text-gray-700 bg-white rounded-xl
+    border-2 border-gray-200 transition-all duration-300
+    placeholder:text-gray-400 shadow-sm resize-none
+    focus:outline-none focus:ring-2 focus:ring-proj/50 focus:border-proj
+    hover:border-proj/30 hover:shadow-md;
+}
+
+/* Date picker input styles */
+.datepicker-input {
+    @apply w-full py-3.5 px-4 text-gray-700 bg-white rounded-xl
+    border-2 border-gray-200 transition-all duration-300
+    placeholder:text-gray-400 shadow-sm cursor-pointer
+    focus:outline-none focus:ring-2 focus:ring-proj/50 focus:border-proj
+    hover:border-proj/30 hover:shadow-md;
+} 
