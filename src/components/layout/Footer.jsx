@@ -1,42 +1,40 @@
-'use client'
-
 import React from 'react'
 import { motion } from 'framer-motion'
 import { FaFacebookF, FaTwitter, FaInstagram, FaYoutube } from 'react-icons/fa'
 
 const socialIcons = [
-  { Icon: FaFacebookF, href: '#', label: 'Facebook' },
-  { Icon: FaTwitter, href: '#', label: 'Twitter' },
-  { Icon: FaInstagram, href: '#', label: 'Instagram' },
-  { Icon: FaYoutube, href: '#', label: 'YouTube' },
+  { Icon: FaFacebookF, href: '/', label: 'Facebook' },
+  { Icon: FaTwitter, href: '/', label: 'Twitter' },
+  { Icon: FaInstagram, href: '/', label: 'Instagram' },
+  { Icon: FaYoutube, href: '/', label: 'YouTube' },
 ]
 
 const footerLinks = [
   {
     title: 'HeritageLink',
     links: [
-      { label: 'About Us', href: '#' },
-      { label: 'Our Mission', href: '#' },
-      { label: 'Careers', href: '#' },
-      { label: 'Press', href: '#' },
+      { label: 'About Us', href: '/' },
+      { label: 'Our Mission', href: '/' },
+      { label: 'Careers', href: '/' },
+      { label: 'Press', href: '/' },
     ],
   },
   {
     title: 'Explore',
     links: [
-      { label: 'Virtual Tours', href: '#' },
-      { label: 'Exhibitions', href: '#' },
-      { label: 'Collections', href: '#' },
-      { label: 'Educational Resources', href: '#' },
+      { label: 'Virtual Tours', href: '/' },
+      { label: 'Exhibitions', href: '/' },
+      { label: 'Collections', href: '/' },
+      { label: 'Educational Resources', href: '/' },
     ],
   },
   {
     title: 'Support',
     links: [
-      { label: 'Donate', href: '#' },
-      { label: 'Membership', href: '#' },
-      { label: 'Volunteer', href: '#' },
-      { label: 'Corporate Partnerships', href: '#' },
+      { label: 'Donate', href: '/' },
+      { label: 'Membership', href: '/' },
+      { label: 'Volunteer', href: '/' },
+      { label: 'Corporate Partnerships', href: '/' },
     ],
   },
 ]
@@ -83,8 +81,8 @@ const FooterLink = ({ href, children }) => (
 
 export default function Footer() {
   return (
-    <footer className="relative py-16 overflow-hidden text-white bg-proj">
-      <div className="absolute inset-0 overflow-hidden">
+    <footer className="overflow-hidden relative py-16 text-white bg-proj">
+      <div className="overflow-hidden absolute inset-0">
         {[...Array(50)].map((_, i) => (
           <Star key={i} top={Math.random() * 100} left={Math.random() * 100} size={Math.random() * 2 + 1} />
         ))}
@@ -113,7 +111,7 @@ export default function Footer() {
                 <motion.a
                   key={label}
                   href={href}
-                  className="p-3 text-2xl transition-colors duration-300 rounded-full hover:bg-white hover:text-blue-600"
+                  className="p-3 text-2xl rounded-full transition-colors duration-300 hover:bg-white hover:text-blue-600"
                   aria-label={label}
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
