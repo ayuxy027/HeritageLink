@@ -62,8 +62,9 @@ const EnhancedLoadingSpinner: React.FC<EnhancedLoadingSpinnerProps> = ({
 
   const circleTransition = {
     duration: 0.5,
-    yoyo: Infinity,
-    ease: 'easeInOut',
+    repeat: Infinity,
+    repeatType: "reverse" as const,
+    ease: "easeInOut" as const,
   };
 
   const containerClass = fullScreen
