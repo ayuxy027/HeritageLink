@@ -1,9 +1,18 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-export const BackgroundPattern = ({ 
-  opacity = 0.1, 
-  colors = { from: 'blue-100', to: 'purple-100' }, 
+interface BackgroundPatternProps {
+  opacity?: number;
+  colors?: { from: string; to: string };
+  strokeColor?: string;
+  pattern?: 'grid' | 'dots' | 'waves' | 'honeycomb';
+  animated?: boolean;
+  className?: string;
+}
+
+export const BackgroundPattern: React.FC<BackgroundPatternProps> = ({
+  opacity = 0.1,
+  colors = { from: 'blue-100', to: 'purple-100' },
   strokeColor = '4A5568',
   pattern = 'grid',  // grid, dots, waves, honeycomb
   animated = false,
@@ -39,17 +48,17 @@ export const BackgroundPattern = ({
   return (
     <div className={`absolute inset-0 z-0 ${className}`} style={{ opacity }}>
       <div className={`absolute inset-0 bg-gradient-to-br from-${colors.from} to-${colors.to}`} />
-      
+
       {animated ? (
-        <motion.svg 
-          className="absolute inset-0 w-full h-full" 
+        <motion.svg
+          className="absolute inset-0 w-full h-full"
           xmlns="http://www.w3.org/2000/svg"
           initial={{ opacity: 0.7 }}
-          animate={{ 
+          animate={{
             opacity: [0.7, 1, 0.7],
             scale: [1, 1.02, 1],
           }}
-          transition={{ 
+          transition={{
             duration: 8,
             repeat: Infinity,
             repeatType: "reverse",

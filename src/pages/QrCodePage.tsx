@@ -52,8 +52,8 @@ const formatDate = (timestamp) => {
     if (!timestamp) return 'N/A';
     const date = new Date(timestamp);
     if (isNaN(date.getTime())) return 'Invalid Date';
-    
-    const options = { weekday: 'short', day: 'numeric', month: 'long', year: 'numeric' };
+
+    const options: Intl.DateTimeFormatOptions = { weekday: 'short', day: 'numeric', month: 'long', year: 'numeric' };
     const formattedDate = date.toLocaleDateString('en-GB', options);
 
     const day = date.getDate();
@@ -87,7 +87,7 @@ const QrCodePage = () => {
                 link.href = dataUrl;
                 link.download = `booking-qr-${bookingDetails.bookingId || 'ticket'}.png`;
                 link.click();
-                
+
                 // Trigger confetti effect
                 confetti({
                     particleCount: 100,

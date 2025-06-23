@@ -9,7 +9,11 @@ import confetti from 'canvas-confetti'
 import toast, { Toaster } from 'react-hot-toast'
 
 export default function Book5() {
-  const [formData, setFormData] = useState({})
+  interface FormData {
+    amenities?: string[];
+  }
+
+  const [formData, setFormData] = useState<FormData>({})
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -46,7 +50,7 @@ export default function Book5() {
       return Math.random() * (max - min) + min
     }
 
-    const interval = setInterval(function() {
+    const interval = setInterval(function () {
       const timeLeft = animationEnd - Date.now()
 
       if (timeLeft <= 0) {
@@ -91,24 +95,24 @@ export default function Book5() {
   }
 
   return (
-    <div className="relative flex items-center justify-center min-h-screen py-12 bg-gray-50 font-body">
+    <div className="flex relative justify-center items-center py-12 min-h-screen bg-gray-50 font-body">
       <BackgroundPattern />
       <Toaster position="top-center" reverseOrder={false} />
-      <motion.div 
-        className="z-10 w-full max-w-xl p-8 bg-white shadow-xl rounded-2xl"
+      <motion.div
+        className="z-10 p-8 w-full max-w-xl bg-white rounded-2xl shadow-xl"
         initial={{ opacity: 0, scale: 0.95, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
       >
-        <motion.h1 
-          className="mb-8 text-4xl font-bold text-center text-transparent bg-proj bg-clip-text"
+        <motion.h1
+          className="mb-8 text-4xl font-bold text-center text-transparent bg-clip-text bg-proj"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.6, ease: "easeOut" }}
         >
           Review and Confirm
         </motion.h1>
-        <motion.div 
+        <motion.div
           className="space-y-6"
           initial="initial"
           animate="animate"
@@ -117,14 +121,14 @@ export default function Book5() {
             animate: { opacity: 1, transition: { staggerChildren: 0.1 } }
           }}
         >
-          <motion.div 
-            className="p-6 space-y-4 shadow-inner rounded-xl bg-gray-50"
+          <motion.div
+            className="p-6 space-y-4 bg-gray-50 rounded-xl shadow-inner"
             variants={fadeInUp}
           >
             {Object.entries(formData).map(([key, value], index) => (
               <motion.div
                 key={key}
-                className="flex items-center justify-between text-sm"
+                className="flex justify-between items-center text-sm"
                 variants={fadeInUp}
               >
                 <span className="font-medium capitalize">{key.replace(/([A-Z])/g, ' $1').trim()}:</span>
@@ -132,7 +136,7 @@ export default function Book5() {
               </motion.div>
             ))}
             <motion.div
-              className="flex items-center justify-between pt-4 mt-4 text-xl font-bold border-t border-gray-200"
+              className="flex justify-between items-center pt-4 mt-4 text-xl font-bold border-t border-gray-200"
               variants={fadeInUp}
             >
               <span>Total:</span>
@@ -141,31 +145,31 @@ export default function Book5() {
           </motion.div>
           <motion.button
             onClick={() => handleEdit(1)}
-            className="w-full px-4 py-3 text-sm font-medium text-white rounded-xl text-proj bg-proj bg-opacity-10 hover:bg-opacity-20 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-proj"
+            className="px-4 py-3 w-full text-sm font-medium bg-opacity-10 rounded-xl text-proj bg-proj hover:bg-opacity-20 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-proj"
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
           >
-            <Edit2 className="inline-block w-4 h-4 mr-2" /> Edit Booking
+            <Edit2 className="inline-block mr-2 w-4 h-4" /> Edit Booking
           </motion.button>
         </motion.div>
         <div className="flex justify-between mt-8">
-          <motion.button 
-            onClick={handlePrevious} 
-            className="flex items-center justify-center px-6 py-3 text-sm font-medium transition duration-300 bg-white border-2 rounded-full text-proj border-proj hover:bg-proj hover:text-white focus:outline-none focus:ring-2 focus:ring-proj focus:ring-offset-2"
+          <motion.button
+            onClick={handlePrevious}
+            className="flex justify-center items-center px-6 py-3 text-sm font-medium bg-white rounded-full border-2 transition duration-300 text-proj border-proj hover:bg-proj hover:text-white focus:outline-none focus:ring-2 focus:ring-proj focus:ring-offset-2"
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
           >
-            <ChevronLeft className="w-5 h-5 mr-2" />
+            <ChevronLeft className="mr-2 w-5 h-5" />
             Previous
           </motion.button>
-          <motion.button 
+          <motion.button
             onClick={handleSubmit}
-            className="flex items-center justify-center px-6 py-3 text-sm font-medium text-white transition duration-300 rounded-full bg-proj hover:bg-proj-hover focus:outline-none focus:ring-2 focus:ring-proj focus:ring-offset-2"
+            className="flex justify-center items-center px-6 py-3 text-sm font-medium text-white rounded-full transition duration-300 bg-proj hover:bg-proj-hover focus:outline-none focus:ring-2 focus:ring-proj focus:ring-offset-2"
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
           >
             Confirm Booking
-            <ChevronRight className="w-5 h-5 ml-2" />
+            <ChevronRight className="ml-2 w-5 h-5" />
           </motion.button>
         </div>
       </motion.div>

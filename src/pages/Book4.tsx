@@ -7,12 +7,23 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { BackgroundPattern } from '../components/shared/BackgroundPattern'
 
 export default function Book4() {
-  const [formData, setFormData] = useState({
+  interface FormData {
+    visitPurpose: string;
+    interests: string[];
+    hearAboutUs: string;
+  }
+
+  interface FormErrors {
+    interests?: string;
+    hearAboutUs?: string;
+  }
+
+  const [formData, setFormData] = useState<FormData>({
     visitPurpose: '',
     interests: [],
     hearAboutUs: '',
   })
-  const [errors, setErrors] = useState({})
+  const [errors, setErrors] = useState<FormErrors>({})
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -23,7 +34,7 @@ export default function Book4() {
   }, [location.state])
 
   const validateForm = () => {
-    const newErrors = {}
+    const newErrors: FormErrors = {}
     if (formData.interests.length === 0) newErrors.interests = 'Please select at least one interest'
     if (!formData.hearAboutUs) newErrors.hearAboutUs = 'Please let us know how you heard about us'
     setErrors(newErrors)
@@ -53,13 +64,13 @@ export default function Book4() {
   return (
     <div className="relative flex items-center justify-center min-h-screen bg-gray-50 font-body">
       <BackgroundPattern />
-      <motion.div 
+      <motion.div
         className="z-10 w-full max-w-xl p-8 bg-white shadow-xl rounded-2xl"
         initial={{ opacity: 0, scale: 0.95, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
       >
-        <motion.h1 
+        <motion.h1
           className="mb-6 text-4xl font-bold text-center text-transparent bg-proj bg-clip-text"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -67,7 +78,7 @@ export default function Book4() {
         >
           Preferences
         </motion.h1>
-        <motion.div 
+        <motion.div
           className="space-y-6"
           initial="initial"
           animate="animate"
@@ -97,11 +108,10 @@ export default function Book4() {
               {interestOptions.map((interest) => (
                 <motion.div
                   key={interest}
-                  className={`flex items-center justify-center p-3 text-sm border rounded-xl cursor-pointer ${
-                    formData.interests.includes(interest)
-                      ? 'border-proj bg-proj bg-opacity-10 text-proj'
-                      : 'border-gray-300 hover:border-proj'
-                  }`}
+                  className={`flex items-center justify-center p-3 text-sm border rounded-xl cursor-pointer ${formData.interests.includes(interest)
+                    ? 'border-proj bg-proj bg-opacity-10 text-proj'
+                    : 'border-gray-300 hover:border-proj'
+                    }`}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => {
@@ -136,8 +146,8 @@ export default function Book4() {
           </motion.div>
         </motion.div>
         <div className="flex justify-between mt-8">
-          <motion.button 
-            onClick={handlePrevious} 
+          <motion.button
+            onClick={handlePrevious}
             className="flex items-center justify-center px-6 py-3 text-sm font-medium transition duration-300 bg-white border-2 rounded-full text-proj border-proj hover:bg-proj hover:text-white focus:outline-none focus:ring-2 focus:ring-proj focus:ring-offset-2"
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
@@ -145,8 +155,8 @@ export default function Book4() {
             <ChevronLeft className="w-5 h-5 mr-2" />
             Previous
           </motion.button>
-          <motion.button 
-            onClick={handleNext} 
+          <motion.button
+            onClick={handleNext}
             className="flex items-center justify-center px-6 py-3 text-sm font-medium text-white transition duration-300 rounded-full bg-proj hover:bg-proj-hover focus:outline-none focus:ring-2 focus:ring-proj focus:ring-offset-2"
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}

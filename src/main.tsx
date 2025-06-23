@@ -4,9 +4,9 @@ import './index.css'
 import EnhancedLoadingSpinner from './components/shared/EnhancedLoadingSpinner'
 
 // Lazy load App component
-const App = React.lazy(() => import('./App.jsx'))
+const App = React.lazy(() => import('./App'))
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <Suspense fallback={<EnhancedLoadingSpinner fullScreen color="primary" text="Loading Application..." />}>
       <App />

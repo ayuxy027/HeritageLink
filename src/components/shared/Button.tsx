@@ -2,20 +2,36 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
-function Button({ 
-  children, 
-  className = '', 
-  variant = 'primary', 
+interface ButtonProps {
+  children: React.ReactNode;
+  className?: string;
+  variant?: 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info' | 'light' | 'dark' | 'link' | 'custom';
+  size?: 'sm' | 'md' | 'lg' | 'xl';
+  icon?: React.ReactNode;
+  iconPosition?: 'left' | 'right';
+  href?: string;
+  isExternal?: boolean;
+  isDisabled?: boolean;
+  isLoading?: boolean;
+  loadingText?: string;
+  onClick?: () => void;
+  type?: 'button' | 'submit' | 'reset';
+}
+
+function Button({
+  children,
+  className = '',
+  variant = 'primary',
   size = 'md',
-  icon, 
+  icon,
   iconPosition = 'right',
   href,
   isExternal = false,
   isDisabled = false,
   isLoading = false,
   loadingText = 'Loading...',
-  ...props 
-}) {
+  ...props
+}: ButtonProps) {
   // Button sizes
   const sizeClasses = {
     sm: "px-4 py-1 text-sm",
@@ -23,7 +39,7 @@ function Button({
     lg: "px-8 py-3 text-lg",
     xl: "px-10 py-4 text-xl"
   };
-  
+
   // Button variants
   const variantClasses = {
     primary: "text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 focus:ring-blue-500",
@@ -37,13 +53,13 @@ function Button({
     link: "text-blue-600 bg-transparent hover:underline focus:ring-blue-400 px-2 py-1",
     custom: "",
   };
-  
+
   const baseClasses = "font-semibold rounded-full transition-all duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2";
   const selectedSize = sizeClasses[size] || sizeClasses.md;
   const selectedVariant = variantClasses[variant] || variantClasses.primary;
-  
+
   const disabledClasses = isDisabled ? "opacity-50 cursor-not-allowed hover:scale-100" : "";
-  
+
   const buttonContent = (
     <span className="relative z-10 flex items-center justify-center">
       {isLoading ? (
@@ -63,10 +79,10 @@ function Button({
       )}
     </span>
   );
-  
+
   // Use motion component for animations
   const MotionComponent = motion.button;
-  
+
   // If href is provided, render as Link
   if (href) {
     if (isExternal) {
@@ -84,7 +100,7 @@ function Button({
         </motion.a>
       );
     }
-    
+
     return (
       <motion.div
         whileHover={!isDisabled && { scale: 1.05 }}
@@ -100,7 +116,7 @@ function Button({
       </motion.div>
     );
   }
-  
+
   // Regular button
   return (
     <MotionComponent

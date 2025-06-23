@@ -3,7 +3,16 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Typewriter } from 'react-simple-typewriter'
 import { getAIResponse } from './aiService'
 
-const Button = React.forwardRef(({ className = '', variant = 'default', size = 'default', children, ...props }, ref) => {
+interface CustomButtonProps {
+  className?: string;
+  variant?: string;
+  size?: string;
+  children?: React.ReactNode;
+  onClick?: () => void;
+  disabled?: boolean;
+}
+
+const Button = React.forwardRef<HTMLButtonElement, CustomButtonProps>(function Button({ className = '', variant = 'default', size = 'default', children, ...props }, ref) {
   const baseStyle = "inline-flex items-center justify-center text-sm font-medium transition-all focus:outline-none disabled:opacity-50 disabled:pointer-events-none rounded-full"
   const variants = {
     default: "bg-blue-600 text-white hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2",
@@ -26,7 +35,16 @@ const Button = React.forwardRef(({ className = '', variant = 'default', size = '
   )
 })
 
-const Input = React.forwardRef(({ className = '', ...props }, ref) => {
+interface CustomInputProps {
+  className?: string;
+  type?: string;
+  value?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  placeholder?: string;
+}
+
+const Input = React.forwardRef<HTMLInputElement, CustomInputProps>(function Input({ className = '', ...props }, ref) {
   return (
     <input
       className={`flex h-12 w-full rounded-full border border-gray-300 bg-white px-4 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${className}`}
@@ -194,11 +212,10 @@ export default function ChatBot() {
                     className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
                   >
                     <div
-                      className={`max-w-[85%] p-3 md:p-4 rounded-2xl shadow-md ${
-                        message.sender === 'user'
-                          ? 'bg-gradient-to-br from-blue-500 to-blue-600 text-white'
-                          : 'bg-white text-gray-800 border border-gray-100'
-                      }`}
+                      className={`max-w-[85%] p-3 md:p-4 rounded-2xl shadow-md ${message.sender === 'user'
+                        ? 'bg-gradient-to-br from-blue-500 to-blue-600 text-white'
+                        : 'bg-white text-gray-800 border border-gray-100'
+                        }`}
                     >
                       {message.sender === 'ai' ? (
                         <Typewriter

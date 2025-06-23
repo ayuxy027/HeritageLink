@@ -1,6 +1,10 @@
 import React from 'react';
 
-const ErrorFallback = ({ error }) => (
+interface ErrorFallbackProps {
+  error: Error;
+}
+
+const ErrorFallback: React.FC<ErrorFallbackProps> = ({ error }) => (
   <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
     <h1 className="mb-4 text-3xl font-bold text-red-600">Oops! Something went wrong.</h1>
     <p className="mb-4 text-xl text-gray-700">{error.message}</p>

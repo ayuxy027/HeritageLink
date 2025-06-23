@@ -115,7 +115,7 @@ export default function ExplorePage() {
               <div className="absolute z-10 mt-1 bg-white rounded-lg border border-gray-300 shadow-lg">
                 <DatePicker
                   selected={selectedDate}
-                  onChange={(date) => {
+                  onChange={(date: Date | null) => {
                     setSelectedDate(date);
                     setIsCalendarOpen(false);
                   }}
@@ -167,7 +167,11 @@ export default function ExplorePage() {
   );
 }
 
-function ExploreCard({ item }) {
+interface ExploreCardProps {
+  item: any;
+}
+
+function ExploreCard({ item }: ExploreCardProps) {
   return (
     <motion.div
       variants={{

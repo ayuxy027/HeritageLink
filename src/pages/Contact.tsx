@@ -31,13 +31,13 @@ const Contact = () => {
       <BackgroundAnimation />
       <BlueMeteor />
       <div className="flex relative flex-col items-center px-4 mx-auto max-w-7xl sm:px-6 lg:px-8 lg:flex-row lg:py-16">
-        <motion.div 
+        <motion.div
           className="w-full lg:w-1/2 lg:pr-8"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <motion.h1 
+          <motion.h1
             className="mb-6 text-4xl font-bold leading-tight text-center text-white sm:text-5xl sm:leading-tight lg:leading-tight lg:text-6xl lg:text-left"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -45,7 +45,7 @@ const Contact = () => {
           >
             Get in Touch
           </motion.h1>
-          <motion.p 
+          <motion.p
             className="mb-8 text-xl text-center text-blue-100 lg:text-left"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -53,7 +53,7 @@ const Contact = () => {
           >
             We're here to assist you on your heritage journey. Reach out to us for any queries or support.
           </motion.p>
-          <motion.form 
+          <motion.form
             className="space-y-6"
             onSubmit={handleSubmit}
             initial={{ opacity: 0 }}
@@ -140,7 +140,16 @@ const Contact = () => {
   );
 };
 
-const InputField = ({ id, type, label, icon, value, onChange }) => (
+interface InputFieldProps {
+  id: string;
+  type: string;
+  label: string;
+  icon: React.ReactNode;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+}
+
+const InputField = ({ id, type, label, icon, value, onChange }: InputFieldProps) => (
   <div className="relative">
     <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
       {icon}
@@ -169,7 +178,12 @@ const InputField = ({ id, type, label, icon, value, onChange }) => (
   </div>
 );
 
-const Button = ({ children, type = "button" }) => (
+interface ButtonProps {
+  children: React.ReactNode;
+  type?: "button" | "submit" | "reset";
+}
+
+const Button = ({ children, type = "button" }: ButtonProps) => (
   <motion.button
     type={type}
     className="flex justify-center items-center px-6 py-3 w-full text-base font-medium text-blue-900 bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-md transition-all duration-300 ease-in-out hover:from-yellow-500 hover:to-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
@@ -180,7 +194,13 @@ const Button = ({ children, type = "button" }) => (
   </motion.button>
 );
 
-const ContactInfo = ({ icon, title, content }) => (
+interface ContactInfoProps {
+  icon: React.ReactNode;
+  title: string;
+  content: string;
+}
+
+const ContactInfo = ({ icon, title, content }: ContactInfoProps) => (
   <div className="flex items-start">
     <div className="flex-shrink-0">{icon}</div>
     <div className="ml-3">

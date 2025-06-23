@@ -1,4 +1,6 @@
-export const museumData = {
+import { MuseumData } from '../types';
+
+export const museumData: MuseumData = {
     exhibitions: [
         {
             id: 'e1',
@@ -201,6 +203,8 @@ export const museumData = {
             price: 50
         }
     ],
+    workshops: [],
+    events: [],
     tours: [
         {
             id: 't1',

@@ -8,17 +8,31 @@ import { BackgroundPattern } from '../components/shared/BackgroundPattern'
 import '../styles/shared-input.css'
 
 export default function Book1() {
-  const [formData, setFormData] = useState({
+  interface FormData {
+    name: string;
+    phone: string;
+    attendees: number;
+    email: string;
+  }
+
+  interface FormErrors {
+    name?: string;
+    phone?: string;
+    attendees?: string;
+    email?: string;
+  }
+
+  const [formData, setFormData] = useState<FormData>({
     name: '',
     phone: '',
     attendees: 1,
     email: '',
   })
-  const [errors, setErrors] = useState({})
+  const [errors, setErrors] = useState<FormErrors>({})
   const navigate = useNavigate()
 
   const validateForm = () => {
-    const newErrors = {}
+    const newErrors: FormErrors = {}
     if (!formData.name.trim()) newErrors.name = 'Name is required'
     if (!formData.phone.trim()) newErrors.phone = 'Phone number is required'
     if (formData.attendees < 1) newErrors.attendees = 'At least one attendee is required'
@@ -42,13 +56,13 @@ export default function Book1() {
   return (
     <div className="flex relative justify-center items-center py-12 min-h-screen bg-gray-50 font-body">
       <BackgroundPattern />
-      <motion.div 
+      <motion.div
         className="z-10 p-8 w-full max-w-xl bg-white rounded-2xl shadow-xl"
         initial={{ opacity: 0, scale: 0.95, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
       >
-        <motion.h1 
+        <motion.h1
           className="mb-6 text-4xl font-bold text-center text-transparent bg-clip-text bg-proj"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -56,7 +70,7 @@ export default function Book1() {
         >
           Visitor Information
         </motion.h1>
-        <motion.div 
+        <motion.div
           className="space-y-6"
           initial="initial"
           animate="animate"
@@ -132,8 +146,8 @@ export default function Book1() {
             {errors.email && <p className="mt-1 text-xs text-red-500">{errors.email}</p>}
           </motion.div>
         </motion.div>
-        <motion.button 
-          onClick={handleNext} 
+        <motion.button
+          onClick={handleNext}
           className="flex justify-center items-center px-6 py-3 mt-8 w-full text-lg font-medium text-white rounded-full transition duration-300 bg-proj hover:bg-proj-hover focus:outline-none focus:ring-2 focus:ring-proj focus:ring-offset-2"
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.97 }}

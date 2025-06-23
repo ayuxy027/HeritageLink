@@ -1,10 +1,18 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-const EnhancedLoadingSpinner = ({ 
-  size = 'md', 
-  color = 'blue', 
-  text = 'Loading...', 
+interface EnhancedLoadingSpinnerProps {
+  size?: 'sm' | 'md' | 'lg';
+  color?: 'blue' | 'red' | 'green' | 'yellow' | 'purple' | 'indigo' | 'primary';
+  text?: string;
+  fullScreen?: boolean;
+  className?: string;
+}
+
+const EnhancedLoadingSpinner: React.FC<EnhancedLoadingSpinnerProps> = ({
+  size = 'md',
+  color = 'blue',
+  text = 'Loading...',
   fullScreen = true,
   className = '',
 }) => {
@@ -58,8 +66,8 @@ const EnhancedLoadingSpinner = ({
     ease: 'easeInOut',
   };
 
-  const containerClass = fullScreen 
-    ? "flex flex-col items-center justify-center h-screen bg-gray-100" 
+  const containerClass = fullScreen
+    ? "flex flex-col items-center justify-center h-screen bg-gray-100"
     : "flex flex-col items-center py-8";
 
   return (

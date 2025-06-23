@@ -132,7 +132,15 @@ export default function AuthPage() {
   )
 }
 
-function InputField({ id, type, label, icon, rightIcon }) {
+interface InputFieldProps {
+  id: string;
+  type: string;
+  label: string;
+  icon: React.ReactNode;
+  rightIcon?: React.ReactNode;
+}
+
+function InputField({ id, type, label, icon, rightIcon }: InputFieldProps) {
   return (
     <div className="space-y-1">
       <label htmlFor={id} className="block text-sm font-medium text-gray-200">
@@ -160,7 +168,11 @@ function InputField({ id, type, label, icon, rightIcon }) {
   )
 }
 
-function Button({ children }) {
+interface ButtonProps {
+  children: React.ReactNode;
+}
+
+function Button({ children }: ButtonProps) {
   return (
     <motion.button
       className="flex items-center justify-center w-full px-6 py-3 text-base font-medium text-blue-900 transition-all duration-300 ease-in-out rounded-md bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
@@ -172,7 +184,11 @@ function Button({ children }) {
   )
 }
 
-function SocialButton({ icon }) {
+interface SocialButtonProps {
+  icon: 'google' | 'facebook';
+}
+
+function SocialButton({ icon }: SocialButtonProps) {
   const iconPath = icon === 'google'
     ? "M20.64 12.2c0-.63-.06-1.25-.16-1.84H12v3.49h4.84c-.22 1.13-.86 2.08-1.83 2.72v2.26h2.96c1.73-1.59 2.72-3.93 2.72-6.63z M12 21c2.47 0 4.55-.82 6.06-2.22l-2.96-2.26c-.83.56-1.89.88-3.1.88-2.39 0-4.41-1.61-5.13-3.77H3.77v2.34C5.25 18.85 8.39 21 12 21z M6.87 13.63c-.19-.55-.3-1.14-.3-1.75s.11-1.2.3-1.75V7.79H3.77C3.29 9.07 3 10.5 3 12s.29 2.93.77 4.21l3.1-2.58z M12 6.38c1.35 0 2.56.46 3.51 1.37l2.62-2.62C16.65 3.67 14.47 3 12 3 8.39 3 5.25 5.15 3.77 8.15l3.1 2.58c.72-2.16 2.74-3.77 5.13-3.77z"
     : "M20.89 2H3.11A1.11 1.11 0 002 3.11v17.78A1.11 1.11 0 003.11 22h9.67v-7.73h-2.63v-3.04h2.63V9.08c0-2.61 1.59-4.03 3.92-4.03 1.11 0 2.07.08 2.35.12v2.72h-1.61c-1.26 0-1.51.6-1.51 1.48v1.94h3.02l-.39 3.04h-2.63V22h5.16A1.11 1.11 0 0022 20.89V3.11A1.11 1.11 0 0020.89 2z"

@@ -27,7 +27,7 @@ const PageLoader = () => (
   </div>
 );
 
-function App() {
+function App(): React.JSX.Element {
   return (
     <Router>
       <ErrorBoundary FallbackComponent={ErrorFallback}>
@@ -42,10 +42,10 @@ function App() {
                 <Route path="/faq" element={<FAQ />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/login" element={<AuthPage />} />
-                
+
                 {/* Redirect /book to /book-1 */}
                 <Route path="/book" element={<Navigate to="/book-1" replace />} />
-                
+
                 {/* Booking routes */}
                 <Route path="/book-1" element={<Book1 />} />
                 <Route path="/book-2" element={<Book2 />} />
