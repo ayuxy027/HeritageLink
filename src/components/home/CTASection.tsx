@@ -1,48 +1,30 @@
-import React, { useEffect, useRef } from 'react';
-import { motion, useAnimation } from 'framer-motion';
-import { FaTicketAlt } from 'react-icons/fa';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { FaTicketAlt } from 'react-icons/fa';
 
-const GlowingButton = () => {
-  const buttonRef = useRef(null);
-  const glowAnimation = useAnimation();
-  const navigate = useNavigate(); // Hook for navigation
-
-  useEffect(() => {
-    const animateGlow = async () => {
-      await glowAnimation.start({
-        boxShadow: [
-          '0 0 10px #818cf8, 0 0 20px #818cf8, 0 0 30px #818cf8',
-          '0 0 15px #a78bfa, 0 0 30px #a78bfa, 0 0 45px #a78bfa',
-          '0 0 10px #f472b6, 0 0 20px #f472b6, 0 0 30px #f472b6',
-        ],
-        scale: [1, 1.05, 1],
-        transition: { duration: 3, ease: 'easeInOut', repeat: Infinity },
-      });
-    };
-    animateGlow();
-  }, [glowAnimation]);
+const GlowingButton = (): React.JSX.Element => {
+  const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate('/book'); // Navigate to /book route
+    navigate('/book');
   };
 
   return (
     <motion.button
-      ref={buttonRef}
-      animate={glowAnimation}
+      type="button"
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.95 }}
-      onClick={handleClick} // Handle button click
-      className="px-8 py-3 text-lg font-semibold text-white transition-all duration-300 rounded-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:from-indigo-400 hover:via-purple-400 hover:to-pink-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-400"
+      onClick={handleClick}
+      className="glow-button px-8 py-3 text-lg font-semibold text-white transition-all duration-300 rounded-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:from-indigo-400 hover:via-purple-400 hover:to-pink-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-400"
     >
-      <FaTicketAlt className="inline-block mr-2" />
+      <FaTicketAlt className="inline-block mr-2" aria-hidden="true" />
       Book Your Visit
     </motion.button>
   );
 };
 
-export default function EnhancedCTASection() {
+export default function CTASection(): React.JSX.Element {
   return (
     <section className="relative py-16 overflow-hidden bg-white">
       <div className="container relative z-10 px-4 mx-auto text-center">

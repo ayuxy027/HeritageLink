@@ -14,7 +14,6 @@
     "clean": "rm -rf node_modules package-lock.json && npm cache clean --force"
   },
   "dependencies": {
-    "@tailwindcss/postcss": "^4.1.10",
     "axios": "^1.10.0",
     "canvas-confetti": "^1.9.3",
     "framer-motion": "^12.19.1",
@@ -29,8 +28,7 @@
     "react-intersection-observer": "^9.16.0",
     "react-qr-code": "^2.0.16",
     "react-router-dom": "^7.6.2",
-    "react-simple-typewriter": "^5.0.1",
-    "styled-components": "^6.1.19"
+    "react-simple-typewriter": "^5.0.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.29.0",
@@ -39,7 +37,6 @@
     "@types/react": "^19.1.8",
     "@types/react-datepicker": "^7.0.0",
     "@types/react-dom": "^19.1.6",
-    "@types/styled-components": "^5.1.34",
     "@typescript-eslint/eslint-plugin": "^8.35.0",
     "@typescript-eslint/parser": "^8.35.0",
     "@vitejs/plugin-react": "^4.6.0",

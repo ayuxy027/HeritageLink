@@ -11,10 +11,9 @@ yarn-error.log*
 
 # OS generated files
 .DS_Store
-.DS_Store          # macOS
-Thumbs.db          # Windows
-ehthumbs.db        # Windows
-Desktop.ini        # Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
 
 # IDEs and text editors
 .vscode/

@@ -1,10 +1,9 @@
-import React, { Suspense } from 'react'
-import ReactDOM from 'react-dom/client'
-import './index.css'
-import EnhancedLoadingSpinner from './components/shared/EnhancedLoadingSpinner'
+import React, { Suspense } from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import EnhancedLoadingSpinner from './components/shared/EnhancedLoadingSpinner';
 
-// Lazy load App component
-const App = React.lazy(() => import('./App'))
+const App = React.lazy(() => import('./App'));
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
@@ -12,4 +11,4 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <App />
     </Suspense>
   </React.StrictMode>,
-)
+);

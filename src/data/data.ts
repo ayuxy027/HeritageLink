@@ -1,4 +1,4 @@
-import { MuseumData } from '../types';
+import type { MuseumData, AmenityItem } from '../types';
 
 export const museumData: MuseumData = {
     exhibitions: [
@@ -279,3 +279,14 @@ const allItems = [...museumData.exhibitions, ...museumData.collections, ...museu
 export const locations = ['All', ...new Set(allItems.map(item => item.location))];
 export const categories = ['All', ...new Set(allItems.map(item => item.category))];
 export const types = ['All', 'Exhibition', 'Collection', 'Tour'];
+
+export const amenities: AmenityItem[] = [
+  { name: 'Tour Guide', price: 200, icon: '🧑‍🏫' },
+  { name: 'Wheelchair for Elderly', price: 50, icon: '👵' },
+  { name: 'Audio Guide', price: 100, icon: '🎧' },
+  { name: 'Photography Permit', price: 150, icon: '📷' },
+  { name: 'Locker Service', price: 75, icon: '🔒' },
+  { name: 'Café Voucher', price: 100, icon: '☕' },
+];
+
+export const BASE_BOOKING_FEE = 100;

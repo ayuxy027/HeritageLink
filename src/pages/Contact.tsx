@@ -1,19 +1,22 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
-import Footer from '../components/layout/Footer';
-import { Send, MapPin, Mail, Phone, ArrowRight, User, MessageSquare } from "lucide-react";
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { Send, MapPin, Mail, Phone, ArrowRight, User, MessageSquare } from 'lucide-react';
+import { BackgroundGradient } from '../components/shared/BackgroundGradient';
+import { Meteor } from '../components/shared/Meteor';
+import { ParticleBackground } from '../components/shared/ParticleBackground';
+import toast from 'react-hot-toast';
 import '../styles/shared-input.css';
 
-const Contact = () => {
+const Contact = (): React.JSX.Element => {
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    message: "",
+    name: '',
+    email: '',
+    phone: '',
+    message: '',
   });
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { id, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
@@ -21,15 +24,18 @@ const Contact = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
+    toast.success('Message sent! We will get back to you soon.', { duration: 3000 });
+    setFormData({ name: '', email: '', phone: '', message: '' });
   };
 
   return (
     <section className="relative bg-proj font-body">
-      <BackgroundAnimation />
-      <BlueMeteor />
+      <BackgroundGradient />
+      <Meteor size={2} duration={2} delay={0} color="rgba(59, 130, 246, 0.6)" />
+      <Meteor size={1} duration={1.5} delay={1} color="rgba(96, 165, 250, 0.6)" />
+      <Meteor size={3} duration={2.5} delay={2} color="rgba(37, 99, 235, 0.6)" />
       <div className="flex relative flex-col items-center px-4 mx-auto max-w-7xl sm:px-6 lg:px-8 lg:flex-row lg:py-16">
         <motion.div
           className="w-full lg:w-1/2 lg:pr-8"
@@ -51,7 +57,7 @@ const Contact = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
-            We're here to assist you on your heritage journey. Reach out to us for any queries or support.
+            We&apos;re here to assist you on your heritage journey. Reach out to us for any queries or support.
           </motion.p>
           <motion.form
             className="space-y-6"
@@ -94,7 +100,7 @@ const Contact = () => {
             />
             <Button type="submit">
               Send Message
-              <Send className="ml-2 w-5 h-5" />
+              <Send className="ml-2 w-5 h-5" aria-hidden="true" />
             </Button>
           </motion.form>
         </motion.div>
@@ -108,17 +114,17 @@ const Contact = () => {
             <h3 className="mb-6 text-2xl font-bold">Contact Information</h3>
             <div className="space-y-6">
               <ContactInfo
-                icon={<MapPin className="w-6 h-6 text-yellow-400" />}
+                icon={<MapPin className="w-6 h-6 text-yellow-400" aria-hidden="true" />}
                 title="Address"
                 content="Pune, Maharashtra 441101, India"
               />
               <ContactInfo
-                icon={<Mail className="w-6 h-6 text-yellow-400" />}
+                icon={<Mail className="w-6 h-6 text-yellow-400" aria-hidden="true" />}
                 title="Email"
                 content="support@heritagelink.com"
               />
               <ContactInfo
-                icon={<Phone className="w-6 h-6 text-yellow-400" />}
+                icon={<Phone className="w-6 h-6 text-yellow-400" aria-hidden="true" />}
                 title="Phone"
                 content="+91 123 456 7890"
               />
@@ -129,13 +135,13 @@ const Contact = () => {
                 className="inline-flex items-center text-yellow-400 transition-colors hover:text-yellow-300"
               >
                 Back to Home
-                <ArrowRight className="ml-2 w-5 h-5" />
+                <ArrowRight className="ml-2 w-5 h-5" aria-hidden="true" />
               </Link>
             </div>
           </div>
         </motion.div>
       </div>
-      <ParticleBackground />
+      <ParticleBackground count={30} />
     </section>
   );
 };
@@ -151,15 +157,14 @@ interface InputFieldProps {
 
 const InputField = ({ id, type, label, icon, value, onChange }: InputFieldProps) => (
   <div className="relative">
-    <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-      {icon}
-    </div>
-    {type === "textarea" ? (
+    <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none" aria-hidden="true">{icon}</div>
+    {type === 'textarea' ? (
       <textarea
         id={id}
         rows={4}
         className="textarea-base input-with-icon"
         placeholder={label}
+        aria-label={label}
         value={value}
         onChange={onChange}
         required
@@ -170,6 +175,7 @@ const InputField = ({ id, type, label, icon, value, onChange }: InputFieldProps)
         id={id}
         className="input-base input-with-icon"
         placeholder={label}
+        aria-label={label}
         value={value}
         onChange={onChange}
         required
@@ -180,10 +186,10 @@ const InputField = ({ id, type, label, icon, value, onChange }: InputFieldProps)
 
 interface ButtonProps {
   children: React.ReactNode;
-  type?: "button" | "submit" | "reset";
+  type?: 'button' | 'submit' | 'reset';
 }
 
-const Button = ({ children, type = "button" }: ButtonProps) => (
+const Button = ({ children, type = 'button' }: ButtonProps) => (
   <motion.button
     type={type}
     className="flex justify-center items-center px-6 py-3 w-full text-base font-medium text-blue-900 bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-md transition-all duration-300 ease-in-out hover:from-yellow-500 hover:to-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
@@ -208,72 +214,6 @@ const ContactInfo = ({ icon, title, content }: ContactInfoProps) => (
       <p className="mt-1 text-sm text-blue-100">{content}</p>
     </div>
   </div>
-);
-
-const BackgroundAnimation = () => (
-  <motion.div
-    className="absolute inset-0 opacity-20"
-    animate={{
-      background: [
-        "radial-gradient(circle, rgba(255,255,255,0) 0%, rgba(200,200,255,0.3) 100%)",
-        "radial-gradient(circle, rgba(255,255,255,0) 0%, rgba(255,200,200,0.3) 100%)",
-        "radial-gradient(circle, rgba(255,255,255,0) 0%, rgba(200,255,200,0.3) 100%)",
-      ],
-    }}
-    transition={{ duration: 10, repeat: Infinity, repeatType: "reverse" }}
-  />
-);
-
-const ParticleBackground = () => (
-  <div className="overflow-hidden absolute inset-0 pointer-events-none">
-    {[...Array(30)].map((_, i) => (
-      <motion.div
-        key={i}
-        className="absolute bg-white rounded-full opacity-20"
-        style={{
-          width: Math.random() * 4 + 1,
-          height: Math.random() * 4 + 1,
-          top: `${Math.random() * 100}%`,
-          left: `${Math.random() * 100}%`,
-        }}
-        animate={{
-          y: [0, -30, 0],
-          opacity: [0.2, 0.5, 0.2],
-        }}
-        transition={{
-          duration: Math.random() * 5 + 5,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-      />
-    ))}
-  </div>
-);
-
-const BlueMeteor = () => (
-  <>
-    <Meteor size={2} duration={2} delay={0} color="rgba(59, 130, 246, 0.6)" />
-    <Meteor size={1} duration={1.5} delay={1} color="rgba(96, 165, 250, 0.6)" />
-    <Meteor size={3} duration={2.5} delay={2} color="rgba(37, 99, 235, 0.6)" />
-  </>
-);
-
-const Meteor = ({ size, duration, delay, color }) => (
-  <motion.div
-    className="absolute rounded-full shadow-lg"
-    style={{
-      width: size,
-      height: size,
-      boxShadow: `0 0 ${size * 2}px ${size / 2}px ${color}`,
-      background: color,
-    }}
-    initial={{ top: '-5%', left: '105%' }}
-    animate={{
-      top: '105%',
-      left: '-5%',
-      transition: { duration, delay, repeat: Infinity, repeatDelay: 3 },
-    }}
-  />
 );
 
 export default Contact;

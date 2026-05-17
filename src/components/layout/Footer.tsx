@@ -1,13 +1,14 @@
-import React from 'react'
-import { motion } from 'framer-motion'
-import { FaFacebookF, FaTwitter, FaInstagram, FaYoutube } from 'react-icons/fa'
+import React, { useMemo } from 'react';
+import { motion } from 'framer-motion';
+import { FaFacebookF, FaTwitter, FaInstagram, FaYoutube } from 'react-icons/fa';
+import { Meteor } from '../shared/Meteor';
 
 const socialIcons = [
   { Icon: FaFacebookF, href: '/', label: 'Facebook' },
   { Icon: FaTwitter, href: '/', label: 'Twitter' },
   { Icon: FaInstagram, href: '/', label: 'Instagram' },
   { Icon: FaYoutube, href: '/', label: 'YouTube' },
-]
+];
 
 const footerLinks = [
   {
@@ -37,28 +38,29 @@ const footerLinks = [
       { label: 'Corporate Partnerships', href: '/' },
     ],
   },
-]
+];
 
-const Meteor = ({ size, duration, delay }) => (
-  <motion.div
-    className={`absolute bg-white rounded-full shadow-lg`}
-    style={{
-      width: size,
-      height: size,
-      boxShadow: `0 0 ${size * 2}px ${size / 2}px rgba(255,255,255,0.5)`,
-    }}
-    initial={{ top: '-5%', left: '105%' }}
-    animate={{
-      top: '105%',
-      left: '-5%',
-      transition: { duration, delay, repeat: Infinity, repeatDelay: 3 },
-    }}
-  />
-)
+interface StarData {
+  id: number;
+  top: number;
+  left: number;
+  size: number;
+}
 
-const Star = ({ top, left, size }) => (
+function useStars(count: number): StarData[] {
+  return useMemo(() => {
+    return Array.from({ length: count }, (_, i) => ({
+      id: i,
+      top: Math.round((i * 37.3) % 100 * 10) / 10,
+      left: Math.round((i * 53.7) % 100 * 10) / 10,
+      size: Math.round((1 + (i % 3) * 0.7) * 10) / 10,
+    }));
+  }, [count]);
+}
+
+const Star = ({ top, left, size }: { top: number; left: number; size: number }) => (
   <div
-    className="absolute bg-white rounded-full animate-twinkle"
+    className="absolute bg-white rounded-full animate-pulse"
     style={{
       top: `${top}%`,
       left: `${left}%`,
@@ -66,9 +68,14 @@ const Star = ({ top, left, size }) => (
       height: size,
     }}
   />
-)
+);
 
-const FooterLink = ({ href, children }) => (
+interface FooterLinkProps {
+  href: string;
+  children: React.ReactNode;
+}
+
+const FooterLink = ({ href, children }: FooterLinkProps) => (
   <motion.a
     href={href}
     className="inline-block text-lg transition-colors duration-300 hover:text-blue-300"
@@ -77,14 +84,21 @@ const FooterLink = ({ href, children }) => (
   >
     {children}
   </motion.a>
-)
+);
 
-export default function Footer() {
+export default function Footer(): React.JSX.Element {
+  const stars = useStars(50);
+
   return (
     <footer className="overflow-hidden relative py-16 text-white bg-proj">
       <div className="overflow-hidden absolute inset-0">
-        {[...Array(50)].map((_, i) => (
-          <Star key={i} top={Math.random() * 100} left={Math.random() * 100} size={Math.random() * 2 + 1} />
+        {stars.map((star) => (
+          <Star
+            key={star.id}
+            top={star.top}
+            left={star.left}
+            size={star.size}
+          />
         ))}
       </div>
       <Meteor size={2} duration={2} delay={0} />
@@ -92,12 +106,12 @@ export default function Footer() {
       <Meteor size={3} duration={2.5} delay={2} />
       <div className="container relative z-10 px-4 mx-auto">
         <div className="grid gap-12 mb-16 md:grid-cols-2 lg:grid-cols-4">
-          {footerLinks.map((column, index) => (
-            <div key={index} className="space-y-6">
+          {footerLinks.map((column) => (
+            <div key={column.title} className="space-y-6">
               <h3 className="text-2xl font-bold">{column.title}</h3>
               <ul className="space-y-4">
-                {column.links.map((link, linkIndex) => (
-                  <li key={linkIndex}>
+                {column.links.map((link) => (
+                  <li key={link.label}>
                     <FooterLink href={link.href}>{link.label}</FooterLink>
                   </li>
                 ))}
@@ -116,7 +130,7 @@ export default function Footer() {
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
                 >
-                  <Icon />
+                  <Icon aria-hidden="true" />
                 </motion.a>
               ))}
             </div>
@@ -128,9 +142,9 @@ export default function Footer() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
         >
-          <p className="text-lg">&copy; 2024 HeritageLink. All rights reserved.</p>
+          <p className="text-lg">&copy; {new Date().getFullYear()} HeritageLink. All rights reserved.</p>
         </motion.div>
       </div>
     </footer>
-  )
+  );
 }

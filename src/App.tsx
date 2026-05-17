@@ -5,8 +5,8 @@ import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 import ErrorFallback from './components/shared/ErrorFallback';
 import EnhancedLoadingSpinner from './components/shared/EnhancedLoadingSpinner';
+import BookingLayout from './components/layout/BookingLayout';
 
-// Lazy load page components
 const Home = lazy(() => import('./pages/Home'));
 const Explore = lazy(() => import('./pages/Explore'));
 const Events = lazy(() => import('./pages/Events'));
@@ -20,8 +20,7 @@ const Book4 = lazy(() => import('./pages/Book4'));
 const Book5 = lazy(() => import('./pages/Book5'));
 const QrCodePage = lazy(() => import('./pages/QrCodePage'));
 
-// Page loading component
-const PageLoader = () => (
+const PageLoader = (): React.JSX.Element => (
   <div className="flex-grow">
     <EnhancedLoadingSpinner fullScreen={false} color="indigo" text="Loading content..." />
   </div>
@@ -42,21 +41,15 @@ function App(): React.JSX.Element {
                 <Route path="/faq" element={<FAQ />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/login" element={<AuthPage />} />
-
-                {/* Redirect /book to /book-1 */}
                 <Route path="/book" element={<Navigate to="/book-1" replace />} />
-
-                {/* Booking routes */}
-                <Route path="/book-1" element={<Book1 />} />
-                <Route path="/book-2" element={<Book2 />} />
-                <Route path="/book-3" element={<Book3 />} />
-                <Route path="/book-4" element={<Book4 />} />
-                <Route path="/book-5" element={<Book5 />} />
-
-                {/* QR Code Page */}
+                <Route element={<BookingLayout />}>
+                  <Route path="/book-1" element={<Book1 />} />
+                  <Route path="/book-2" element={<Book2 />} />
+                  <Route path="/book-3" element={<Book3 />} />
+                  <Route path="/book-4" element={<Book4 />} />
+                  <Route path="/book-5" element={<Book5 />} />
+                </Route>
                 <Route path="/qr-code" element={<QrCodePage />} />
-
-                {/* Catch-all route for 404 */}
                 <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>
             </Suspense>

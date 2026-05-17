@@ -4,9 +4,9 @@ import StatsSection from '../components/home/StatsSection';
 import FeatureSection from '../components/home/FeatureSection';
 import TestimonialSection from '../components/home/TestimonialSection';
 import CTASection from '../components/home/CTASection';
-import ChatBot from '../components/home/ChatBot.jsx';
+import ChatBot from '../components/home/ChatBot';
 
-function Home() {
+function Home(): React.JSX.Element {
   return (
     <div className="min-h-screen text-gray-900 bg-white">
       <HeroSection />

@@ -16,14 +16,12 @@ const EnhancedLoadingSpinner: React.FC<EnhancedLoadingSpinnerProps> = ({
   fullScreen = true,
   className = '',
 }) => {
-  // Size variations
   const sizeMap = {
     sm: { dot: 'w-2 h-2', spacing: 'space-x-1.5' },
     md: { dot: 'w-3 h-3', spacing: 'space-x-2' },
     lg: { dot: 'w-4 h-4', spacing: 'space-x-3' },
   };
 
-  // Color variations
   const colorMap = {
     blue: 'bg-blue-500',
     red: 'bg-red-500',
@@ -63,13 +61,13 @@ const EnhancedLoadingSpinner: React.FC<EnhancedLoadingSpinnerProps> = ({
   const circleTransition = {
     duration: 0.5,
     repeat: Infinity,
-    repeatType: "reverse" as const,
-    ease: "easeInOut" as const,
+    repeatType: 'reverse' as const,
+    ease: 'easeInOut' as const,
   };
 
   const containerClass = fullScreen
-    ? "flex flex-col items-center justify-center h-screen bg-gray-100"
-    : "flex flex-col items-center py-8";
+    ? 'flex flex-col items-center justify-center h-screen bg-gray-100'
+    : 'flex flex-col items-center py-8';
 
   return (
     <div className={`${containerClass} ${className}`}>
@@ -86,7 +84,7 @@ const EnhancedLoadingSpinner: React.FC<EnhancedLoadingSpinnerProps> = ({
             variants={circleVariants}
             transition={{
               ...circleTransition,
-              delay: index * 0.1
+              delay: index * 0.1,
             }}
           />
         ))}

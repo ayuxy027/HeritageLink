@@ -2,17 +2,19 @@
 Welcome to **Heritage Link**! 🏛️
 
 ## Project Overview
-**Heritage Link** is an AI-Powered Ticket Booking Platform built for **Smart India Hackathon (SIH) 2024**, addressing Problem Statement 1648. 
+**Heritage Link** is an AI-Powered Ticket Booking Platform built for **Smart India Hackathon (SIH) 2024**, addressing Problem Statement 1648.
 
 🎫 Discover seamless cultural experiences with our innovative booking solution.
 
 ## Tech Stack
-- **Vite**
-- **Axios**
-- **Framer Motion**
-- **React Router**
-- **React QR Code**
-- **Styled Components**
+- **Vite** — Next generation frontend tooling
+- **React 19** — UI library
+- **TypeScript** — Strict type safety enabled
+- **Tailwind CSS** — Utility-first CSS framework
+- **Framer Motion** — Production-ready motion library
+- **React Router** — Declarative routing
+- **React QR Code** — QR code generation
+- **Axios** — HTTP client for AI chatbot
 
 ## Features
 - **AI-Powered Ticket Booking** 🤖
@@ -24,6 +26,7 @@ Welcome to **Heritage Link**! 🏛️
 - **Date Picker Integration** 📅
 - **Toast Notifications** 🔔
 - **Modern UI/UX Design** 🎨
+- **Persistent Booking State** 💾 (survives page refreshes)
 
 ## Setup and Installation
 1. **Clone** this repository:
@@ -34,7 +37,28 @@ Welcome to **Heritage Link**! 🏛️
    ```bash
    npm install
    ```
-3. **Create a `.env` file** and add the API keys as specified in `.env.example`.
+3. **Create a `.env` file** from the example:
+   ```bash
+   cp .env.example .env
+   ```
+4. **Add your API key** to `.env`:
+   ```
+   VITE_GEMINI_API_KEY=your_gemini_api_key_here
+   ```
+5. **Run the development server**:
+   ```bash
+   npm run dev
+   ```
+
+## Available Scripts
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start development server |
+| `npm run build` | Production build |
+| `npm run preview` | Preview production build |
+| `npm run lint` | Run ESLint |
+| `npm run lint:fix` | Fix ESLint issues |
+| `npm run type-check` | Run TypeScript compiler |
 
 ## Contributing
 **Contributions are welcomed** 😁

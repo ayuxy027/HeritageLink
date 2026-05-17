@@ -78,10 +78,10 @@ export interface BookingFormData {
 }
 
 // Component props types
-import React from 'react';
+import type { ReactNode } from 'react';
 
 export interface ButtonProps {
-  children: React.ReactNode;
+  children: ReactNode;
   variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
   size?: 'sm' | 'md' | 'lg';
   className?: string;
@@ -125,4 +125,75 @@ export interface ApiResponse<T> {
 // Route params
 export interface RouteParams {
   [key: string]: string | undefined;
-} 
+}
+
+// Booking step types
+export interface Book1FormData {
+  name: string;
+  phone: string;
+  attendees: number;
+  email: string;
+}
+
+export interface Book1Errors {
+  name?: string;
+  phone?: string;
+  attendees?: string;
+  email?: string;
+}
+
+export interface Book2FormData {
+  timeSlot: string;
+}
+
+export interface Book2Errors {
+  timeSlot?: string;
+}
+
+export interface Book4FormData {
+  visitPurpose: string;
+  interests: string[];
+  hearAboutUs: string;
+}
+
+export interface Book4Errors {
+  interests?: string;
+  hearAboutUs?: string;
+}
+
+export interface Book5FormData {
+  amenities?: string[];
+}
+
+export interface QrCodeOptions {
+  weekday: 'long' | 'short' | 'narrow';
+  day: 'numeric' | '2-digit';
+  month: 'long' | 'short' | 'narrow' | 'numeric' | '2-digit';
+  year: 'numeric' | '2-digit';
+}
+
+export interface CustomButtonProps {
+  type?: 'button' | 'submit' | 'reset';
+  children?: ReactNode;
+  onClick?: () => void;
+  className?: string;
+  disabled?: boolean;
+}
+
+export interface AmenityItem {
+  name: string;
+  price: number;
+  icon: string;
+}
+
+export interface BookingState {
+  name: string;
+  phone: string;
+  attendees: number;
+  email: string;
+  timeSlot: string;
+  amenities: string[];
+  visitPurpose: string;
+  interests: string[];
+  hearAboutUs: string;
+}
