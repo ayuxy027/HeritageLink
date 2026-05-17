@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { FaFacebookF, FaTwitter, FaInstagram, FaYoutube } from 'react-icons/fa';
-import { Meteor } from '../shared/Meteor';
+import { Meteor } from '../shared/Effects';
 
 const socialIcons = [
   { Icon: FaFacebookF, href: '/', label: 'Facebook' },

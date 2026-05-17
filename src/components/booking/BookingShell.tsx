@@ -1,8 +1,26 @@
 import { motion } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { BackgroundPattern } from '../shared/BackgroundPattern';
-import { bookingContainerVariants } from './variants';
 import type { ReactNode } from 'react';
+
+// eslint-disable-next-line react-refresh/only-export-components
+export const bookingContainerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1 },
+  },
+};
+
+// eslint-disable-next-line react-refresh/only-export-components
+export const bookingItemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: 'easeOut' as const },
+  },
+};
 
 interface BookingShellProps {
   title: string;

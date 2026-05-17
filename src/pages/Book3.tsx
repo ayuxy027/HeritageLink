@@ -2,10 +2,9 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Info } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { BookingShell } from '../components/booking/BookingShell';
-import { bookingItemVariants } from '../components/booking/variants';
-import { useBooking } from '../hooks/useBooking';
-import { amenities, BASE_BOOKING_FEE } from '../data/data';
+import { BookingShell, bookingItemVariants } from '../components/booking/BookingShell';
+import { useBooking } from '../context/BookingContext';
+import { amenities, BASE_BOOKING_FEE } from '../data/amenities';
 
 export default function Book3(): React.JSX.Element {
   const { booking, updateBooking } = useBooking();

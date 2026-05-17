@@ -4,10 +4,9 @@ import { motion } from 'framer-motion';
 import { Edit2 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import toast, { Toaster } from 'react-hot-toast';
-import { BookingShell } from '../components/booking/BookingShell';
-import { bookingItemVariants } from '../components/booking/variants';
-import { useBooking } from '../hooks/useBooking';
-import { amenities, BASE_BOOKING_FEE } from '../data/data';
+import { BookingShell, bookingItemVariants } from '../components/booking/BookingShell';
+import { useBooking } from '../context/BookingContext';
+import { amenities, BASE_BOOKING_FEE } from '../data/amenities';
 
 function generateBookingId(): string {
   const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';

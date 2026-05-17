@@ -1,4 +1,3 @@
-import axios from 'axios';
 import getAIPrompt from './aiPrompt';
 
 const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
@@ -16,9 +15,12 @@ interface GeminiResponse {
 
 export const getAIResponse = async (userInput: string): Promise<string> => {
   try {
-    const response = await axios.post(
-      `${API_URL}?key=${API_KEY}`,
-      {
+    const response = await fetch(`${API_URL}?key=${API_KEY}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
         contents: [
           {
             parts: [
@@ -28,23 +30,20 @@ export const getAIResponse = async (userInput: string): Promise<string> => {
             ],
           },
         ],
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    );
+      }),
+    });
 
-    const responseData = response.data as GeminiResponse;
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const responseData = (await response.json()) as GeminiResponse;
     const firstCandidate = responseData.candidates[0];
     if (!firstCandidate) return 'No response received from AI.';
     const firstPart = firstCandidate.content.parts[0];
     if (!firstPart) return 'No response received from AI.';
     return firstPart.text;
-  } catch (error: unknown) {
-    // eslint-disable-next-line no-console
-    console.error('Error fetching response from API:', error);
+  } catch {
     return "I apologize, but I'm unable to process that request at the moment. How else can I assist you with HeritageLink's services or provide information about our exhibits and Indian cultural heritage?";
   }
 };

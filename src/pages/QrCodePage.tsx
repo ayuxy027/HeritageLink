@@ -7,7 +7,7 @@ import { ChevronLeft, Download } from 'lucide-react';
 import html2canvas from 'html2canvas';
 import confetti from 'canvas-confetti';
 import toast from 'react-hot-toast';
-import type { BookingState } from '../types';
+import type { BookingState } from '../types/booking';
 
 interface BookingDetails extends BookingState {
   bookingId: string;

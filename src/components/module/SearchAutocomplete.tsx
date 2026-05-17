@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Search, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import type { MuseumItem } from '../../types';
+import type { MuseumItem } from '../../types/museum';
 
 interface SearchAutocompleteProps {
   searchQuery: string;

@@ -2,9 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { User, Phone, Users, Mail } from 'lucide-react';
-import { BookingShell } from '../components/booking/BookingShell';
-import { bookingItemVariants } from '../components/booking/variants';
-import { useBooking } from '../hooks/useBooking';
+import { BookingShell, bookingItemVariants } from '../components/booking/BookingShell';
+import { useBooking } from '../context/BookingContext';
 import '../styles/shared-input.css';
 
 interface FormErrors {

@@ -14,7 +14,6 @@
     "clean": "rm -rf node_modules package-lock.json && npm cache clean --force"
   },
   "dependencies": {
-    "axios": "^1.10.0",
     "canvas-confetti": "^1.9.3",
     "framer-motion": "^12.19.1",
     "html2canvas": "^1.4.1",

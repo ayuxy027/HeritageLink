@@ -23,7 +23,7 @@ import {
   Leaf,
   Star,
 } from 'lucide-react';
-import { FloatingIcon } from '../shared/FloatingIcon';
+import { FloatingIcon } from '../shared/Effects';
 import { ParticleBackground } from '../shared/ParticleBackground';
 
 const dynamicWords = ['Blazing-Fast', 'AI-Powered', 'Hassle-Free'];

@@ -5,11 +5,11 @@ import { MapPin, Calendar, Clock, ChevronRight, ChevronDown } from 'lucide-react
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import SearchAutocomplete from '../components/module/SearchAutocomplete';
-import { museumData, locations, categories, types } from '../data/data';
+import { museumData, locations, categories, types } from '../data/museums';
 import { ParticleBackground } from '../components/shared/ParticleBackground';
 import '../styles/datepicker.css';
 import '../styles/shared-input.css';
-import type { MuseumItem } from '../types';
+import type { MuseumItem } from '../types/museum';
 
 const exploreContainerVariants = {
   hidden: { opacity: 0 },
@@ -37,12 +37,22 @@ const exploreCardVariants = {
 
 const allItems: MuseumItem[] = [...museumData.exhibitions, ...museumData.collections, ...museumData.tours];
 
+interface Filters {
+  query: string;
+  location: string;
+  category: string;
+  type: string;
+  date: Date | null;
+}
+
 export default function ExplorePage(): React.JSX.Element {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedLocation, setSelectedLocation] = useState('All');
-  const [selectedCategory, setSelectedCategory] = useState('All');
-  const [selectedType, setSelectedType] = useState('All');
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [filters, setFilters] = useState<Filters>({
+    query: '',
+    location: 'All',
+    category: 'All',
+    type: 'All',
+    date: null,
+  });
   const [visibleCount, setVisibleCount] = useState(9);
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const calendarRef = useRef<HTMLDivElement>(null);
@@ -62,18 +72,22 @@ export default function ExplorePage(): React.JSX.Element {
   const filteredItems = useMemo(() => {
     return allItems.filter(
       (item) =>
-        (selectedLocation === 'All' || item.location === selectedLocation) &&
-        (selectedCategory === 'All' || item.category === selectedCategory) &&
-        (selectedType === 'All' || item.type.toLowerCase() === selectedType.toLowerCase()) &&
-        (item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          item.description.toLowerCase().includes(searchQuery.toLowerCase())) &&
-        (!selectedDate ||
-          (item.availability && item.availability.includes(selectedDate.toLocaleDateString('en-US', { weekday: 'long' }))))
+        (filters.location === 'All' || item.location === filters.location) &&
+        (filters.category === 'All' || item.category === filters.category) &&
+        (filters.type === 'All' || item.type.toLowerCase() === filters.type.toLowerCase()) &&
+        (item.title.toLowerCase().includes(filters.query.toLowerCase()) ||
+          item.description.toLowerCase().includes(filters.query.toLowerCase())) &&
+        (!filters.date ||
+          (item.availability && item.availability.includes(filters.date.toLocaleDateString('en-US', { weekday: 'long' }))))
     );
-  }, [searchQuery, selectedLocation, selectedCategory, selectedType, selectedDate]);
+  }, [filters]);
 
   const handleViewMore = useCallback(() => {
     setVisibleCount((prev) => prev + 9);
+  }, []);
+
+  const updateFilter = useCallback(<K extends keyof Filters>(key: K, value: Filters[K]) => {
+    setFilters((prev) => ({ ...prev, [key]: value }));
   }, []);
 
   return (
@@ -91,16 +105,16 @@ export default function ExplorePage(): React.JSX.Element {
 
         <div className="flex flex-wrap justify-center items-center mb-8 space-y-4 sm:space-y-0 sm:space-x-4">
           <SearchAutocomplete
-            searchQuery={searchQuery}
-            setSearchQuery={setSearchQuery}
+            searchQuery={filters.query}
+            setSearchQuery={(v) => updateFilter('query', v)}
             allItems={allItems}
           />
 
           <div className="relative w-full sm:w-auto">
             <select
               aria-label="Location"
-              value={selectedLocation}
-              onChange={(e) => setSelectedLocation(e.target.value)}
+              value={filters.location}
+              onChange={(e) => updateFilter('location', e.target.value)}
               className="select-base"
             >
               <option value="All">All Locations</option>
@@ -116,8 +130,8 @@ export default function ExplorePage(): React.JSX.Element {
           <div className="relative w-full sm:w-auto">
             <select
               aria-label="Category"
-              value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
+              value={filters.category}
+              onChange={(e) => updateFilter('category', e.target.value)}
               className="py-3 pr-10 pl-4 w-full text-gray-700 bg-white rounded-full border border-gray-300 appearance-none focus:outline-none focus:ring-2 focus:ring-proj focus:border-transparent"
             >
               {categories.map((category) => (
@@ -132,8 +146,8 @@ export default function ExplorePage(): React.JSX.Element {
           <div className="relative w-full sm:w-auto">
             <select
               aria-label="Type"
-              value={selectedType}
-              onChange={(e) => setSelectedType(e.target.value)}
+              value={filters.type}
+              onChange={(e) => updateFilter('type', e.target.value)}
               className="py-3 pr-10 pl-4 w-full text-gray-700 bg-white rounded-full border border-gray-300 appearance-none focus:outline-none focus:ring-2 focus:ring-proj focus:border-transparent"
             >
               {types.map((type) => (
@@ -151,15 +165,15 @@ export default function ExplorePage(): React.JSX.Element {
               onClick={() => setIsCalendarOpen(!isCalendarOpen)}
               className="flex justify-between items-center datepicker-input"
             >
-              {selectedDate ? selectedDate.toLocaleDateString() : 'Select Date'}
+              {filters.date ? filters.date.toLocaleDateString() : 'Select Date'}
               <Calendar className="w-5 h-5 text-gray-400" aria-hidden="true" />
             </button>
             {isCalendarOpen && (
               <div className="absolute z-10 mt-1 bg-white rounded-lg border border-gray-300 shadow-lg">
                 <DatePicker
-                  selected={selectedDate}
+                  selected={filters.date}
                   onChange={(date: Date | null) => {
-                    setSelectedDate(date);
+                    updateFilter('date', date);
                     setIsCalendarOpen(false);
                   }}
                   inline

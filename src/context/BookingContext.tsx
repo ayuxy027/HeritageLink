@@ -1,5 +1,5 @@
-import { createContext, useCallback, useState, useEffect, type ReactNode } from 'react';
-import type { BookingState } from '../types';
+import { createContext, useCallback, useContext, useState, useEffect, type ReactNode } from 'react';
+import type { BookingState } from '../types/booking';
 
 const defaultState: BookingState = {
   name: '',
@@ -58,4 +58,13 @@ export function BookingProvider({ children }: { children: ReactNode }) {
       {children}
     </BookingContext.Provider>
   );
+}
+
+// eslint-disable-next-line react-refresh/only-export-components
+export function useBooking(): BookingContextType {
+  const ctx = useContext(BookingContext);
+  if (!ctx) {
+    throw new Error('useBooking must be used within BookingProvider');
+  }
+  return ctx;
 }

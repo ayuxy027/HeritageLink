@@ -18,8 +18,7 @@ import {
   Briefcase,
   Lightbulb,
 } from 'lucide-react';
-import { FloatingIcon } from '../components/shared/FloatingIcon';
-import { BackgroundGradient } from '../components/shared/BackgroundGradient';
+import { FloatingIcon, BackgroundGradient } from '../components/shared/Effects';
 import { ParticleBackground } from '../components/shared/ParticleBackground';
 import toast from 'react-hot-toast';
 
